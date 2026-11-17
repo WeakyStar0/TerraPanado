@@ -1,0 +1,179 @@
+package org.confluence.terra_furniture.common.block.light;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CopperBulbBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import org.confluence.terra_furniture.client.generators.DefaultBlockDataGenerator;
+import org.confluence.terra_furniture.common.block.func.BlockSetGetter;
+import org.confluence.terra_furniture.common.block.func.set.TFBlockSetType;
+import org.confluence.terra_furniture.common.block.func.set.TFBlockType;
+import org.confluence.terra_furniture.common.datagen.empowered.AutoGenBlockData;
+import org.confluence.terra_furniture.common.datagen.empowered.BlockDataGenerator;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashSet;
+
+public class SwitchableLightBlock extends CopperBulbBlock implements SimpleWaterloggedBlock, AutoGenBlockData<SwitchableLightBlock>, BlockSetGetter<SwitchableLightBlock> {
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    private static final VoxelShape OAK_CANDLE_SHAPE = Shapes.or(
+            Block.box(6, 0, 6, 10, 1, 10),
+            Block.box(6.5, 0.75, 6.5, 9.5, 10, 9.5),
+            Block.box(7.5, 0.075, 4.5, 8.5, 4, 6.5)
+    );
+
+    private final TFBlockSetType type;
+    private final BlockShapeType shapeType;
+    public SwitchableLightBlock(TFBlockSetType type, Properties properties, BlockShapeType shapeType) {
+        super(properties);
+        this.type = type;
+        this.shapeType = shapeType;
+        this.registerDefaultState(stateDefinition.any().setValue(LIT, true).setValue(POWERED, false).setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (type == org.confluence.terra_furniture.common.init.TFBlockSetTypes.OAK && shapeType == BlockShapeType.CANDLE) {
+            return OAK_CANDLE_SHAPE;
+        }
+        return shapeType.getShape();
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (type == org.confluence.terra_furniture.common.init.TFBlockSetTypes.OAK
+                && shapeType == BlockShapeType.CANDLE
+                && state.getValue(LIT)
+                && !state.getValue(WATERLOGGED)) {
+            level.addParticle(ParticleTypes.SMALL_FLAME,
+                    pos.getX() + 8.06 / 16,
+                    pos.getY() + 12.6 / 16,
+                    pos.getZ() + 8.06 / 16,
+                    0, 0, 0);
+        }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED,POWERED,LIT);
+    }
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        BlockState blockstate = state.cycle(LIT);
+        level.playSound(null, pos, blockstate.getValue(LIT) ? SoundEvents.COPPER_BULB_TURN_ON : SoundEvents.COPPER_BULB_TURN_OFF, SoundSource.BLOCKS);
+        level.setBlock(pos, blockstate, 3);
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        LevelAccessor level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        if (state != null && canSurvive(state, level, pos)) {
+            return state
+                    .setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER)
+                    .setValue(POWERED, false)
+                    .setValue(LIT, true);
+        }
+        return null;
+    }
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        if (oldState.getBlock() != state.getBlock() && level instanceof ServerLevel serverlevel) {
+            this.checkAndFlip(state, serverlevel, pos);
+        }
+    }
+    @Override
+    public void checkAndFlip(BlockState state, ServerLevel level, BlockPos pos) {
+        boolean flag = level.hasNeighborSignal(pos);
+        if (flag != state.getValue(POWERED)) {
+            BlockState blockstate = state.cycle(LIT);
+            level.playSound(null, pos, blockstate.getValue(LIT) ? SoundEvents.COPPER_BULB_TURN_ON : SoundEvents.COPPER_BULB_TURN_OFF, SoundSource.BLOCKS);
+            level.setBlock(pos, blockstate.setValue(POWERED, flag), 3);
+        }
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return shapeType.isSupported(state, level, pos);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        boolean supportChanged = switch (shapeType) {
+            case CANDLE, LAMP -> direction == Direction.DOWN;
+            case CHANDELIER, LANTERN -> direction == Direction.UP;
+            case DEFAULT -> false;
+        };
+        if (supportChanged && !state.canSurvive(level, pos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+
+    @Override
+    public TFBlockSetType getType() {
+        return type;
+    }
+
+    @Override
+    public boolean hasParticle(SwitchableLightBlock block) {
+        return false;
+    }
+
+    @Override
+    public @Nullable BlockDataGenerator<? super SwitchableLightBlock> getGenerator() {
+        return new DefaultBlockDataGenerator<>() {
+            @Override
+            public TFBlockType<? extends SwitchableLightBlock> getTemplateType(SwitchableLightBlock block) {
+                return switch (block.shapeType) {
+                    case CANDLE -> TFBlockType.CANDLE;
+                    case LANTERN -> TFBlockType.LANTERN;
+                    case LAMP -> TFBlockType.LAMP;
+                    case CHANDELIER -> TFBlockType.CHANDELIER;
+                    default -> throw new IllegalStateException("Unexpected shape type: " + block.shapeType);
+                };
+            }
+
+            @Override
+            public void addBlockTags(SwitchableLightBlock block, BlockTagsProvider provider, HashSet<TagKey<Block>> keys) {
+            }
+        };
+    }
+}
