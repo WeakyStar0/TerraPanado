@@ -1,0 +1,25 @@
+{
+  "name": "Blacksmith",
+  "base_model": "confluence:guide",
+  "names_weights": { "Brom": 1.0, "Hilda": 1.0, "Torvald": 0.5 },
+  "dialogs": [
+    "Mind the sparks!",
+    "Bring me ore and I'll bring you steel."
+  ],
+  "health": 100,
+  "damage": 6,
+  "weapon": "minecraft:iron_sword",
+  "egg_model_data": 1001,
+  "offers": [
+    { "item": { "id": "minecraft:iron_ingot", "count": 4 } },
+    { "item": { "id": "minecraft:anvil", "count": 1 },
+      "costs": [ { "id": "minecraft:iron_block", "count": 2 } ] },
+    { "item": { "id": "minecraft:diamond_pickaxe", "count": 1 },
+      "condition": { "type": "confluence:hardmode" } }
+  ],
+  "chat": [
+    { "chat": { "text": "It's getting late..." },
+      "condition": { "type": "confluence:weather", "raining": true, "thundering": false },
+      "cooldown_ticks": 1200 }
+  ]
+}
