@@ -33,6 +33,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
+import org.confluence.mod.common.menu.ToggleCurioSlot;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -136,6 +137,40 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             renderTeam(guiGraphics, mouseX, mouseY);
         }
         renderTooltip(guiGraphics, mouseX, mouseY);
+        renderEmptySlotName(guiGraphics, mouseX, mouseY);
+    }
+
+    /// 空槽位悬停时显示槽位名称（原版只给有物品的槽位显示提示）。
+    private void renderEmptySlotName(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        Slot slot = this.hoveredSlot;
+        if (slot == null || slot.hasItem() || !menu.getCarried().isEmpty()) return;
+        Component name = emptySlotName(slot);
+        if (name != null) guiGraphics.renderTooltip(font, name, mouseX, mouseY);
+    }
+
+    private static final String[] VANITY_SLOT_NAMES = {"vanity_head", "vanity_chest", "vanity_legs", "vanity_feet"};
+    private static final String[] EQUIPMENT_SLOT_NAMES = {"pet", "light_pet", "minecart", "hook", "mount"};
+
+    private static Component emptySlotName(Slot slot) {
+        if (slot instanceof ToggleCurioSlot) return Component.translatable("curios.identifier.accessory");
+        if (!(slot.container instanceof ExtraInventory)) return null;
+        int i = slot.getContainerSlot();
+        if (i < VANITY_ARMOR_DYE_START) return slotName(VANITY_SLOT_NAMES[i]);
+        if (i < COINS_START) return dyeName(slotName(VANITY_SLOT_NAMES[i - VANITY_ARMOR_DYE_START]));
+        if (i < AMMO_START) return slotName("coin");
+        if (i < EQUIPMENT_START) return slotName("ammo");
+        if (i < EQUIPMENT_DYE_START) return slotName(EQUIPMENT_SLOT_NAMES[i - EQUIPMENT_START]);
+        if (i < TRASH_START) return dyeName(slotName(EQUIPMENT_SLOT_NAMES[i - EQUIPMENT_DYE_START]));
+        if (i < ACCESSORY_DYE_START) return slotName("trash");
+        return dyeName(Component.translatable("curios.identifier.accessory"));
+    }
+
+    private static Component slotName(String id) {
+        return Component.translatable("gui.confluence.extra_slot." + id);
+    }
+
+    private static Component dyeName(Component slotName) {
+        return Component.translatable("gui.confluence.extra_slot.dye", slotName);
     }
 
     @Override
@@ -279,7 +314,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         if (i >= SIZE_EQUIPMENT) i -= SIZE_EQUIPMENT;
         boolean isMount = i == MOUNT_INDEX;
         guiGraphics.blit(BACKGROUND,
-                leftPos + (isMount ? 148 : 121), topPos + (isMount ? 8 : i * 18 + 8),
+                leftPos + (isMount ? 148 : 121), topPos + (isMount ? 8 : (i - MINECART_INDEX) * 18 + 8),
                 isMount ? 194 : 177, isMount ? 68 : 68 + i * 17,
                 16, 16
         );

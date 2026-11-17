@@ -71,8 +71,12 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 });
             } else if (i < EQUIPMENT_DYE_START) { // 16, 17, 18, 19, 20
                 int j = i - EQUIPMENT_START;
+                if (j < MINECART_INDEX) { // 宠物 / 照明宠物：目前没有任何功能读取这两个槽位，隐藏
+                    addSlot(new HiddenSlot(extraInventory, i));
+                    continue;
+                }
                 int x = j == MOUNT_INDEX ? 148 : 121;
-                int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
+                int y = j == MOUNT_INDEX ? 8 : (j - MINECART_INDEX) * 18 + 8;
                 addSlot(new ToggleSlot(extraInventory, i, x, y) { // equipment
                     @Override
                     public boolean mayPlace(ItemStack stack) {
@@ -87,8 +91,12 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 });
             } else if (i < TRASH_START) { // 21, 22, 23, 24, 25
                 int j = i - EQUIPMENT_DYE_START;
+                if (j < MINECART_INDEX) {
+                    addSlot(new HiddenSlot(extraInventory, i));
+                    continue;
+                }
                 int x = j == MOUNT_INDEX ? 148 : 121;
-                int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
+                int y = j == MOUNT_INDEX ? 8 : (j - MINECART_INDEX) * 18 + 8;
                 addSlot(new DyeToggleSlot(extraInventory, i, x, y));
             } else if (i < ACCESSORY_DYE_START) { // 26
                 addSlot(new Slot(extraInventory, i, 152, 166));
