@@ -17,8 +17,6 @@ public final class AchievementsLanguageSubProvider {
         language.add("achievements.confluence.an_eye_for_an_eye.title", "An Eye For An Eye", "以眼还眼");
         language.add("achievements.confluence.and_good_riddance.description", "Completely purify all Corruption, Crimson, and Hallow from your world, until the Dryad is satisfied!", "彻底净化世界中所有的腐化、猩红和神圣，直到树妖满意为止！");
         language.add("achievements.confluence.and_good_riddance.title", "And Good Riddance!", "终于解脱了！");
-        language.add("achievements.confluence.ankhumulation_complete.description", "The finest protection from unpleasant maladies and ailments.", "这是对抗烦人疾病的最佳防护。");
-        language.add("achievements.confluence.ankhumulation_complete.title", "Ankhumulation Complete", "十字章收集完成");
         language.add("achievements.confluence.archaeologist.description", "Kill Doctor Bones.", "杀死骷髅博士。");
         language.add("achievements.confluence.archaeologist.title", "Archaeologist", "考古学家");
         language.add("achievements.confluence.baleful_harvest.description", "Reach the 15th wave of a pumpkin moon, where evil lurks among the autumn harvest.", "在南瓜月中打到第15波，恶魔潜伏在金秋丰收之中。");
@@ -101,8 +99,6 @@ public final class AchievementsLanguageSubProvider {
         language.add("achievements.confluence.glorious_golden_pole.title", "Glorious Golden Pole", "荣耀金竿");
         language.add("achievements.confluence.goblin_punter.description", "Triumph over a goblin invasion, a ragtag regiment of crude, barbaric, pointy-eared warriors and their shadowflame sorcerers.", "击败哥布林入侵，它们是一群低贱、野蛮、粗暴的尖耳朵战士和暗影焰巫士。");
         language.add("achievements.confluence.goblin_punter.title", "Goblin Punter", "哥布林草民");
-        language.add("achievements.confluence.going_oldschool.description", "“Bring back the original title screen.”", "“换回最初的标题屏幕。”");
-        language.add("achievements.confluence.going_oldschool.title", "Going Oldschool", "致敬经典");
         language.add("achievements.confluence.good_little_slave.description", "Complete your 10th quest for the angler.", "完成10个渔夫任务");
         language.add("achievements.confluence.good_little_slave.title", "Good Little Slave", "三好小奴隶");
         language.add("achievements.confluence.grave_mistake.description", "“Accidentally’ kill a friend with your tombstone.”", "“用你的墓石‘意外’击杀一个朋友。”");

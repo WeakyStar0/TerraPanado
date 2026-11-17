@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -18,7 +17,6 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.AchievementToast;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -120,13 +118,6 @@ public record AchievementOffset(float x, float y, boolean hideLink, Category cat
                 INSTANCE = new Loader(AchievementOffset.SERVER_CODEC);
             }
             return INSTANCE;
-        }
-
-        public static void handle(Object2BooleanMap<ResourceLocation> value) {
-            AchievementToast.clearToast();
-            for (Object2BooleanMap.Entry<ResourceLocation> entry : value.object2BooleanEntrySet()) {
-                AchievementToast.registerToast(entry.getKey(), entry.getBooleanValue());
-            }
         }
 
         public static Map<ResourceLocation, AchievementOffset> getDisplayOffset() {
