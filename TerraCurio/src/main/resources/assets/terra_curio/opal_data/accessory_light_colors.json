@@ -1,0 +1,45 @@
+{
+    "items": {
+        "terra_curio:magiluminescence": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 14
+        },
+        "terra_curio:jellyfish_necklace": {
+            "color": [
+                0.61568627,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 12,
+            "entity_state": {
+                "eyes_in_water": true
+            }
+        },
+        "terra_curio:jellyfish_diving_gear": {
+            "color": [
+                0.61568627,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 12,
+            "entity_state": {
+                "eyes_in_water": true
+            }
+        },
+        "terra_curio:arctic_diving_gear": {
+            "color": [
+                0.61568627,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 12,
+            "entity_state": {
+                "eyes_in_water": true
+            }
+        }
+    }
+}
