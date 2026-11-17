@@ -11,9 +11,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -24,6 +26,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,6 +40,7 @@ public enum MeteoriteTracker implements IGlobalData {
     private transient boolean shouldGenerate = true;
     public boolean spawnAtNextNight = false;
     private BlockPos location = BlockPos.ZERO;
+    private ResourceKey<Level> dimension = Level.OVERWORLD;
     private int tickUntilLanding = 0;
 
     private final LongSet unavailableChunks = new LongOpenHashSet();
@@ -55,13 +60,16 @@ public enum MeteoriteTracker implements IGlobalData {
             tickUntilLanding--;
             if (tickUntilLanding == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
-                place(level, chunkPos.x, chunkPos.z, new BlockPos(location));
+                ServerLevel target = level.getServer().getLevel(dimension);
+                if (target != null) place(target, chunkPos.x, chunkPos.z, new BlockPos(location));
             }
         }
     }
 
-    public void generateLandingDetail(ServerLevel level, int landingTime) {
+    public void generateLandingDetail(ServerLevel overworld, int landingTime) {
         if (!shouldGenerate || !ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+        ServerLevel level = chooseLevel(overworld);
+        if (level == null) return;
         this.shouldGenerate = false;
 
         // 获取玩家数量最小的象限
@@ -111,6 +119,7 @@ public enum MeteoriteTracker implements IGlobalData {
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
         LongSet forcedChunks = level.getForcedChunks();
         boolean liquidSurface;
+        int attempts = 0;
         do {
             while (isUnAvailableChunk(chunkMap, x, z)) {
                 if (level.random.nextBoolean()) x += xStep;
@@ -121,20 +130,25 @@ public enum MeteoriteTracker implements IGlobalData {
             int bx = SectionPos.sectionToBlockCoord(x, 7);
             int bz = SectionPos.sectionToBlockCoord(z, 7);
             landingPos.set(bx, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
-            liquidSurface = !level.getBlockState(landingPos).getFluidState().isEmpty();
+            liquidSurface = !level.getBlockState(landingPos).getFluidState().isEmpty() || landingPos.getY() <= level.getMinBuildHeight() + 1;
 
             if (requires) level.setChunkForced(x, z, false);
             if (liquidSurface) {
                 x += xStep;
                 z += zStep;
             }
-        } while (liquidSurface);
+        } while (liquidSurface && ++attempts < MAX_LANDING_ATTEMPTS);
+        if (liquidSurface) {
+            this.shouldGenerate = true;
+            return;
+        }
 
         this.shouldGenerate = true;
         this.location = landingPos;
+        this.dimension = level.dimension();
         this.tickUntilLanding = landingTime;
         markUnavailable(ChunkPos.asLong(x, z));
-        MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
+        MeteoriteLocationPacketS2C.sendToAll(dimension, location, landingTime);
     }
 
     private boolean isUnAvailableChunk(ChunkMap chunkMap, int x, int z) {
@@ -147,6 +161,9 @@ public enum MeteoriteTracker implements IGlobalData {
 
     /// 陨石落地时覆盖的区块半径：1 表示 3×3 区块（与 [MeteoriteFeature.Config#radius()] 对应）。
     public static final int LANDING_CHUNK_RADIUS = 1;
+
+    /// 找不到落点（全是液体或虚空）时放弃本次降落的尝试次数。
+    private static final int MAX_LANDING_ATTEMPTS = 64;
 
     /// 落地时把整片 3×3 区域强制加载再放方块。
     ///
@@ -187,14 +204,31 @@ public enum MeteoriteTracker implements IGlobalData {
         }
     }
 
-    public void setMeteorite(BlockPos location, int tickUntilLanding) {
+    public void setMeteorite(ResourceKey<Level> dimension, BlockPos location, int tickUntilLanding) {
+        this.dimension = dimension;
         this.location = location;
         this.tickUntilLanding = tickUntilLanding;
-        MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
+        MeteoriteLocationPacketS2C.sendToAll(dimension, location, tickUntilLanding);
     }
 
     public BlockPos getLocation() {
         return location;
+    }
+
+    public ResourceKey<Level> getDimension() {
+        return dimension;
+    }
+
+    /// 从配置的维度里随机挑一个存在且没有天花板的维度；配置为空或全部无效时不降落。
+    private static @Nullable ServerLevel chooseLevel(ServerLevel fallback) {
+        List<ServerLevel> candidates = new ArrayList<>();
+        for (String id : ModCommonConfigs.METEORITE_DIMENSIONS.get()) {
+            ResourceLocation location = ResourceLocation.tryParse(id);
+            if (location == null) continue;
+            ServerLevel candidate = fallback.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, location));
+            if (candidate != null && !candidate.dimensionType().hasCeiling()) candidates.add(candidate);
+        }
+        return candidates.isEmpty() ? null : candidates.get(fallback.random.nextInt(candidates.size()));
     }
 
     public void markUnavailable(long pos) {
@@ -204,6 +238,7 @@ public enum MeteoriteTracker implements IGlobalData {
     @Override
     public void decode(CompoundTag tag) {
         this.spawnAtNextNight = tag.getBoolean("spawnAtNextNight");
+        this.dimension = tag.contains("meteoriteDimension") ? ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(tag.getString("meteoriteDimension"))) : Level.OVERWORLD;
         this.location = NbtUtils.readBlockPos(tag, "meteoriteLocation").orElse(BlockPos.ZERO);
         this.tickUntilLanding = tag.getInt("tickUtilMeteoriteLanding");
         unavailableChunks.clear();
@@ -216,6 +251,7 @@ public enum MeteoriteTracker implements IGlobalData {
     public void encode(CompoundTag tag) {
         tag.putBoolean("spawnAtNextNight", spawnAtNextNight);
         tag.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
+        tag.putString("meteoriteDimension", dimension.location().toString());
         tag.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
         tag.putLongArray("unavailableChunks", unavailableChunks.longStream().toArray());
     }
@@ -230,6 +266,7 @@ public enum MeteoriteTracker implements IGlobalData {
         this.shouldGenerate = true;
         this.spawnAtNextNight = false;
         this.location = BlockPos.ZERO;
+        this.dimension = Level.OVERWORLD;
         this.tickUntilLanding = 0;
         unavailableChunks.clear();
     }

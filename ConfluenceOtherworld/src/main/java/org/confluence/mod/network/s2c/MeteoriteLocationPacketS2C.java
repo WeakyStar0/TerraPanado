@@ -2,10 +2,13 @@ package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
@@ -13,9 +16,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 
-public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding) implements IPacketS2C {
+public record MeteoriteLocationPacketS2C(ResourceKey<Level> dimension, BlockPos location, int tickUntilLanding) implements IPacketS2C {
     public static final Type<MeteoriteLocationPacketS2C> TYPE = Confluence.createType("meteorite_location");
     public static final StreamCodec<ByteBuf, MeteoriteLocationPacketS2C> STREAM_CODEC = StreamCodec.composite(
+            ResourceKey.streamCodec(Registries.DIMENSION), MeteoriteLocationPacketS2C::dimension,
             BlockPos.STREAM_CODEC, MeteoriteLocationPacketS2C::location,
             ByteBufCodecs.VAR_INT, MeteoriteLocationPacketS2C::tickUntilLanding,
             MeteoriteLocationPacketS2C::new
@@ -33,15 +37,15 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
 
     /// @param location         陨石坐标，等于[0, 0, 0]是无效的
     /// @param tickUntilLanding 落地时间，小于等于0将只刷新指南针
-    public static void sendToAll(BlockPos location, int tickUntilLanding) {
+    public static void sendToAll(ResourceKey<Level> dimension, BlockPos location, int tickUntilLanding) {
         if (ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
-            PacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
+            PacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(dimension, location, tickUntilLanding));
         }
     }
 
     public static void refreshMeteorCompass(ServerPlayer player) {
         BlockPos pos = MeteoriteTracker.INSTANCE.getLocation();
         if (BlockPos.ZERO.equals(pos)) return;
-        PacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(pos, 0));
+        PacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(MeteoriteTracker.INSTANCE.getDimension(), pos, 0));
     }
 }

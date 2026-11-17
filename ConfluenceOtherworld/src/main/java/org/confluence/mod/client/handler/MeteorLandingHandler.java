@@ -3,21 +3,29 @@ package org.confluence.mod.client.handler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+
+import java.util.List;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
@@ -59,7 +67,7 @@ public final class MeteorLandingHandler {
     }
 
     public static void handlePacket(MeteoriteLocationPacketS2C packet, @Nullable Player player) {
-        globalPos = GlobalPos.of(OverworldUtils.dimension(), packet.location());
+        globalPos = GlobalPos.of(packet.dimension(), packet.location());
         if (packet.tickUntilLanding() <= 0) {
             location = null;
             tickUntilLanding = 0;
@@ -91,7 +99,7 @@ public final class MeteorLandingHandler {
         if (location == null || vector == null) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null || player.level().dimension() != OverworldUtils.dimension()) return;
+        if (player == null || globalPos == null || player.level().dimension() != globalPos.dimension()) return;
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         poseStack.pushPose();
@@ -116,5 +124,40 @@ public final class MeteorLandingHandler {
 
     public static @Nullable GlobalPos getGlobalPos() {
         return globalPos;
+    }
+
+    private static List<ResourceLocation> landingDimensions = List.of();
+
+    public static void setLandingDimensions(List<ResourceLocation> dimensions) {
+        landingDimensions = List.copyOf(dimensions);
+    }
+
+    /// 在陨石相关物品上标出陨石可能降落的维度（来自服务端配置）。
+    public static void addTooltip(ItemStack stack, List<Component> tooltip) {
+        if (landingDimensions.isEmpty() || !isMeteoriteItem(stack)) return;
+        MutableComponent names = Component.empty();
+        for (int i = 0; i < landingDimensions.size(); i++) {
+            if (i > 0) names.append(", ");
+            names.append(dimensionName(landingDimensions.get(i)));
+        }
+        tooltip.add(Component.translatable("tooltip.confluence.meteorite.dimensions", names).withStyle(ChatFormatting.GRAY));
+    }
+
+    private static boolean isMeteoriteItem(ItemStack stack) {
+        return stack.is(OreBlocks.METEORITE_ORE.asItem()) || stack.is(OreBlocks.RAW_METEORITE_BLOCK.asItem())
+                || stack.is(OreBlocks.METEORITE_BLOCK.asItem()) || stack.is(MaterialItems.RAW_METEORITE.get())
+                || stack.is(MaterialItems.METEORITE_INGOT.get()) || stack.is(MaterialItems.METEORITE_NUGGET.get());
+    }
+
+    private static Component dimensionName(ResourceLocation id) {
+        String key = id.toLanguageKey("dimension");
+        if (I18n.exists(key)) return Component.translatable(key);
+        StringBuilder name = new StringBuilder();
+        for (String word : id.getPath().split("[_/]")) {
+            if (word.isEmpty()) continue;
+            if (!name.isEmpty()) name.append(' ');
+            name.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+        }
+        return Component.literal(name.toString());
     }
 }
