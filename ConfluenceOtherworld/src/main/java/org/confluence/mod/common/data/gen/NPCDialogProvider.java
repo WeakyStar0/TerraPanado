@@ -329,7 +329,7 @@ public final class NPCDialogProvider implements DataProvider {
             validateDefinition(entity, npc, defined);
             builder.put(entity.get(), new NPCDialog(IntStream.range(0, npc.dialogs().size()).mapToObj(index -> prefix(entity) + index).toList()));
         });
-        Set<ResourceLocation> registered = NpcEntities.ENTITIES.getEntries().stream().map(npc -> Objects.requireNonNull(npc.getId())).collect(Collectors.toSet());
+        Set<ResourceLocation> registered = NpcEntities.ENTITIES.getEntries().stream().map(npc -> Objects.requireNonNull(npc.getId())).filter(id -> !id.equals(NpcEntities.CUSTOM_NPC.getId())).collect(Collectors.toSet());
         if (!registered.equals(defined))
             throw new IllegalStateException("NPC dialog definitions do not match registered NPC entities");
         DataResult<JsonElement> encoded = NPCDialog.MAP_CODEC.encodeStart(JsonOps.INSTANCE, builder.build());

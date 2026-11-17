@@ -43,7 +43,11 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     private static final int MAX_TEXT_LINES = 4;
 
     public NPCEntityRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
-        super(context, new NPCHumanoidGeoModel<>(path));
+        this(context, new NPCHumanoidGeoModel<>(path));
+    }
+
+    public NPCEntityRenderer(EntityRendererProvider.Context context, NPCHumanoidGeoModel<T> model) {
+        super(context, model);
         addRenderLayer(new VanillaHumanoidRenderer.HeldItemLayer<>(this, "LeftArm", "RightArm"));
         addRenderLayer(new GeoRenderLayer<>(this) {
             @Override

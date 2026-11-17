@@ -9,7 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
@@ -142,8 +141,7 @@ public final class NPCShopProvider implements DataProvider {
         ));
         shops.put(Confluence.asResource("witch_doctor"), List.of(
                 offer(GunItems.BLOWGUN.toStack()),
-                offer(FunctionalBlocks.CAULDRON.toStack(), halloween()),
-                offer(AccessoryItems.PYGMY_NECKLACE.toStack(), new TimeCondition(LibDateUtils._19$30, LibDateUtils._04$30, false))
+                offer(FunctionalBlocks.CAULDRON.toStack(), halloween())
         ));
         shops.put(Confluence.asResource("clothier"), List.of(
                 offer(VanityArmorItems.FAMILIAR_WIG.toStack()),

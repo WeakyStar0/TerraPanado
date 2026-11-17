@@ -4,10 +4,6 @@ import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.client.event.ModClientSetups;
@@ -15,7 +11,6 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
@@ -123,29 +118,6 @@ public final class ClientPacketHandler {
         chooseSunTexture();
     }
 
-    public static void handleDeathInfo(PlayerDeathInfoPacketS2C packet, Player player) {
-        ((LocalPlayer) player).connection.handlePlayerCombatKill(new ClientboundPlayerCombatKillPacket(player.getId(), packet.deathMessage()));
-        if (!player.isCreative() && Minecraft.getInstance().screen instanceof IDeathScreen deathScreen) {
-            deathScreen.confluence$setDelayTicker(0);
-            deathScreen.confluence$setRespawnWaitTime(packet.respawnTime() * 20);
-            if (packet.platinum() != 0 || packet.gold() != 0 || packet.silver() != 0 || packet.copper() != 0) {
-                MutableComponent component = Component.translatable("info.confluence.drops_money");
-                if (packet.platinum() > 0) {
-                    component.append(Component.translatable("info.confluence.drops_money.platinum", packet.platinum()));
-                }
-                if (packet.gold() > 0) {
-                    component.append(Component.translatable("info.confluence.drops_money.gold", packet.gold()));
-                }
-                if (packet.silver() > 0) {
-                    component.append(Component.translatable("info.confluence.drops_money.silver", packet.silver()));
-                }
-                if (packet.copper() > 0) {
-                    component.append(Component.translatable("info.confluence.drops_money.copper", packet.copper()));
-                }
-                deathScreen.confluence$setDropsMoney(component);
-            }
-        }
-    }
 
     public static void handleFlushArmorSetBonus(Player localPlayer, int playerId) {
         if (localPlayer.level().getEntity(playerId) instanceof AbstractClientPlayer clientPlayer) {

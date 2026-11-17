@@ -9,7 +9,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +34,7 @@ public interface Immunity {
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
             if (weaponItemStack.isEmpty()) {
-                return directEntity instanceof Player ? (Immunity) weaponItemStack : null;
+                return null; // bare hands use vanilla invulnerability frames
             }
 
             Item weaponItem = weaponItemStack.getItem();

@@ -166,7 +166,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             entityData.set(SWING_PROGRESS, progress);
             float soundProgress = sweepLevel() > 0 ? WhipCurves.SWEEP_SOUND_PROGRESS : WhipCurves.SNAP_PROGRESS;
             if (previous < soundProgress && progress >= soundProgress) {
-                owner.playSound(ModSoundEvents.WHIP_ATTACK.get(), 0.6F + getRandom().nextFloat() * 0.2F, 1.0F);
+                level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSoundEvents.WHIP_ATTACK.get(), owner.getSoundSource(), 0.6F + getRandom().nextFloat() * 0.2F, 1.0F);
             }
 
             /// 高攻速下也走过中间轨迹，避免一个 tick 跨过整段伸展而漏判。

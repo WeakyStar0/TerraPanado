@@ -2035,19 +2035,6 @@
       "confluence:item_cracked_dungeon_brick"
     ]
   },
-  "item_crystal_charge_impact": {
-    "subtitle": "confluence.subtitle.item_crystal_charge_impact",
-    "sounds": [
-      "confluence:item_crystal_charge_impact_0",
-      "confluence:item_crystal_charge_impact_1"
-    ]
-  },
-  "item_crystal_serpent": {
-    "subtitle": "confluence.subtitle.item_crystal_serpent",
-    "sounds": [
-      "confluence:item_crystal_serpent"
-    ]
-  },
   "item_deadly_sphere_staff": {
     "subtitle": "confluence.subtitle.item_deadly_sphere_staff",
     "sounds": [

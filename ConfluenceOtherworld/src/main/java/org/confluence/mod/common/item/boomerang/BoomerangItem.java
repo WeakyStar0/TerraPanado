@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.boomerang;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -21,7 +20,6 @@ import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -29,10 +27,11 @@ import java.util.List;
 
 
 public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponTooltip {
+    private static final float VOLLEY_SPREAD_DEGREES = 8.0F;
     private final Settings settings;
 
     public BoomerangItem(Settings settings) {
-        super(settings.properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+        super(settings.properties());
         this.settings = settings;
     }
 
@@ -46,17 +45,22 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
     public void onLeftRelease(Player player, ItemStack stack) {}
 
     /// 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
+    /// 一次投掷会把剩余的空位一次性扇形射出（基础数量加上多重回旋镖附魔等级），冷却与耐久按一次投掷计算。
     public void throwBoomerang(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         int maximumActive = settings.maxCount() + LibEnchantmentUtils.getEnchantmentLevel(ModEnchantments.MULTI_BOOMERANG, stack);
-        if (player.getCooldowns().isOnCooldown(this) || activeCount(player, stack) >= maximumActive) {
+        int volley = maximumActive - activeCount(player, stack);
+        if (player.getCooldowns().isOnCooldown(this) || volley <= 0) {
             return;
         }
-        BoomerangProjectile projectile = new BoomerangProjectile(ModEntities.BOOMERANG_PROJECTILE.get(), player.level());
-        projectile.configure(player, stack, settings);
-        onThrown(projectile, player, stack);
-        projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, settings.flySpeed(), 0.0F);
-        player.level().addFreshEntity(projectile);
+        for (int i = 0; i < volley; i++) {
+            float yawOffset = (i - (volley - 1) / 2.0F) * VOLLEY_SPREAD_DEGREES;
+            BoomerangProjectile projectile = new BoomerangProjectile(ModEntities.BOOMERANG_PROJECTILE.get(), player.level());
+            projectile.configure(player, stack, settings);
+            onThrown(projectile, player, stack);
+            projectile.shootFromRotation(player, player.getXRot(), player.getYRot() + yawOffset, 0.0F, settings.flySpeed(), 0.0F);
+            player.level().addFreshEntity(projectile);
+        }
         player.playSound(SoundEvents.TRIDENT_THROW.value(), 0.6F, 1.35F);
         player.swing(hand, true);
         player.awardStat(Stats.ITEM_USED.get(this));

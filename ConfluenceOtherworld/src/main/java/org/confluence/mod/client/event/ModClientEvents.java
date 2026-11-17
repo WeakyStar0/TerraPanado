@@ -1,5 +1,10 @@
 package org.confluence.mod.client.event;
 
+import org.confluence.mod.client.effect.ModDynamicLights;
+import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
+import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -52,8 +57,6 @@ import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.BrainDissolveTexture;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
-import org.confluence.mod.client.effect.ModDynamicLights;
-import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.connected.CustomBlockModels;
 import org.confluence.mod.client.effect.connected.ModConnectives;
 import org.confluence.mod.client.effect.connected.ModelSwapper;
@@ -69,7 +72,6 @@ import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
@@ -132,9 +134,6 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
-import org.confluence.mod.integration.appleskin.AppleskinHelper;
-import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
@@ -171,7 +170,6 @@ public final class ModClientEvents {
             ModClientSetups.setRenderLayers();
 
             PonderHelper.registerPlugin();
-            AppleskinHelper.addListeners();
 
             ClientBestiary.getInstance().registerCustomFilter();
 
@@ -225,14 +223,8 @@ public final class ModClientEvents {
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
         event.registerAbove(repeaterHud, Confluence.asResource("hit_marker"), new HitMarkerHud());
-        ResourceLocation healthHud = Confluence.asResource("health_hud");
-        event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
-        ResourceLocation armorHud = Confluence.asResource("armor_hud");
-        event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
         ResourceLocation manaHud = Confluence.asResource("mana_hud");
         event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
-        ResourceLocation foodHud = Confluence.asResource("food_hud");
-        event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
@@ -346,8 +338,7 @@ public final class ModClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
         // 纯 ParticleStorm 粒子表现的逻辑实体：本体不渲染，但必须登记渲染器（分发器不判空）
-        event.registerEntityRenderer(SEABED_WATER_COLUMN.get(), InvisibleEntityRenderer::new); // 海床崩裂者水柱
-        event.registerEntityRenderer(OPAL_STAFF_PROJECTILE.get(), InvisibleEntityRenderer::new); // 欧泊法杖洪流弹幕
+        event.registerEntityRenderer(SEABED_WATER_COLUMN.get(), InvisibleEntityRenderer::new);  // 欧泊法杖洪流弹幕
         event.registerEntityRenderer(ICHOR_STREAM.get(), InvisibleEntityRenderer::new); // 舌锋剑灵液流
         event.registerEntityRenderer(MURAMASA_SLASH.get(), InvisibleEntityRenderer::new); // 村正刀光
         event.registerEntityRenderer(CHESTER.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/chester.geo.json"), Confluence.asResource("textures/entity/summon/chester.png"), Confluence.asResource("animations/entity/summon/chester.animation.json"))));
@@ -423,8 +414,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FOSSIL_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(FLY_FISH_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(DEVELOPER_ARROW.get(), TerraArrowRenderer::new);
-        // 风与星系列
-        event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
         // 血雨：箭矢结算 + 雨滴外观
         event.registerEntityRenderer(BLOOD_RAIN_ARROW.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
         // 昏晓：小日光 / 小月光
@@ -433,15 +422,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WIND_BULLET.get(), NoopRenderer::new);
         event.registerEntityRenderer(STELLAR_STUDIES_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(HOMING_FALLING_STAR.get(), FallingStarCrossRenderer::new);
-        event.registerEntityRenderer(STAR_MUSIC_CHARGE.get(), StarMusicChargeRenderer::new);
-        event.registerEntityRenderer(STAR_FEAR_STAR.get(), FallingStarCrossRenderer::new);
-        event.registerEntityRenderer(WIND_EYE_TORNADO.get(), NoopRenderer::new);
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
-        event.registerEntityRenderer(TOMBSTONE_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(GHOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(LAVA_BOULDER.get(), BoulderRenderer::new);
@@ -465,10 +450,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SPIKY_BALL.get(), SpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(THROWN_WATER.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(SPARKLE_SLIME_BALLOON.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(MAGIC_DAGGER.get(), MagicDaggerRenderer::new);
-        event.registerEntityRenderer(CRYSTAL_STORM.get(), NoopRenderer::new);
         event.registerEntityRenderer(THUNDERSTRIKE_SPARK.get(), NoopRenderer::new);
-        event.registerEntityRenderer(CURSED_FLAMES.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLOWER_PETAL.get(), NoopRenderer::new);
         event.registerEntityRenderer(SKELETRON_SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(NPC_SHADOWFLAME_SKULL.get(), SkullProjectileRenderer::new);
@@ -519,9 +501,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
         event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SUPER_SPIKY_BALL.get(), SuperSpikyBallProjectileRenderer::new);
-        event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(BALL_OF_FROST.get(), NoopRenderer::new);
-        event.registerEntityRenderer(DEMON_SCYTHE.get(), DemonScytheProjectileRenderer::new);
+        event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new);         event.registerEntityRenderer(DEMON_SCYTHE.get(), DemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(BLOOD_CLOUD.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
         event.registerEntityRenderer(BLOOD_RAIN.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
@@ -538,10 +518,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GOLDEN_SHOWER.get(), NoopRenderer::new);
         event.registerEntityRenderer(MAGIC_MISSILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLAMELASH.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new); // todo 粒子
-        event.registerEntityRenderer(SKY_FRACTURE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(CRYSTAL_CHARGE_1.get(), NoopRenderer::new); // todo 粒子
-        event.registerEntityRenderer(CRYSTAL_CHARGE_2.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new);  // todo 模型
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjectileRenderer::new);
         event.registerEntityRenderer(HARPY_FEATHER.get(), HarpyFeatherProjectileRenderer::new);
         event.registerEntityRenderer(HOSTILE_DEMON_SCYTHE.get(), HostileDemonScytheProjectileRenderer::new);
@@ -967,6 +944,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CritterEntities.MAGMA_SNAIL.get(), SnailRenderer::new);
         event.registerEntityRenderer(CritterEntities.SLUGGY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("animal/sluggy")));
         event.registerEntityRenderer(CritterEntities.SNAIL.get(), SnailRenderer::new);
+        event.registerEntityRenderer(NpcEntities.CUSTOM_NPC.get(), c -> new NPCEntityRenderer<>(c, new org.confluence.mod.client.model.entity.CustomNPCGeoModel()));
         event.registerEntityRenderer(NpcEntities.GUIDE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/guide")));
         event.registerEntityRenderer(NpcEntities.MERCHANT.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/merchant")));
         event.registerEntityRenderer(NpcEntities.NURSE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/nurse")));
@@ -1090,8 +1068,6 @@ public final class ModClientEvents {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
             }
         }
-        /// 祈灵之刃按短剑手持姿态渲染
-        event.registerItem(ShortSwordInHandRenderer.INSTANCE, SoulItems.SPIRITWARD_BLADE.get());
         /// 大马林鱼刺剑同样是短剑手持姿态
         event.registerItem(ShortSwordInHandRenderer.INSTANCE, SwordItems.MARLIN_SPIKE_SWORD.get());
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);

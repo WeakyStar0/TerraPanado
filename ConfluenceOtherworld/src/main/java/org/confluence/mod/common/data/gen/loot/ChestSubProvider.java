@@ -446,7 +446,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_golden_chest"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))

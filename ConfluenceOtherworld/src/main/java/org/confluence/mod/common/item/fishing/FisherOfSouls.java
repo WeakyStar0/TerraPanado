@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.fishing;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,13 +11,12 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
-import org.confluence.mod.common.init.item.ModItems;
 
 public class FisherOfSouls extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("fisher_of_souls");
 
     public FisherOfSouls() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.BLUE);
+        super(new Properties().durability(384), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(ConfluenceMagicLib.FISHING_POWER, new AttributeModifier(ID, 20, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 

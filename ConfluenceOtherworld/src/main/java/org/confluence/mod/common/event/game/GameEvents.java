@@ -23,7 +23,8 @@ import org.confluence.mod.common.entity.npc.mood.MoodData;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
+import org.confluence.mod.common.entity.npc.custom.CustomNPCDefinitions;
+import org.confluence.mod.network.s2c.CustomNPCSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
@@ -62,15 +63,16 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
-        for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo))
+        for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo)) {
             NPCDialogSyncPacketS2C.sendToClient(target);
+            CustomNPCSyncPacketS2C.sendToClient(target);
+        }
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);
             }
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
-            AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
         }
     }
 
@@ -78,6 +80,7 @@ public final class GameEvents {
     public static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(AchievementOffset.Loader.getInstance());
         event.addListener(NPCDialogLoader.getInstance());
+        event.addListener(CustomNPCDefinitions.getInstance());
         event.addListener(NPCNames.Loader.getInstance());
         event.addListener(ChatManager.getLoader());
         event.addListener(new MoodData.Loader());

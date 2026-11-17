@@ -116,7 +116,6 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(PercentageLootEntry.exclusive(true,
                         PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SwordItems.MURAMASA)),
-                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(TCItems.COBALT_SHIELD)),
                         PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(GunItems.HAND_GUN)),
                         PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER)),
                         PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE)),

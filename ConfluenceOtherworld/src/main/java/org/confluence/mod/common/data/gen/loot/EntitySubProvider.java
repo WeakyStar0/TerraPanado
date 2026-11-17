@@ -101,7 +101,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
-        add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
         add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(50, hearts))))
                 .withPool(LootPool.lootPool()
@@ -715,7 +714,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS).when(lootingScaledChance(registries, 0.03333333333333333F)))));
         add(MonsterEntities.WINDY_BALLOON.get(), LootTable.lootTable());
         add(MonsterEntities.OLD_SHAKING_CHEST.get(), LootTable.lootTable());
-        add(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), LootTable.lootTable());
         /// 红魔鬼 缺少未加入物品：火焰羽(Fire Feather, 2%)、烈火之花(Flower of Fire, 3.33%)（热狗、邪恶三叉戟已实现）
         add(MonsterEntities.RED_DEVIL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HOTDOG).when(lootingScaledChance(registries, 0.03333333333333333F)))));
@@ -1304,7 +1302,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.ICE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         /// 冰雪弓
-                        .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FROST))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(25)))
@@ -1544,19 +1541,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )).apply(random0To1)
                 )
         );
-        add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
-        add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.PALADINS_SHIELD).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        .when(() -> new DifficultyChanceLootItemCondition(1F / 10, 1F - (1F - 1F / 10) * (1F - 1F / 10)))));
-        add(MonsterEntities.BONE_LEE.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BLACK_BELT).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        .when(() -> new DifficultyChanceLootItemCondition(1F / 12, 1F - (1F - 1F / 12) * (1F - 1F / 12)))));
         /// 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
-        add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
-        add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
-        add(MonsterEntities.RAGGED_CASTER.get(), LootTable.lootTable());
         add(MonsterEntities.ARCH_WYVERN.get(), LootTable.lootTable());
         LootPool.Builder rainbowSheep = LootPool.lootPool()
                 .add(LootItem.lootTableItem(Items.MUTTON)
@@ -1599,11 +1584,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(HookItems.DUAL_HOOK))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_DAGGER))
                         .add(LootItem.lootTableItem(AccessoryItems.PHILOSOPHERS_STONE))
                         .add(LootItem.lootTableItem(TCItems.TITAN_GLOVE))
                         .add(LootItem.lootTableItem(TCItems.STAR_CLOAK))
-                        .add(LootItem.lootTableItem(TCItems.CROSS_NECKLACE))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(25)))

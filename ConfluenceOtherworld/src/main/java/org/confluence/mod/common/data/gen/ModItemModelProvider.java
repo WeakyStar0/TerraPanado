@@ -82,7 +82,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldTextureAlias(SoulItems.STAR_SPIRIT, Confluence.asResource("item/soul_lantern/star_spirit"));
         handheldTextureAlias(SoulItems.DAY_AND_NIGHT_ALIKE, Confluence.asResource("item/soul_lantern/day_and_night_alike"));
         handheldTextureAlias(SoulItems.SENIOR_PATHFINDER_PRO, Confluence.asResource("item/soul_lantern/senior_pathfinder_pro"));
-        handheldTextureAlias(SoulItems.SPIRITWARD_BLADE, Confluence.asResource("item/sword/spiritward_blade"));
         withExistingParent(SoulItems.FALLEN_SOUL_CORE.getId().getPath(), "item/generated").texture("layer0", Confluence.asResource("item/consumable/fallen_soul_core"));
         skip.add(SoulItems.FALLEN_SOUL_CORE.get());
         ItemModelBuilder skillBookModel = withExistingParent(SoulItems.SOUL_SKILL_BOOK.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.withDefaultNamespace("item/book"));
@@ -98,9 +97,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(SwordItems.ZENITH.get());
         handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
 
-        /// 裂天剑：物品栏用 16x 的 sky_fracture_inventory，手持/预览用 24x 的 sky_fracture；
-        /// 整套模型（含毁灭刃同款手持参数）由手写 JSON 持有（models/item/sky_fracture*.json）。
-        skip.add(ManaWeaponItems.SKY_FRACTURE.get());
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");

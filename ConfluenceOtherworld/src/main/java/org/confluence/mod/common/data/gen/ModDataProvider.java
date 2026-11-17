@@ -1572,8 +1572,7 @@ public class ModDataProvider {
             ));
             register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     overworld,
-                    List.of(new MobSpawnSettings.SpawnerData(MonsterEntities.HARPY.get(), 60, 1, 2),
-                            new MobSpawnSettings.SpawnerData(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), 1, 1, 1))
+                    List.of(new MobSpawnSettings.SpawnerData(MonsterEntities.HARPY.get(), 60, 1, 2))
             ));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_SWAMP),

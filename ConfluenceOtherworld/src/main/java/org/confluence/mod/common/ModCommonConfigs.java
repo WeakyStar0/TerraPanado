@@ -24,6 +24,7 @@ import java.util.Set;
 
 public final class ModCommonConfigs {
     public static BooleanValue ENEMY_DROPS_MONEY;
+    public static IntValue DEATH_COIN_LOSS_PERCENT;
     public static BooleanValue AUTO_STACK_GELS_COLOR;
     public static BooleanValue RETURN_POTION_GLASS_BOTTLE;
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
@@ -31,7 +32,7 @@ public final class ModCommonConfigs {
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
-    public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
+    public static BooleanValue HARDMODE_WORLD_CONVERSION;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue VILLAGER_INVULNERABLE_TO_PLAYER;
     public static BooleanValue PREVENT_ENEMY_FRIENDLY_FIRE;
@@ -47,7 +48,6 @@ public final class ModCommonConfigs {
     public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE;
     public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE;
     private static BooleanValue DRAGON_CHARGE_PLAYER;
-    public static BooleanValue STOP_ASK_FOR_SOFTCORE;
     public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
     public static IntValue TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER;
     /// 泰拉闪电束开启时生效：闪电落地不再点燃方块。
@@ -84,6 +84,7 @@ public final class ModCommonConfigs {
     public static BooleanValue DEERCLOPS_NATURE_SPAWNING;
 
     public static BooleanValue DO_METEORITE_SPAWNING;
+    public static ConfigValue<List<? extends String>> METEORITE_DIMENSIONS;
 
     // ===== 风（Weather） =====
     /// 风系统总开关。关闭后退化为「无风」，所有消费端静默。
@@ -101,13 +102,6 @@ public final class ModCommonConfigs {
     /// 暴风雪是否推实体。
     public static BooleanValue BLIZZARD_PUSHES_ENTITIES;
 
-    public static BooleanValue PLAYER_DROPS_MONEY;
-    public static BooleanValue SHOW_MONEY_DROPS;
-    public static BooleanValue DROPS_TOMBSTONE;
-    public static IntValue DEFAULT_RESPAWN_TIME_MIN;
-    public static IntValue DEFAULT_RESPAWN_TIME_MAX;
-    public static IntValue BOSS_RESPAWN_TIME_MIN;
-    public static IntValue BOSS_RESPAWN_TIME_MAX;
     public static BooleanValue BOSS_CLEAR_WHEN_NO_TARGET;
     public static BooleanValue KING_SLIME_LARGE_MINIONS;
     public static BooleanValue ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD;
@@ -172,11 +166,14 @@ public final class ModCommonConfigs {
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
 
     public static ModConfigSpec SPEC;
+    public static ModConfigSpec TOOLS_SPEC;
+    public static ModConfigSpec MOBS_SPEC;
 
     private static boolean isSingleplayerOwner = true;
     private static boolean dragonChargePlayer = true;
 
     public static void onLoad() {
+        if (SPEC == null || TOOLS_SPEC == null || MOBS_SPEC == null || !SPEC.isLoaded() || !TOOLS_SPEC.isLoaded() || !MOBS_SPEC.isLoaded()) return;
         Set<ResourceKey<Item>> a = new HashSet<>();
         Set<TagKey<Item>> b = new HashSet<>();
         for (String s : AMMO_SLOTS_BLACKLIST.get()) {
@@ -213,136 +210,122 @@ public final class ModCommonConfigs {
 
     public static void register(ModContainer container) {
         Builder builder = new Builder();
+        Builder tools = new Builder();
+        Builder mobs = new Builder();
         {
             builder.push("Gameplay");
             ENEMY_DROPS_MONEY = builder.define("enemyDropsMoney", true);
+            DEATH_COIN_LOSS_PERCENT = builder.defineInRange("deathCoinLossPercent", 25, 0, 100);
             AUTO_STACK_GELS_COLOR = builder.define("autoStackGelsColor", true);
             RETURN_POTION_GLASS_BOTTLE = builder.define("returnPotionGlassBottle", false);
             RIGHT_CLICK_RIDE_MINECART = builder.define("rightClickRideMinecart", true);
             ANNOUNCEMENT_BOX_DISTANCE = builder.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = builder.define("alertPlayerDungeon", false);
-            AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
-                if (o instanceof String s) {
-                    if (s.startsWith("#")) {
-                        return ResourceLocation.tryParse(s.substring(1)) != null;
-                    }
-                    return ResourceLocation.tryParse(s) != null;
-                }
-                return false;
-            });
             TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
-            TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
-            STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
-            {
-                builder.push("AutomaticWeaponUse");
-                AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);
-                AUTO_RELEASE_ALL_BOWS = builder.define("autoReleaseAllBows", false);
-                AUTO_FIRE_ALL_GUNS = builder.define("autoFireAllGuns", false);
-                builder.pop();
-            }
+            HARDMODE_WORLD_CONVERSION = builder.comment("Whether entering Hardmode converts part of the world into the Hallow (the Hallow stripe).").define("hardmodeWorldConversion", true);
             builder.pop();
         }
         {
-            builder.push("NPC");
-            NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
-            VILLAGER_INVULNERABLE_TO_PLAYER = builder.comment("Protect villagers from player-owned damage, except damage caused by creative players.")
+            mobs.push("NPC");
+            NPC_INVULNERABLE_TO_PLAYER = mobs.define("npcInvulnerableToPlayer", true);
+            VILLAGER_INVULNERABLE_TO_PLAYER = mobs.comment("Protect villagers from player-owned damage, except damage caused by creative players.")
                     .define("villagerInvulnerableToPlayer", true);
-            NPC_ATTACK_BLACKLIST = builder.defineListAllowEmpty("npcAttackBlacklist", List::of, () -> "[#]namespace:path", value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
-            DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
-            NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
-            BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
-            TOWN_SUPPRESSES_ENEMY_SPAWNING = builder.comment("Allow town residents to suppress natural enemy spawning.").define("townSuppressesEnemySpawning", true);
-            NPC_HAPPINESS_AFFECTS_PRICES = builder.comment("Apply NPC happiness multipliers to buying and selling prices.").define("npcHappinessAffectsPrices", true);
-            NPC_AUTO_RESPAWN = builder.comment("Allow deceased resident professions to return automatically in their region. Does not prevent first arrivals or rescues.").define("npcAutoRespawn", true);
-            BROADCAST_NPC_DEATH_MSG = builder.comment("Broadcast NPC death messages independently of arrival and departure messages.").define("broadcastNpcDeathMsg", true);
-            builder.pop();
+            NPC_ATTACK_BLACKLIST = mobs.defineListAllowEmpty("npcAttackBlacklist", List::of, () -> "[#]namespace:path", value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
+            DO_NPC_SPAWNING = mobs.define("doNPCSpawning", true);
+            NPC_SPAWN_INTERVAL = mobs.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+            BROADCAST_NPC_MSG = mobs.define("broadcastNpcMsg", true);
+            TOWN_SUPPRESSES_ENEMY_SPAWNING = mobs.comment("Allow town residents to suppress natural enemy spawning.").define("townSuppressesEnemySpawning", true);
+            NPC_HAPPINESS_AFFECTS_PRICES = mobs.comment("Apply NPC happiness multipliers to buying and selling prices.").define("npcHappinessAffectsPrices", true);
+            NPC_AUTO_RESPAWN = mobs.comment("Allow deceased resident professions to return automatically in their region. Does not prevent first arrivals or rescues.").define("npcAutoRespawn", true);
+            BROADCAST_NPC_DEATH_MSG = mobs.comment("Broadcast NPC death messages independently of arrival and departure messages.").define("broadcastNpcDeathMsg", true);
+            mobs.pop();
         }
         {
-            builder.push("Enemies");
-            PREVENT_ENEMY_FRIENDLY_FIRE = builder.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
+            mobs.push("Enemies");
+            PREVENT_ENEMY_FRIENDLY_FIRE = mobs.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
                     .define("preventEnemyFriendlyFire", true);
-            PREVENT_ENEMY_HURTING_PASSIVE_MOBS = builder.comment("Prevent enemies from hurting passive creatures (animals, water animals and ambient creatures). Players, villagers, NPCs, summons and environmental damage are unaffected.")
+            PREVENT_ENEMY_HURTING_PASSIVE_MOBS = mobs.comment("Prevent enemies from hurting passive creatures (animals, water animals and ambient creatures). Players, villagers, NPCs, summons and environmental damage are unaffected.")
                     .define("preventEnemyHurtingPassiveMobs", false);
             {
-                builder.push("Attributes");
-                ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
-                ENHANCE_ALL_MONSTER = builder
+                mobs.push("Attributes");
+                ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = mobs.define("allowsVanillaEntitiesToPerformStageAttributes", false);
+                ENHANCE_ALL_MONSTER = mobs
                         .comment("Apply these multipliers to vanilla and other mods' hostile mobs as well. Otherwise only Confluence enemies are affected. Bosses, summons and friendly creatures are excluded.")
                         .define("enhanceAllMonster", false);
-                MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH = mobs
                         .comment("Maximum health multiplier. Does not refill wounded enemies when reloaded.")
                         .defineInRange("monsterAttributesMultiplierHealth", 1.0D, 0.0625D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE = mobs
                         .comment("Attack damage attribute multiplier. Projectiles derived from that attribute inherit it once; independently configured projectile damage is unchanged.")
                         .defineInRange("monsterAttributesMultiplierDamage", 1.0D, 0.0625D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR = mobs
                         .comment("Armor multiplier. Multiplication cannot give armor to an enemy whose armor is zero.")
                         .defineInRange("monsterAttributesMultiplierArmor", 1.0D, 0.0D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = mobs
                         .comment("Armor toughness multiplier. Zero toughness remains zero.")
                         .defineInRange("monsterAttributesMultiplierArmorToughness", 1.0D, 0.0D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = mobs
                         .comment("Movement speed attribute multiplier; does not alter AI movement implemented with fixed velocities.")
                         .defineInRange("monsterAttributesMultiplierMovementSpeed", 1.0D, 0.0D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = mobs
                         .comment("Flying speed attribute multiplier; only affects enemies that use this attribute.")
                         .defineInRange("monsterAttributesMultiplierFlyingSpeed", 1.0D, 0.0D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = mobs
                         .comment("Knockback resistance multiplier, clamped by the attribute's own allowed range.")
                         .defineInRange("monsterAttributesMultiplierKnockbackResistance", 1.0D, 0.0D, 100.0D);
-                MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
+                MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = mobs
                         .comment("Follow range attribute multiplier; existing line-of-sight and AI-specific range checks still apply.")
                         .defineInRange("monsterAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
-                builder.pop();
+                mobs.pop();
             }
-            builder.pop();
+            mobs.pop();
         }
         {
-            builder.push("Boss");
+            mobs.push("Boss");
             {
-                builder.push("Attributes");
-                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder
+                mobs.push("Attributes");
+                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = mobs
                         .comment("Maximum health multiplier for Confluence bosses. Reloading does not heal existing bosses.")
                         .defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = mobs
                         .comment("Damage multiplier for Confluence bosses, including contact attacks and projectiles attributed to the boss. Applied once before damage reduction.")
                         .defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR = mobs
                         .comment("Armor multiplier. Zero armor remains zero.")
                         .defineInRange("bossAttributesMultiplierArmor", 1.0D, 0.0D, 100.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = mobs
                         .comment("Armor toughness multiplier. Zero toughness remains zero.")
                         .defineInRange("bossAttributesMultiplierArmorToughness", 1.0D, 0.0D, 100.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = mobs
                         .comment("Movement speed attribute multiplier; fixed AI velocities are unchanged.")
                         .defineInRange("bossAttributesMultiplierMovementSpeed", 1.0D, 0.0D, 100.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = mobs
                         .comment("Flying speed attribute multiplier; only affects bosses that use this attribute.")
                         .defineInRange("bossAttributesMultiplierFlyingSpeed", 1.0D, 0.0D, 100.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = mobs
                         .comment("Knockback resistance multiplier, clamped by the attribute's allowed range.")
                         .defineInRange("bossAttributesMultiplierKnockbackResistance", 1.0D, 0.0D, 100.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
+                BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = mobs
                         .comment("Follow range attribute multiplier; line-of-sight and AI-specific range checks still apply.")
                         .defineInRange("bossAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
-                builder.pop();
+                mobs.pop();
             }
             {
-                builder.push("Behavior");
-                SPECIAL_SEED_BOSS_BEHAVIORS = builder.comment("Enable additional boss behaviors from special world seeds. Does not change difficulty scaling.").define("specialSeedBossBehaviors", true);
-                ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = builder.define("allowFleshBossesOutsideUnderworld", false);
-                BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
-                KING_SLIME_LARGE_MINIONS = builder.define("kingSlimeLargeMinions", false);
-                DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
-                builder.pop();
+                mobs.push("Behavior");
+                SPECIAL_SEED_BOSS_BEHAVIORS = mobs.comment("Enable additional boss behaviors from special world seeds. Does not change difficulty scaling.").define("specialSeedBossBehaviors", true);
+                ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = mobs.define("allowFleshBossesOutsideUnderworld", false);
+                BOSS_CLEAR_WHEN_NO_TARGET = mobs.define("bossClearWhenNoTarget", true);
+                KING_SLIME_LARGE_MINIONS = mobs.define("kingSlimeLargeMinions", false);
+                DRAGON_CHARGE_PLAYER = mobs.define("dragonChargePlayer", true);
+                mobs.pop();
             }
             {
-                builder.push("Spawning");
-                EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
-                DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
-                builder.pop();
+                mobs.push("Spawning");
+                EYE_OF_CTHULHU_NATURE_SPAWNING = mobs.define("eyeOfCthulhuNatureSpawning", true);
+                DEERCLOPS_NATURE_SPAWNING = mobs.define("deerclopsNatureSpawning", true);
+                mobs.pop();
             }
-            builder.pop();
+            mobs.pop();
         }
         {
             builder.push("Weather");
@@ -380,17 +363,12 @@ public final class ModCommonConfigs {
                 builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
+            METEORITE_DIMENSIONS = builder.comment("Dimensions where meteorites may land. Dimensions with a ceiling (such as the Nether) are ignored.")
+                    .defineListAllowEmpty("meteoriteDimensions", () -> List.of("minecraft:overworld"), () -> "namespace:path", o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
             builder.pop();
         }
         {
             builder.push("PlayerDeath");
-            PLAYER_DROPS_MONEY = builder.define("playerDropsMoney", true);
-            SHOW_MONEY_DROPS = builder.define("showMoneyDrops", true);
-            DROPS_TOMBSTONE = builder.define("dropsTombstone", true);
-            DEFAULT_RESPAWN_TIME_MIN = builder.defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
-            DEFAULT_RESPAWN_TIME_MAX = builder.defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
-            BOSS_RESPAWN_TIME_MIN = builder.defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
-            BOSS_RESPAWN_TIME_MAX = builder.defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
             builder.pop();
         }
         {
@@ -487,6 +465,28 @@ public final class ModCommonConfigs {
             }
             builder.pop();
         }
+        {
+            tools.push("Tools");
+            AMMO_SLOTS_BLACKLIST = tools.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
+                if (o instanceof String s) {
+                    if (s.startsWith("#")) {
+                        return ResourceLocation.tryParse(s.substring(1)) != null;
+                    }
+                    return ResourceLocation.tryParse(s) != null;
+                }
+                return false;
+            });
+            {
+                tools.push("AutomaticWeaponUse");
+                AUTO_SWING_ALL_SWORDS = tools.define("autoSwingAllSwords", false);
+                AUTO_RELEASE_ALL_BOWS = tools.define("autoReleaseAllBows", false);
+                AUTO_FIRE_ALL_GUNS = tools.define("autoFireAllGuns", false);
+                tools.pop();
+            }
+            tools.pop();
+        }
         container.registerConfig(ModConfig.Type.COMMON, SPEC = builder.build());
+        container.registerConfig(ModConfig.Type.COMMON, TOOLS_SPEC = tools.build(), "confluence-tools.toml");
+        container.registerConfig(ModConfig.Type.COMMON, MOBS_SPEC = mobs.build(), "confluence-mobs.toml");
     }
 }

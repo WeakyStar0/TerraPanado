@@ -1,20 +1,14 @@
 package org.confluence.mod.mixin.server.level;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketSendListener;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -104,14 +98,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         if (!confluence$marathon_medalist) {
             this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
         }
-    }
-
-    @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
-    private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
-        if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {
-            return PlayerDeathInfoPacketS2C.replaceCombatKillPacket(instance.player, combatKillPacket.message());
-        }
-        return true;
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))

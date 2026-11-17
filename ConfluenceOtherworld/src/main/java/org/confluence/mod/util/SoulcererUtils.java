@@ -20,14 +20,12 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
@@ -37,7 +35,6 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import org.confluence.lib.common.LibTags;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
@@ -1816,33 +1813,7 @@ public final class SoulcererUtils {
         return Math.max(floor, y);
     }
 
-    /// 祈灵之刃：向前贯穿扁矩形范围，主目标仍由原版结算，这里只补打其余敌怪。
-    public static void soulKnifeReach(AttackEntityEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player) || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            return;
-        }
-        float scale = player.getAttackStrengthScale(0.5F);
-        if (scale < SoulSkillParameters.SPIRITWARD_BLADE_MIN_CHARGE) {
-            return;
-        }
-        Vec3 eye = player.getEyePosition();
-        AABB box = new AABB(eye, eye.add(player.getLookAngle().scale(SoulSkillParameters.SPIRITWARD_BLADE_REACH)))
-                .inflate(SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH, SoulSkillParameters.SPIRITWARD_BLADE_HALF_HEIGHT, SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH);
-        Entity primary = event.getTarget();
-        float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * (0.2F + scale * scale * 0.8F);
-        DamageSource source = player.damageSources().playerAttack(player);
-        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, box,
-                entity -> entity != player && entity != primary && entity.isAlive() && !entity.isSpectator() && player.canAttack(entity))) {
-            target.hurt(source, damage);
-        }
-    }
 
-    /// 祈灵之刃：用它击杀的敌怪额外收取灵魂。
-    public static void soulKnifeExtraSoul(SoulCollectionEvent event) {
-        if (event.getEntity().getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_KILL_SOUL_BONUS);
-        }
-    }
 
     /// 灵魂短弓 / 灵魂弓：用它击杀的敌怪额外收取灵魂。
     public static void soulBowExtraSoul(SoulCollectionEvent event) {
@@ -1852,16 +1823,6 @@ public final class SoulcererUtils {
         }
     }
 
-    /// 祈灵之刃：当前灵魂高于阈值时，持有者造成的近战伤害额外提升。
-    public static void soulKnifeBonusDamage(LivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
-                || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            return;
-        }
-        if (getSoul(player) > SoulSkillParameters.SPIRITWARD_BLADE_SOUL_THRESHOLD) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_DAMAGE_BONUS);
-        }
-    }
 
     /// 灵魂短弓 / 灵魂弓：当前灵魂高于阈值时，由它射出的箭矢额外提升伤害。
     public static void soulBowBonusDamage(LivingIncomingDamageEvent event) {
@@ -1905,11 +1866,9 @@ public final class SoulcererUtils {
             return;
         }
         Entity direct = event.getSource().getDirectEntity();
-        boolean blade = direct == player && event.getSource().is(DamageTypes.PLAYER_ATTACK)
-                && player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get());
         boolean bow = direct instanceof AbstractArrow arrow && arrow.getWeaponItem() != null
                 && ISoulBow.isSoulBow(arrow.getWeaponItem());
-        float chance = Math.min(1.0F, (blade || bow ? SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE : 0.0F)
+        float chance = Math.min(1.0F, (bow ? SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE : 0.0F)
                 + getSoulHarvestHitChance(player, direct, event.getEntity()) + getSoulHitChanceBonus(player));
         if (chance > 0 && player.getRandom().nextFloat() < chance) {
             SoulStorage.of(player).receive(SoulSkillParameters.SOUL_WEAPON_HIT_SOUL

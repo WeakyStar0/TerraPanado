@@ -78,11 +78,8 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes", "提升洞穴探险药水时长2分钟");
         language.add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%", "召唤伤害提高12%");
         language.add("armor_set_bonus.confluence.splendid_robe_set.0", "7% increased movement speed", "移动速度提高7%");
-        language.add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1", "仆从数量上限增加1");
         language.add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%", "近战攻速提高4%");
         language.add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%", "远程伤害提高4%");
-        language.add("armor_set_bonus.confluence.tiki_set.0", "Increases your max number of minions by 1", "仆从数量上限增加1");
-        language.add("armor_set_bonus.confluence.tiki_set.1", "Increases whip range by 20%", "鞭子攻击范围扩大20%");
         language.add("armor_set_bonus.confluence.tin_set.0", "+2 Armor", "+2 护甲值");
         language.add("armor_set_bonus.confluence.titanium_headgear_set.0", "Attacking generates a defensive barrier of titanium shards", "攻击生成钛金碎片防御屏障");
         language.add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards", "攻击生成钛金碎片防御屏障");
@@ -90,6 +87,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.tungsten_set.0", "+1 Armor", "+1 护甲值");
         language.add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 3 Soul Points", "近战暴击会回复3点灵魂值");
         language.add("armor_set_bonus.when_applied", "Set Bonus:", "套装奖励：");
+        language.add("armor_set_bonus.variant", "With %s:", "搭配%s：");
         language.add("armor_set_bonus.confluence.black_spot_set.0", "Using a healing potion resets artifact cooldowns", "使用治疗药水重置法器冷却");
         language.add("armor_set_bonus.confluence.black_spot_set.1", "10% reduced artifact cooldowns", "法器冷却降低10%");
         language.add("armor_set_bonus.confluence.black_spot_set.2", "Healing potions grant 4 saturation to you and nearby allies", "使用治疗药水时为你与周围队友回复4点饱和");

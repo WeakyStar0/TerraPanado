@@ -7,7 +7,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
 import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
-import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
@@ -28,12 +27,12 @@ public final class NetworkEvents {
                 .playToClient(SoulSkillSyncPacketS2C.TYPE, SoulSkillSyncPacketS2C.STREAM_CODEC, SoulSkillSyncPacketS2C::handle)
                 .playToClient(SoulSkillIndexSyncPacketS2C.TYPE, SoulSkillIndexSyncPacketS2C.STREAM_CODEC, SoulSkillIndexSyncPacketS2C::handle)
                 .playToClient(SoulSkillUsePacketS2C.TYPE, SoulSkillUsePacketS2C.STREAM_CODEC, SoulSkillUsePacketS2C::handle)
+                .playToClient(CustomNPCSyncPacketS2C.TYPE, CustomNPCSyncPacketS2C.STREAM_CODEC, CustomNPCSyncPacketS2C::handle)
                 .playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle)
+                .playToClient(MeteoriteDimensionsPacketS2C.TYPE, MeteoriteDimensionsPacketS2C.STREAM_CODEC, MeteoriteDimensionsPacketS2C::handle)
                 .playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle)
-                .playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle)
                 .playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle)
                 .playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle)
-                .playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle)
                 .playToClient(RepeaterShootingPayloadS2C.TYPE, RepeaterShootingPayloadS2C.STREAM_CODEC, RepeaterShootingPayloadS2C::handle)
                 .playToClient(LeftClickCooldownPacketS2C.TYPE, LeftClickCooldownPacketS2C.STREAM_CODEC, LeftClickCooldownPacketS2C::handle)
                 .playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle)
@@ -49,7 +48,6 @@ public final class NetworkEvents {
                 .playToClient(GameEventSyncPacketS2C.TYPE, GameEventSyncPacketS2C.STREAM_CODEC, GameEventSyncPacketS2C::handle)
                 .playToClient(GoblinArmyProgressPacketS2C.TYPE, GoblinArmyProgressPacketS2C.STREAM_CODEC, GoblinArmyProgressPacketS2C::handle)
                 .playToClient(SyncEnemyBannerEntriesPacketS2C.TYPE, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC, SyncEnemyBannerEntriesPacketS2C::handle)
-                .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
                 .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
                 .playToClient(BossBarSyncPacketS2C.TYPE, BossBarSyncPacketS2C.STREAM_CODEC, BossBarSyncPacketS2C::handle)
@@ -95,7 +93,6 @@ public final class NetworkEvents {
                 .playToServer(InspectPacketC2S.TYPE, InspectPacketC2S.STREAM_CODEC, InspectPacketC2S::handle)
 
                 .playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle)
-                .playBidirectional(AskForSoftcorePacket.TYPE, AskForSoftcorePacket.STREAM_CODEC, AskForSoftcorePacket::handle)
         ;
     }
 }

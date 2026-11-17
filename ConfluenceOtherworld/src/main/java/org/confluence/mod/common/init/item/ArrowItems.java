@@ -24,8 +24,6 @@ public class ArrowItems {
     public static final DeferredItem<ShimmerArrowItem> SHIMMER_ARROW = registerItem("shimmer_arrow", "微光箭", ShimmerArrowItem::new);
     public static final DeferredItem<FossilArrowItem> FOSSIL_ARROW = registerItem("fossil_arrow", "化石箭", FossilArrowItem::new);
     public static final DeferredItem<FlyFishArrowItem> FLY_FISH_ARROW = registerItem("fly_fish_arrow", "飞鱼箭", FlyFishArrowItem::new);
-    /// 风矢：更慢、更痛、能穿过一个敌怪并减速的箭矢。
-    public static final DeferredItem<WindArrowItem> WIND_ARROW = registerItem("wind_arrow", "风矢", WindArrowItem::new);
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

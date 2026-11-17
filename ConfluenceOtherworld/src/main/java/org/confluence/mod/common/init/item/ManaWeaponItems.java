@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -48,16 +46,9 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = registerItem("flower_of_fire", "火之花", "Flower of Fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 9, 7.5F, 7, 0.04));
     public static final DeferredItem<FlamelashItem> FLAMELASH = registerItem("flamelash", "烈焰火鞭", FlamelashItem::new);
     public static final DeferredItem<CloudRodItem> NIMBUS_ROD = registerItem("nimbus_rod", "雨云魔杖", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD.get(), ModEntities.RAIN.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));
-    public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = registerItem("flower_of_frost", "寒霜之花", "Flower of Frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 12, 4, 0.04));
-    public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = registerItem("magic_dagger", "魔法飞刀", MagicDaggerItem::new);
-    public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = registerItem("crystal_storm", "水晶风暴", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 22, 3, 0.04));
-    public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = registerItem("cursed_flames", "诅咒焰", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 13, 5, 0.04));
     public static final DeferredItem<GoldenShowerItem> GOLDEN_SHOWER = registerItem("golden_shower", "黄金雨", GoldenShowerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = registerItem("crystal_vile_shard", "魔晶碎块", CrystalVileShardItem::new);
     public static final DeferredItem<RainbowRodItem> RAINBOW_ROD = registerItem("rainbow_rod", "彩虹魔杖", RainbowRodItem::new);
-    public static final DeferredItem<SkyFractureItem> SKY_FRACTURE = registerItem("sky_fracture", "裂天剑", SkyFractureItem::new);
-    public static final DeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = registerItem("crystal_serpent", "水晶蛇", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
-            .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
     public static final DeferredItem<ThunderstrikeItem> THUNDERSTRIKE = registerItem("thunderstrike", (item, language) -> {
         language.add(item, "闪电之击");
         language.addTooltip(item, 0,
@@ -69,16 +60,6 @@ public class ManaWeaponItems {
         language.addTooltip(item, 0, "Shift + scroll to adjust aim distance. The spark attaches to enemies; blue lightning strikes after 0.5 seconds.",
                 "Shift + 滚轮调节落点距离；电火花吸附敌人，0.5 秒后引下蓝色闪电。");
     }, RedGloveItem::new);
-    /// 欧泊法杖：洪流弹幕落地后贴地奔涌，折返时伤害翻倍，并额外吃 50% 近战攻击力。
-    public static final DeferredItem<OpalStaffItem> OPAL_STAFF = registerItem("opal_staff", "欧泊法杖", () -> new OpalStaffItem(ModRarity.GREEN, OpalStaffProjectile::new, 20.0F, 8, 12, 12, 0.04));
-    /// 昏晓：恶魔祭坛：永夜 + 极昼。
-    public static final DeferredItem<DuskDawnItem> DUSK_DAWN = registerItem("dusk_dawn", "昏晓", () -> new DuskDawnItem(ModRarity.PURPLE));
-    /// 风页：一次释放三发上飞后追踪的风弹。
-    public static final DeferredItem<WindPageItem> WIND_PAGE = registerItem("wind_page", "风页", () -> new WindPageItem(ModRarity.PURPLE));
-    /// 风眼：制造持续吸附敌人的大范围旋风。
-    public static final DeferredItem<WindEyeItem> WIND_EYE = registerItem("wind_eye", "风眼", () -> new WindEyeItem(ModRarity.YELLOW));
-    /// 星乐：长按聚星，松开爆出追踪坠星。
-    public static final DeferredItem<StarMusicItem> STAR_MUSIC = registerItem("star_music", "星乐", () -> new StarMusicItem(ModRarity.YELLOW));
     /// 星体研究汇编：初始无法攻击，需要装订蕴魔书页才能逐步解锁附加弹幕。
     public static final DeferredItem<StellarStudiesCompilationItem> STELLAR_STUDIES_COMPILATION = registerItem("stellar_studies_compilation", "星体研究汇编", () -> new StellarStudiesCompilationItem(ModRarity.BLUE));
 

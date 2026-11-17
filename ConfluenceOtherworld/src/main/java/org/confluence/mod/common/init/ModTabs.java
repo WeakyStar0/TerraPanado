@@ -1628,12 +1628,6 @@ public final class ModTabs {
                         blue_hermit_armor.accept(ArmorItems.BLUE_HERMIT_LEGGINGS.get());
                         blue_hermit_armor.accept(ArmorItems.BLUE_HERMIT_BOOTS.get());
 
-                        CreativeModeTab.Output spore_root_armor = GroupItem.belongsTo("spore_root_armor", output);
-                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_HELMET.get());
-                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_CHESTPLATE.get());
-                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_LEGGINGS.get());
-                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_BOOTS.get());
-
                         CreativeModeTab.Output cold_crystal_armor = GroupItem.belongsTo("cold_crystal_armor", output);
                         cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_HELMET.get());
                         cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_CHESTPLATE.get());
@@ -1698,12 +1692,6 @@ public final class ModTabs {
                         spider_armor.accept(ArmorItems.SPIDER_CHESTPLATE.get());
                         spider_armor.accept(ArmorItems.SPIDER_LEGGINGS.get());
                         spider_armor.accept(ArmorItems.SPIDER_BOOTS.get());
-
-                        CreativeModeTab.Output tiki_armor = GroupItem.belongsTo("tiki_armor", output);
-                        tiki_armor.accept(ArmorItems.TIKI_MASK.get());
-                        tiki_armor.accept(ArmorItems.TIKI_SHIRT.get());
-                        tiki_armor.accept(ArmorItems.TIKI_LEGGINGS.get());
-                        tiki_armor.accept(ArmorItems.TIKI_BOOTS.get());
 
                         CreativeModeTab.Output cobalt_armor = GroupItem.belongsTo("cobalt_armor", output);
                         cobalt_armor.accept(ArmorItems.COBALT_MASK.get());
@@ -2093,7 +2081,6 @@ public final class ModTabs {
                         short_bow.accept(BowItems.TIN_SHORT_BOW.get());
                         short_bow.accept(BowItems.IRON_SHORT_BOW.get());
                         short_bow.accept(BowItems.LEAD_SHORT_BOW.get());
-                        short_bow.accept(BowItems.SOUL_SHORT_BOW.get());
                         short_bow.accept(BowItems.SILVER_SHORT_BOW.get());
                         short_bow.accept(BowItems.TUNGSTEN_SHORT_BOW.get());
                         short_bow.accept(BowItems.GOLDEN_SHORT_BOW.get());
@@ -2108,7 +2095,6 @@ public final class ModTabs {
                         bow.accept(BowItems.TIN_BOW.get());
                         bow.accept(BowItems.IRON_BOW.get());
                         bow.accept(BowItems.LEAD_BOW.get());
-                        bow.accept(BowItems.SOUL_BOW.get());
                         bow.accept(BowItems.SILVER_BOW.get());
                         bow.accept(BowItems.TUNGSTEN_BOW.get());
                         bow.accept(BowItems.GOLDEN_BOW.get());
@@ -2124,11 +2110,6 @@ public final class ModTabs {
                         bow.accept(BowItems.DAEDALUS_STORM_BOW.get());
                         bow.accept(BowItems.BLOOD_RAIN_BOW.get());
                         bow.accept(BowItems.DEVELOPER_BOW.get());
-                        bow.accept(BowItems.WIND_STRING.get());
-                        bow.accept(BowItems.ENCHANTED_BOW.get());
-                        bow.accept(BowItems.STAR_WEEP.get());
-                        bow.accept(BowItems.POLAR_DAY.get());
-                        bow.accept(BowItems.BLADE_BOW.get());
 
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
@@ -2210,9 +2191,6 @@ public final class ModTabs {
                         soulcerer_main_weapons.accept(SoulItems.DAY_AND_NIGHT_ALIKE.get());
                         soulcerer_main_weapons.accept(SoulItems.SENIOR_PATHFINDER_PRO.get());
                         CreativeModeTab.Output soulcerer_secondary_weapons = GroupItem.belongsTo("soulcerer_secondary_weapons", output);
-                        soulcerer_secondary_weapons.accept(SoulItems.SPIRITWARD_BLADE.get());
-                        soulcerer_secondary_weapons.accept(BowItems.SOUL_SHORT_BOW.get());
-                        soulcerer_secondary_weapons.accept(BowItems.SOUL_BOW.get());
                         CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
                         SoulItems.ARTIFACTS.forEach(item -> soulcerer_artifacts.accept(item.get()));
                         CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
@@ -2512,6 +2490,7 @@ public final class ModTabs {
                         npc.accept(SpawnEggItems.FEMALE_ANGLER_SPAWN_EGG.get());
                         npc.accept(SpawnEggItems.STYLIST_SPAWN_EGG.get());
                         npc.accept(SpawnEggItems.TAX_COLLECTOR_SPAWN_EGG.get());
+                        org.confluence.mod.client.handler.ClientCustomNPCs.addEggs(npc);
                         CreativeModeTab.Output boss = GroupItem.belongsTo("boss_entity", output);
                         boss.accept(SpawnEggItems.KING_SLIME_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.EYE_OF_CTHULHU_SPAWN_EGG.get());
@@ -2559,7 +2538,6 @@ public final class ModTabs {
                         output.accept(FoodItems.PINK_COLA);
                         output.accept(FoodItems.DONGDONGS_FLATBREAD);
                         output.accept(FoodItems.PIGLIN_STEW);
-                        output.accept(BoomerangItems.BEIDOU_BOOMERANG);
                         output.accept(ToolItems.DEV_BUG_NET);
                         output.accept(ToolItems.BOSS_TARGET_SELECTOR);
                         output.accept(SwordItems.DEVELOPER_SWORD);

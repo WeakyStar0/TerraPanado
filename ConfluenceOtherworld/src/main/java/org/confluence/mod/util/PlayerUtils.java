@@ -3,11 +3,9 @@ package org.confluence.mod.util;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -20,6 +18,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,12 +28,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
@@ -40,7 +39,6 @@ import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
@@ -49,7 +47,6 @@ import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -69,7 +66,6 @@ import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
-import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -182,6 +178,7 @@ public final class PlayerUtils {
         KillBoardSyncPacketS2C.sendToClient(player);
         GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.refreshMeteorCompass(player);
+        MeteoriteDimensionsPacketS2C.sendToClient(player);
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
@@ -492,41 +489,53 @@ public final class PlayerUtils {
         }
     }
 
-    /// @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
-    public static void dropMoney(Player player) {
-        if (!ModCommonConfigs.PLAYER_DROPS_MONEY.get()) return;
-        long money = getMoney(player, false);
-        long drops;
-        if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            int ratio = LibUtils.switchByDifficulty(player.level(), 2, 3, 4);
-            drops = money * ratio / 4;
-        } else {
-            drops = money;
-        }
-        tryCostMoney(money, player, drops, false);
-        ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
+    private static final String DEATH_COINS_KEY = "confluence:death_coins";
 
-        if (ModCommonConfigs.SHOW_MONEY_DROPS.get()) {
-            LibEntityUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
+    /// 死亡时钱币不会掉落：每一组钱币按配置的百分比损失，剩下的留给玩家。
+    /// 钱币栏里的钱币本来就会随玩家保留；背包里的钱币先收起来，重生后在 [#restoreDeathCoins] 归还。
+    public static void applyDeathCoinLoss(ServerPlayer player) {
+        int percent = ModCommonConfigs.DEATH_COIN_LOSS_PERCENT.get();
+        ExtraInventory extraInventory = ExtraInventory.of(player);
+        for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
+            ItemStack stack = extraInventory.getCoins(i);
+            if (!stack.isEmpty()) {
+                stack.shrink(coinLoss(stack.getCount(), percent));
+            }
+        }
+        boolean keepInventory = player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
+        ListTag saved = new ListTag();
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.items.size(); i++) {
+            ItemStack stack = inventory.items.get(i);
+            if (stack.isEmpty() || !stack.is(ModTags.Items.COINS)) continue;
+            stack.shrink(coinLoss(stack.getCount(), percent));
+            if (!keepInventory && !stack.isEmpty()) {
+                saved.add(stack.save(player.registryAccess()));
+                inventory.items.set(i, ItemStack.EMPTY);
+            }
+        }
+        if (!saved.isEmpty()) {
+            LibEntityUtils.getOrCreatePersistedData(player).put(DEATH_COINS_KEY, saved);
         }
     }
 
-    /// 获取玩家复活时间
-    ///
-    /// @param player 玩家
-    /// @return 复活时间
-    public static int getRespawnWaitTime(ServerPlayer player) {
-        AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
-        int min, max;
-        if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
-            min = ModCommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get();
-            max = ModCommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get();
-        } else {
-            min = ModCommonConfigs.BOSS_RESPAWN_TIME_MIN.get();
-            max = ModCommonConfigs.BOSS_RESPAWN_TIME_MAX.get();
+    private static int coinLoss(int count, int percent) {
+        return (int) Math.round(count * percent / 100.0);
+    }
+
+    /// 把 [#applyDeathCoinLoss] 收起来的钱币还给重生后的玩家。
+    public static void restoreDeathCoins(Player old, Player neo) {
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(old);
+        if (!data.contains(DEATH_COINS_KEY, Tag.TAG_LIST)) return;
+        ListTag saved = data.getList(DEATH_COINS_KEY, Tag.TAG_COMPOUND);
+        data.remove(DEATH_COINS_KEY);
+        for (Tag tag : saved) {
+            ItemStack.parse(neo.registryAccess(), tag).ifPresent(stack -> {
+                if (!neo.getInventory().add(stack)) {
+                    neo.drop(stack, false);
+                }
+            });
         }
-        if (min == max) return min;
-        return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
 
     /// @return true表示魔力值不够
@@ -628,16 +637,7 @@ public final class PlayerUtils {
         return LibMathUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
-    public static boolean skipHealIfOnFire(Player player) {
-        return ModCommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && player.isOnFire();
-    }
 
-    public static float applyTerraFire(DamageSource damageSource, float amount) {
-        if (ModCommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && damageSource.is(DamageTypeTags.IS_FIRE)) {
-            return amount * 4;
-        }
-        return amount;
-    }
 
     public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 200 == 0) {
@@ -655,14 +655,6 @@ public final class PlayerUtils {
         VisibilityPacketS2C.sendEcho(player);
     }
 
-    public static void askForSoftcore(ServerPlayer player) {
-        if (ModCommonConfigs.STOP_ASK_FOR_SOFTCORE.get()) return;
-        ServerLevel overworld = player.server.getLevel(OverworldUtils.dimension());
-        if (overworld == null) return;
-        if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;
-        if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
-        PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
-    }
 
     /// 判断主背包与副手是否持有目标物品，不比较物品组件。
     public static boolean hasItemInInventory(Player player, Item item) {

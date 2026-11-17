@@ -2,12 +2,6 @@ package org.confluence.mod.common.event;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.PackLocationInfo;
-import net.minecraft.server.packs.PackSelectionConfig;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -22,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
@@ -31,7 +24,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
@@ -43,15 +35,12 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
@@ -88,7 +77,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -102,7 +90,6 @@ public final class ModEvents {
             ModGunProperties.init();
             GunSounds.init();
             GunTrailColors.init();
-            Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModBiomes.registerRegionAndSurface();
@@ -178,40 +165,6 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void addPackFinders(AddPackFindersEvent event) {
-        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-            IModFile modFile = ModList.get().getModFileById(MODID).getFile();
-            event.addRepositorySource(consumer -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        new PackLocationInfo("confluence:terraria_art", Component.translatable("resourcepack.terraria_art"), PackSource.BUILT_IN, Optional.empty()),
-                        new ConfluenceResources(modFile, "resourcepacks/terraria_art"),
-                        PackType.CLIENT_RESOURCES,
-                        new PackSelectionConfig(false, Pack.Position.TOP, false)
-                );
-                if (pack != null) consumer.accept(pack);
-            });
-            event.addRepositorySource(consumer -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        new PackLocationInfo("confluence:terraria_armor", Component.translatable("resourcepack.terraria_armor"), PackSource.BUILT_IN, Optional.empty()),
-                        new ConfluenceResources(modFile, "resourcepacks/terraria_armor"),
-                        PackType.CLIENT_RESOURCES,
-                        new PackSelectionConfig(false, Pack.Position.TOP, false)
-                );
-                if (pack != null) consumer.accept(pack);
-            });
-            event.addRepositorySource(consumer -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        new PackLocationInfo("confluence:confluence_datatip_0.4", Component.translatable("resourcepack.confluence_datatip_0.4"), PackSource.BUILT_IN, Optional.empty()),
-                        new ConfluenceResources(modFile, "resourcepacks/confluence_datatip_0.4"),
-                        PackType.CLIENT_RESOURCES,
-                        new PackSelectionConfig(false, Pack.Position.TOP, false)
-                );
-                if (pack != null) consumer.accept(pack);
-            });
-        }
-    }
-
-    @SubscribeEvent
     public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
@@ -241,7 +194,6 @@ public final class ModEvents {
                     AccessoryItems.APPRENTICES_SCARF,
                     AccessoryItems.SQUIRES_SHIELD, AccessoryItems.HUNTRESSS_BUCKLER, AccessoryItems.MONKS_BELT,
                     AccessoryItems.HERCULES_BEETLE, AccessoryItems.NECROMANTIC_SCROLL, AccessoryItems.PAPYRUS_SCARAB,
-                    AccessoryItems.PYGMY_NECKLACE,
                     // 魂师：灵魂手环、刻骨的记忆、束魂锁链与冰冷魂戒
                     AccessoryItems.BAND_OF_SOUL, AccessoryItems.BAND_OF_SOUL_REGENERATION,
                     AccessoryItems.BAND_OF_MEDIUMSHIP, AccessoryItems.MEMORY_OF_BONEBRAND,

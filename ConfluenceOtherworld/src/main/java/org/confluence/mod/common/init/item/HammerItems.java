@@ -17,7 +17,6 @@ import org.confluence.mod.common.item.common.SeafloorCrackerItem;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
-import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
 public class HammerItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -36,16 +35,16 @@ public class HammerItems {
     public static final DeferredItem<BaseHammerItem> TUNGSTEN_HAMMER = registerItem("tungsten_hammer", "钨锤", () -> new BaseHammerItem(ModTiers.TUNGSTEN, 9, 1.3F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<BaseHammerItem> GOLDEN_HAMMER = registerItem("golden_hammer", "金锤", () -> new BaseHammerItem(ModTiers.GOLD, 9, 1.5F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<BaseHammerItem> PLATINUM_HAMMER = registerItem("platinum_hammer", "铂金锤", () -> new BaseHammerItem(ModTiers.PLATINUM, 10, 1.6F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<BaseHammerItem> THE_BREAKER = registerItem("the_breaker", "魔锤", () -> new BaseHammerItem(ModTiers.DEMONITE, 11, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
-    public static final DeferredItem<BaseHammerItem> FLESH_GRINDER = registerItem("flesh_grinder", "血肉锤", () -> new BaseHammerItem(ModTiers.CRIMTANE, 12, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
-    public static final DeferredItem<BaseHammerItem> ROCKFISH = registerItem("rockfish", "岩鱼锤", () -> new BaseHammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 13, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.ORANGE).hasImage());
+    public static final DeferredItem<BaseHammerItem> THE_BREAKER = registerItem("the_breaker", "魔锤", () -> new BaseHammerItem(ModTiers.DEMONITE, 11, 1.6F, new Item.Properties(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final DeferredItem<BaseHammerItem> FLESH_GRINDER = registerItem("flesh_grinder", "血肉锤", () -> new BaseHammerItem(ModTiers.CRIMTANE, 12, 1.6F, new Item.Properties(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final DeferredItem<BaseHammerItem> ROCKFISH = registerItem("rockfish", "岩鱼锤", () -> new BaseHammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 1200, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 13, 1.2F, new Item.Properties(), attributes(0, 0.6), ModRarity.ORANGE).hasImage());
 
-    public static final DeferredItem<BaseHammerItem> PWNHAMMER = registerItem("pwnhammer", "神锤", () -> new BaseHammerItem(ModTiers.HALLOWED, 14, 2.0F, unbreakable(), attributes(0, 0.75), ModRarity.LIGHT_RED));
-    public static final DeferredItem<BaseHammerItem> HAMMUSH = registerItem("hammush", "蘑菇锤", () -> new BaseHammerItem(ModTiers.SHROOMITE, 16, 2.2F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
-    public static final DeferredItem<BaseHammerItem> CHLOROPHYTE_WARHAMMER = registerItem("chlorophyte_warhammer", "叶绿战锤", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 20, 2.4F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
-    public static final DeferredItem<BaseHammerItem> CHLOROPHYTE_JACKHAMMER = registerItem("chlorophyte_jackhammer", "叶绿手提钻", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 24, 4, unbreakable(), attributes(0, 0.52), ModRarity.LIME));
+    public static final DeferredItem<BaseHammerItem> PWNHAMMER = registerItem("pwnhammer", "神锤", () -> new BaseHammerItem(ModTiers.HALLOWED, 14, 2.0F, new Item.Properties(), attributes(0, 0.75), ModRarity.LIGHT_RED));
+    public static final DeferredItem<BaseHammerItem> HAMMUSH = registerItem("hammush", "蘑菇锤", () -> new BaseHammerItem(ModTiers.SHROOMITE, 16, 2.2F, new Item.Properties(), attributes(0, 0.75), ModRarity.LIME));
+    public static final DeferredItem<BaseHammerItem> CHLOROPHYTE_WARHAMMER = registerItem("chlorophyte_warhammer", "叶绿战锤", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 20, 2.4F, new Item.Properties(), attributes(0, 0.75), ModRarity.LIME));
+    public static final DeferredItem<BaseHammerItem> CHLOROPHYTE_JACKHAMMER = registerItem("chlorophyte_jackhammer", "叶绿手提钻", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 24, 4, new Item.Properties(), attributes(0, 0.52), ModRarity.LIME));
     /// 海床崩裂者：视作锤的近战武器，满蓄力砸出 5x5x3 范围伤害并掀起水柱。
-    public static final DeferredItem<BaseHammerItem> SEAFLOOR_CRACKER = registerItem("seafloor_cracker", "海床崩裂者", () -> new SeafloorCrackerItem(ModTiers.UNBREAKABLE, 20, 1.2F, unbreakable(), attributes(0, 0.55), ModRarity.BLUE));
+    public static final DeferredItem<BaseHammerItem> SEAFLOOR_CRACKER = registerItem("seafloor_cracker", "海床崩裂者", () -> new SeafloorCrackerItem(ModTiers.durable(ModTiers.UNBREAKABLE, 20), 20, 1.2F, new Item.Properties(), attributes(0, 0.55), ModRarity.BLUE));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

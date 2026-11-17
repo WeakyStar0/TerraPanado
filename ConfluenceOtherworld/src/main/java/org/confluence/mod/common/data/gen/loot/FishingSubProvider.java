@@ -242,9 +242,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(FoodItems.GOLDEN_CARP).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(caveThroughSurface))
                         ).setWeight(7))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_SERPENT).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
-                        )).setWeight(7).when(GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH)))
                 )
         );
         // 钓鱼垃圾池

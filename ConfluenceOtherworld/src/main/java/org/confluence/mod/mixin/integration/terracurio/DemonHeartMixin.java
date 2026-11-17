@@ -18,7 +18,7 @@ public abstract class DemonHeartMixin {
     @Inject(method = "lambda$use$0", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
     private static void update(CallbackInfo ci, @Local(argsOnly = true) ServerPlayer player, @Local(name = "iCurioStacksHandler") ICurioStacksHandler iCurioStacksHandler) {
         int slots = iCurioStacksHandler.getSlots();
-        player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
+        player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.TRANSMUTATION_USE.get(), player.getSoundSource(), 1.0F, 1.0F);
         ExtraInventory.of(player).updateAccessorySize(player, slots);
         ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, slots, slots - 1, ItemStack.EMPTY);
     }

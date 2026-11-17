@@ -9,10 +9,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 
-/// 仅负责遭遇人数与生命配置，难度全部交给 CreatureDifficultyScaling。
+/// 仅负责 Boss 生命配置，难度全部交给 CreatureDifficultyScaling。
 public final class BossMultiplayerEnhancement {
-    /// 参与多人 Boss 属性缩放计算的玩家数量上限。
-    private static final int MAX_PLAYER_COUNT = 8;
     private static final ResourceLocation LEGACY_HEALTH_ID = Confluence.asResource("boss_difficulty_player_count_max_health");
     private static final ResourceLocation LEGACY_DAMAGE_ID = Confluence.asResource("boss_difficulty_attack_damage");
     private static final ResourceLocation HEALTH_CONFIG_ID = Confluence.asResource("boss_server_config_max_health");
@@ -20,7 +18,7 @@ public final class BossMultiplayerEnhancement {
 
     private BossMultiplayerEnhancement() {}
 
-    /// 遭遇人数只确定一次；已有存档移除旧难度项，不叠加新的难度倍率。
+    /// 已有存档移除旧难度项，不叠加新的难度倍率。
     /// 仅新生成时补齐生命上限；读档和配置重载不治疗。
     public static void apply(LivingEntity boss, boolean fillHealth) {
         if (boss.level().isClientSide) return;
@@ -31,11 +29,8 @@ public final class BossMultiplayerEnhancement {
         if (damage != null) damage.removeModifier(LEGACY_DAMAGE_ID);
         if (maxHealth != null) {
             maxHealth.removeModifier(LEGACY_HEALTH_ID);
-            if (!maxHealth.hasModifier(PLAYER_COUNT_ID)) {
-                int count = Math.max(1, Math.min(boss.level().players().size(), MAX_PLAYER_COUNT));
-                double multiplier = boss instanceof BaseBoss base ? base.getBossHealthPlayerMultiplier(count) : count;
-                maxHealth.addPermanentModifier(new AttributeModifier(PLAYER_COUNT_ID, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-            }
+            // Boss health no longer scales with the number of players; drop the modifier from bosses saved by older versions.
+            maxHealth.removeModifier(PLAYER_COUNT_ID);
             replace(maxHealth, HEALTH_CONFIG_ID, ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get());
         }
         CreatureDifficultyScaling.apply(boss, false);
@@ -49,9 +44,9 @@ public final class BossMultiplayerEnhancement {
             attribute.addPermanentModifier(new AttributeModifier(id, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 
-    /// 替代主体继承遭遇人数，难度仍由其登记的实体类别统一应用。
+    /// 替代主体继承生命配置，难度仍由其登记的实体类别统一应用。
     static void copyEncounterScaling(LivingEntity source, LivingEntity target) {
-        for (ResourceLocation id : new ResourceLocation[]{PLAYER_COUNT_ID, HEALTH_CONFIG_ID}) {
+        for (ResourceLocation id : new ResourceLocation[]{HEALTH_CONFIG_ID}) {
             AttributeInstance from = source.getAttribute(Attributes.MAX_HEALTH);
             AttributeInstance to = target.getAttribute(Attributes.MAX_HEALTH);
             if (from == null || to == null) continue;

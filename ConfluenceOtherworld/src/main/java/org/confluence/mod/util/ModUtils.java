@@ -327,7 +327,9 @@ public final class ModUtils {
         IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
         SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
         GlobalCloakData.INSTANCE.reveal(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState());
-        HardmodeConvertor.INSTANCE.start(server);
+        if (ModCommonConfigs.HARDMODE_WORLD_CONVERSION.get()) {
+            HardmodeConvertor.INSTANCE.start(server);
+        }
     }
 
     /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。

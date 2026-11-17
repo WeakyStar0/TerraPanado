@@ -1135,13 +1135,6 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.tragic_umbrella.0", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));
         add(root, SwordItems.UMBRELLA.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.umbrella.0", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));
-        add(root, BoomerangItems.BEIDOU_BOOMERANG.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.bei_dou_boomerang.0", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
-                translate("tooltip.item.confluence.bei_dou_boomerang.1", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
-                translate("tooltip.item.confluence.bei_dou_boomerang.2", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
-                translate("tooltip.item.confluence.bei_dou_boomerang.3", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
-                translate("tooltip.item.confluence.bei_dou_boomerang.4", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
-                translate("tooltip.item.confluence.bei_dou_boomerang.5", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));
         // 魂师主武器：自带效果说明（与 SoulWeaponItem.Trait 一一对应）
         add(root, SoulItems.BROKEN_GLIMMER.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.broken_glimmer.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
@@ -1166,10 +1159,6 @@ public final class ModDataTipProvider implements DataProvider {
         add(root, WhipItems.FIRECRACKER.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.firecracker.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
                 translate("tooltip.item.confluence.firecracker.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
-        add(root, WhipItems.WIND_WHIP.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.wind_whip.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
-        add(root, WhipItems.STAR_FEAR.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.star_fear.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         return root;
     }
 }

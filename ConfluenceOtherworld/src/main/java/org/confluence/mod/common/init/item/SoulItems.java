@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +21,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.item.soulcerer.*;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
@@ -104,11 +102,6 @@ public class SoulItems {
                     .trait(SoulWeaponItem.Trait.LURE_HOMING)
                     .build()));
 
-    /// 副武器：战士侧武器，只吃近战伤害加成（6 点伤害 / 1.6 攻速 / 4% 基础暴击）。
-    public static final DeferredItem<SoulKnifeItem> SPIRITWARD_BLADE = registerItem("spiritward_blade", "祈灵之刃", () -> new SoulKnifeItem(
-            new Item.Properties().component(DataComponents.ATTRIBUTE_MODIFIERS,
-                    ModItems.createAttributes(ModTiers.UNBREAKABLE, 4.0F, -2.4F, ModItems.attributes(0, 0.4F))),
-            ModRarity.BLUE));
 
     /// 首次获得即永久学会的技能：物品 → 技能 ID。新增首得解锁只在此登记，判定入口为 PlayerUtils.learnSoulSkillsOnFirstObtain。
     public static final Map<DeferredItem<? extends Item>, List<ResourceLocation>> FIRST_OBTAIN_SOUL_SKILLS = Map.of(

@@ -1021,49 +1021,16 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, SoulItems.PILLAGING_FLAME.toStack(), Ingredient.of(Items.EMERALD), Ingredient.of(MaterialItems.JADE), Ingredient.of(Items.OMINOUS_BOTTLE), Ingredient.of(SoulItems.SOUL_CONDUIT));
         shapeless(output, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
 
-        // 祈灵之刃：堕魂星核 + 铁短剑/铅短剑
-        shapeless(output, SoulItems.SPIRITWARD_BLADE.toStack(), Ingredient.of(SoulItems.FALLEN_SOUL_CORE), Ingredient.of(SwordItems.IRON_SHORT_SWORD, SwordItems.LEAD_SHORT_SWORD));
 
         // 灵魂手环：星力手环 + 堕魂星核，可反向拆回
         shapeless(output, AccessoryItems.BAND_OF_SOUL.toStack(), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
         shapeless(output, AccessoryItems.BAND_OF_STARPOWER.toStack(), Ingredient.of(AccessoryItems.BAND_OF_SOUL));
 
-        // 灵魂短弓 / 灵魂弓：堕魂星核 + 铁短弓/铅短弓、铁弓/铅弓
-        shaped(output, "", "_from_iron_or_lead_short_bow", ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
-                'b', Ingredient.of(BowItems.IRON_SHORT_BOW, BowItems.LEAD_SHORT_BOW)
-        ), List.of(
-                "a",
-                "b"
-        )), BowItems.SOUL_SHORT_BOW.toStack());
-        shaped(output, "", "_from_iron_or_lead_bow", ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
-                'b', Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW)
-        ), List.of(
-                "a",
-                "b"
-        )), BowItems.SOUL_BOW.toStack());
 
-        // 风弦：沉重核心 + 铁/铅弓 + 风棒（旋风棒），无序
-        shapeless(output, BowItems.WIND_STRING.toStack(),
-                Ingredient.of(Items.HEAVY_CORE), Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW),
-                Ingredient.of(Items.BREEZE_ROD));
-        // 附魔弓：附魔剑 + 铂金/金弓，无序
-        shapeless(output, BowItems.ENCHANTED_BOW.toStack(),
-                Ingredient.of(SwordItems.ENCHANTED_SWORD), Ingredient.of(BowItems.PLATINUM_BOW, BowItems.GOLDEN_BOW));
         // 怒星核：星怒在工作台无序拆出，再无序装回，可逆
         shapeless(output, "", "_from_starfury", MaterialItems.STARFURY_CORE.toStack(), Ingredient.of(SwordItems.STARFURY));
         shapeless(output, "", "_from_starfury_core", SwordItems.STARFURY.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE));
-        // 星泣：怒星核 + 金/铂金弓，无序
-        shapeless(output, BowItems.STAR_WEEP.toStack(),
-                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
 
-        // 星乐：怒星核 + 钻石/红玉法杖，无序
-        shapeless(output, ManaWeaponItems.STAR_MUSIC.toStack(),
-                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
-        // 星惧：怒星核 + 钻石/红玉鞭，无序
-        shapeless(output, WhipItems.STAR_FEAR.toStack(),
-                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
 
         // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
         shaped(output, ShapedRecipePattern.of(Map.of(

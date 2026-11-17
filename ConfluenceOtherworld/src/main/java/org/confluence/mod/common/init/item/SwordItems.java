@@ -68,11 +68,9 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> MARLIN_SPIKE_SWORD = register("marlin_spike_sword", "大马林鱼刺剑", () -> new MarlinSpikeSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 14, 2.2F,
             SwordDefinition.builder().withoutSweep().tooltip().tooltip()));
     public static final DeferredItem<BaseSwordItem> UMBRELLA = register("umbrella", "伞", () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
-            .withoutSweep()
-            .unbreakable()));
+            .withoutSweep()));
     public static final DeferredItem<BaseSwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", "悲剧雨伞", () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
-            .withoutSweep()
-            .unbreakable()));
+            .withoutSweep()));
 
     // 普通宽剑 默认横扫*1.5
     public static final DeferredItem<BaseSwordItem> CACTUS_SWORD = register("cactus_sword", "仙人掌剑", ModTiers.CACTUS, 5, 1.6F, SwordDefinition::builder);
@@ -261,9 +259,6 @@ public class SwordItems {
     public static DeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, Supplier<SwordDefinition.Builder> modifierBuilder) {
         return register(name, () -> {
             SwordDefinition.Builder builder = modifierBuilder.get();
-            if (tier == ModTiers.UNBREAKABLE) {
-                builder.unbreakable();
-            }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, builder);
         });
     }
@@ -305,9 +300,6 @@ public class SwordItems {
     private static DeferredItem<BaseSwordItem> register(String registryId, String chineseName, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, Supplier<SwordDefinition.Builder> modifierBuilder) {
         DeferredItem<BaseSwordItem> entry = register(registryId, () -> {
             SwordDefinition.Builder builder = modifierBuilder.get();
-            if (tier == ModTiers.UNBREAKABLE) {
-                builder.unbreakable();
-            }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, builder);
         });
         Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
@@ -335,9 +327,6 @@ public class SwordItems {
     private static DeferredItem<BaseSwordItem> registerWithEnglishName(String registryId, String chineseName, String englishName, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, Supplier<SwordDefinition.Builder> modifierBuilder) {
         DeferredItem<BaseSwordItem> entry = register(registryId, () -> {
             SwordDefinition.Builder builder = modifierBuilder.get();
-            if (tier == ModTiers.UNBREAKABLE) {
-                builder.unbreakable();
-            }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, builder);
         });
         Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));

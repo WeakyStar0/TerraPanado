@@ -422,13 +422,7 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                 .add(LootItem.lootTableItem(HammerItems.SEAFLOOR_CRACKER)))
                         // 风系武器：与风锚同一个池子，一次只随机出一件，权重相同
                         .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FlailItems.WIND_ANCHOR))
-                                .add(LootItem.lootTableItem(BowItems.WIND_STRING))
-                                .add(LootItem.lootTableItem(ManaWeaponItems.WIND_PAGE))
-                                .add(LootItem.lootTableItem(WhipItems.WIND_WHIP))
-                                .add(LootItem.lootTableItem(ManaWeaponItems.WIND_EYE))
-                                .add(LootItem.lootTableItem(ArrowItems.WIND_ARROW)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 30)))))
+                                .add(LootItem.lootTableItem(FlailItems.WIND_ANCHOR)))
         ));
         entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/village/village_savanna_house")),

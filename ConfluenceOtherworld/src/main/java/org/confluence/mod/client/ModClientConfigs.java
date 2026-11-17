@@ -67,26 +67,17 @@ public final class ModClientConfigs {
         }
     }
 
-    public static boolean achievementToast = true;
     public static boolean weaponTooltipBaseStats = false;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
     public static CustomBossBarRenderer.Style bossBarStyle = CustomBossBarRenderer.Style.STATIC;
     public static boolean bossBarNumbersVisible = true;
 
-    public static boolean terraStyleHealth = true;
-    public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
-    public static int healthOffsetX = 0;
-    public static int healthOffsetY = 0;
-    public static boolean terraStyleFood = true;
-    public static TerraStyleFoodHud.Food foodStyle = TerraStyleFoodHud.Food.OVERLAY;
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static TerraStyleManaHud.Soul soulStyle = TerraStyleManaHud.Soul.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
     public static ClientSoulHandler.Type soulQuickSkillStyle;
-    public static boolean terraStyleArmor = true;
-    public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
     public static boolean crosshairAnimation = true;
     public static List<? extends String> crosshairAnimationBlacklist = List.of();
@@ -128,26 +119,17 @@ public final class ModClientConfigs {
     /// 魂师技能总览界面的背景总开关：关掉后整层背景不画。
     public static BooleanValue SOULCERER_BACKGROUND_ENABLED;
 
-    private static BooleanValue ACHIEVEMENT_TOAST;
     private static BooleanValue WEAPON_TOOLTIP_BASE_STATS;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
     private static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
     private static BooleanValue BOSS_BAR_NUMBERS_VISIBLE;
 
-    private static BooleanValue TERRA_STYLE_HEALTH;
-    private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
-    private static IntValue HEALTH_OFFSET_X;
-    private static IntValue HEALTH_OFFSET_Y;
-    private static BooleanValue TERRA_STYLE_FOOD;
-    private static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static EnumValue<TerraStyleManaHud.Soul> SOUL_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
     private static EnumValue<ClientSoulHandler.Type> SOUL_QUICK_SKILL_STYLE;
-    private static BooleanValue TERRA_STYLE_ARMOR;
-    private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
@@ -195,26 +177,17 @@ public final class ModClientConfigs {
         soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
         soulcererBackgroundEnabled = SOULCERER_BACKGROUND_ENABLED.get();
 
-        achievementToast = ACHIEVEMENT_TOAST.get();
         weaponTooltipBaseStats = WEAPON_TOOLTIP_BASE_STATS.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
         bossBarStyle = BOSS_BAR_STYLE.get();
         bossBarNumbersVisible = BOSS_BAR_NUMBERS_VISIBLE.get();
 
-        terraStyleHealth = TERRA_STYLE_HEALTH.get();
-        healthStyle = HEALTH_STYLE.get();
-        healthOffsetX = HEALTH_OFFSET_X.get();
-        healthOffsetY = HEALTH_OFFSET_Y.get();
-        foodStyle = FOOD_STYLE.get();
         manaStyle = MANA_STYLE.get();
         soulStyle = SOUL_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
         soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
-        terraStyleArmor = TERRA_STYLE_ARMOR.get();
-        armorStyle = ARMOR_STYLE.get();
-        terraStyleFood = TERRA_STYLE_FOOD.get();
         leftEffectIcon = LEFT_EFFECT_ICON.get();
         crosshairAnimation = CROSSHAIR_ANIMATION.get();
         crosshairAnimationBlacklist = CROSSHAIR_ANIMATION_BLACKLIST.get();
@@ -259,7 +232,6 @@ public final class ModClientConfigs {
                 SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
                 builder.pop();
             }
-            ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
             {
                 builder.push("Soulcerer");
@@ -284,20 +256,6 @@ public final class ModClientConfigs {
                 builder.pop();
             }
             {
-                builder.push("Health");
-                TERRA_STYLE_HEALTH = builder.define("terraStyleHealth", true);
-                HEALTH_STYLE = builder.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
-                HEALTH_OFFSET_X = builder.defineInRange("healthOffsetX", 0, -256, 256);
-                HEALTH_OFFSET_Y = builder.defineInRange("healthOffsetY", 0, -256, 256);
-                builder.pop();
-            }
-            {
-                builder.push("Food");
-                TERRA_STYLE_FOOD = builder.define("terraStyleFood", true);
-                FOOD_STYLE = builder.defineEnum("foodStyle", TerraStyleFoodHud.Food.OVERLAY);
-                builder.pop();
-            }
-            {
                 builder.push("Mana");
                 MANA_STYLE = builder.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
                 MANA_OFFSET_X = builder.defineInRange("manaOffsetX", 0, -256, 256);
@@ -308,12 +266,6 @@ public final class ModClientConfigs {
                 builder.push("Soulcerer");
                 SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleManaHud.Soul.OVERLAY);
                 SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulcererQuickSkillStyle", ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL);
-                builder.pop();
-            }
-            {
-                builder.push("Armor");
-                TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
-                ARMOR_STYLE = builder.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
                 builder.pop();
             }
             {

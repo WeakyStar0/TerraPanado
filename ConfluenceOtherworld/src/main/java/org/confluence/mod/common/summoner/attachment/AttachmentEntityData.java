@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summoner.attachment;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.util.concurrent.atomic.AtomicReference;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -255,7 +254,9 @@ public class AttachmentEntityData {
     public static final class SyncHandler implements AttachmentSyncHandler<AttachmentEntityData> {
 
         @Override
-        public void write(RegistryFriendlyByteBuf buf, AttachmentEntityData data, boolean initialSync) {
+        public void write(RegistryFriendlyByteBuf out, AttachmentEntityData data, boolean initialSync) {
+            // Serialize into a temporary buffer and length-prefix it, so the reader consumes exactly this attachment's bytes
+            RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), out.registryAccess(), out.getConnectionType());
             // 写入 AttachmentEntityType → 实体列表的结构
             buf.writeVarInt(data.groups.size());
             for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
@@ -272,14 +273,16 @@ public class AttachmentEntityData {
                     }
                 }
             }
+            out.writeVarInt(buf.readableBytes());
+            out.writeBytes(buf);
+            buf.release();
         }
 
         @Override
         public AttachmentEntityData read(@NotNull IAttachmentHolder holder, @NotNull RegistryFriendlyByteBuf buf, @Nullable AttachmentEntityData oldData) {
             AttachmentEntityData data = oldData != null ? oldData : new AttachmentEntityData(holder);
-            ByteBuf copy = buf.copy();
-            byte[] payload = new byte[copy.readableBytes()];
-            copy.readBytes(payload);
+            byte[] payload = new byte[buf.readVarInt()];
+            buf.readBytes(payload);
             if (payload.length == 0) {
                 return data;
             }

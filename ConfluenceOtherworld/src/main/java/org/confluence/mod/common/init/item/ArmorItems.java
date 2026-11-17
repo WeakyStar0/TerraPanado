@@ -723,23 +723,6 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .criticalChance(0.02));
 
-    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", "孢根头盔", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
-            .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE)
-            .summonDamage(0.02)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", "孢根胸甲", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
-            .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE)
-            .summonDamage(0.03));
-    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_LEGGINGS = register("spore_root_leggings", "孢根护腿", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
-            .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE)
-            .summonDamage(0.03));
-    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_BOOTS = register("spore_root_boots", "孢根靴", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
-            .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE)
-            .summonDamage(0.02));
 
     public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_HELMET = register("cold_crystal_helmet", "寒晶头盔", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cold_crystal_armor")
@@ -1187,25 +1170,6 @@ public class ArmorItems {
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
 
-    public static final DeferredItem<BaseArmorItem> TIKI_MASK = register("tiki_mask", "提基面具", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
-            .geo("armor/tiki_armor")
-            .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
-            .summonDamage(0.10));
-    public static final DeferredItem<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", "提基衣", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
-            .geo("armor/tiki_armor")
-            .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
-            .summonDamage(0.10));
-    public static final DeferredItem<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", "提基裤", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
-            .geo("armor/tiki_armor")
-            .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.WHIP_RANGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-    public static final DeferredItem<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", "提基靴子", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
-            .geo("armor/tiki_armor")
-            .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
-            .summonDamage(0.10));
 
     public static final DeferredItem<BaseArmorItem> WIZARD_HAT = register("wizard_hat", "巫师帽", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/wizard_hat")

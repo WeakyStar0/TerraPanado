@@ -1,6 +1,9 @@
 package org.confluence.mod.common.init;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
@@ -24,37 +27,46 @@ public final class ModTiers {
     public static final Tier SILVER = new PoweredTier(45, ModTags.Blocks.NEEDS_2_LEVEL, 546, 6, 2, 9, () -> Ingredient.of(MaterialItems.SILVER_INGOT));
     public static final Tier TUNGSTEN = new PoweredTier(50, ModTags.Blocks.NEEDS_3_LEVEL, 890, 7, 2, 10, () -> Ingredient.of(MaterialItems.TUNGSTEN_INGOT));
     public static final Tier GOLD = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 1600, 10, 3, 11, () -> Ingredient.of(Items.GOLD_INGOT));
-    public static final Tier CANDY_CANE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 7, 2, 11, () -> Ingredient.of(Items.SUGAR));
-    public static final Tier FOSSIL = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 8, 3, 11, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL));
-    public static final Tier BONE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 13, 3, 11, () -> Ingredient.of(Items.BONE_BLOCK));
+    public static final Tier CANDY_CANE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 600, 7, 2, 11, () -> Ingredient.of(Items.SUGAR));
+    public static final Tier FOSSIL = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 900, 8, 3, 11, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL));
+    public static final Tier BONE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 900, 13, 3, 11, () -> Ingredient.of(Items.BONE_BLOCK));
     public static final Tier PLATINUM = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1661, 10, 3, 11, () -> Ingredient.of(MaterialItems.PLATINUM_INGOT));
-    public static final Tier REAVER_SHARK = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(MaterialItems.SHARK_FIN));
+    public static final Tier REAVER_SHARK = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1100, 9, 3, 10, () -> Ingredient.of(MaterialItems.SHARK_FIN));
 
     // 无限耐久uses为10000
 
-    public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 24, 5, 12, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT));
-    public static final Tier CRIMTANE = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 25, 6, 13, () -> Ingredient.of(MaterialItems.CRIMTANE_INGOT));
-    public static final Tier METEOR = new PoweredTier(80, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 27, 6.5f, 14, () -> Ingredient.of(MaterialItems.METEORITE_INGOT));
-    public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 30, 7, 15, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT));
-    public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 31, 8, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT));
-    public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 32, 12, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT));
-    public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 33, 14, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT));
-    public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 34, 16, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT));
-    public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 35, 22, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT));
-    public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 36, 24, 18, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT));
-    public static final Tier SPECTRE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 48, 26, 21, () -> Ingredient.of(MaterialItems.SPECTRE_INGOT));
-    public static final Tier CHLOROPHYTE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 47, 26, 20, () -> Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
-    public static final Tier HALLOWED = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 46, 25, 19, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT));
-    public static final Tier SHROOMITE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 60, 28, 22, () -> Ingredient.of(MaterialItems.SHROOMITE_INGOT));
-    public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 10000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS.FULL));
-    public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 10000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
+    public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 1500, 24, 5, 12, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT));
+    public static final Tier CRIMTANE = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 1500, 25, 6, 13, () -> Ingredient.of(MaterialItems.CRIMTANE_INGOT));
+    public static final Tier METEOR = new PoweredTier(80, ModTags.Blocks.NEEDS_6_LEVEL, 1700, 27, 6.5f, 14, () -> Ingredient.of(MaterialItems.METEORITE_INGOT));
+    public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 2000, 30, 7, 15, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT));
+    public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 2200, 31, 8, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT));
+    public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 2400, 32, 12, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT));
+    public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_8_LEVEL, 2600, 33, 14, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT));
+    public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_8_LEVEL, 2800, 34, 16, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT));
+    public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_8_LEVEL, 3000, 35, 22, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT));
+    public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_8_LEVEL, 3200, 36, 24, 18, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT));
+    public static final Tier SPECTRE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 3600, 48, 26, 21, () -> Ingredient.of(MaterialItems.SPECTRE_INGOT));
+    public static final Tier CHLOROPHYTE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 3600, 47, 26, 20, () -> Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+    public static final Tier HALLOWED = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 3600, 46, 25, 19, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT));
+    public static final Tier SHROOMITE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 4000, 60, 28, 22, () -> Ingredient.of(MaterialItems.SHROOMITE_INGOT));
+    public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 4000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS.FULL));
+    public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 5000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
     // 给一些无限耐久的物品使用的
-    public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
+    public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 1000, 4, 1, 18, Ingredient::of);
+    private static final Int2ObjectMap<Tier> DURABLE_BY_USES = new Int2ObjectOpenHashMap<>();
+
+    /// 共用 [#UNBREAKABLE] 的武器按基础伤害获得各自的耐久，其它材质原样返回。
+    public static Tier durable(Tier tier, int rawDamage) {
+        if (tier != UNBREAKABLE) return tier;
+        int uses = Mth.clamp(rawDamage * 40, 250, 2500);
+        return DURABLE_BY_USES.computeIfAbsent(uses, key -> new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, key, 4, 1, 18, Ingredient::of));
+    }
+
     public static final Tier GRAVE_DIGGERS_TIER = new PoweredTier(
             40, // 镐力 12
             ModTags.Blocks.NEEDS_2_LEVEL, // 挖掘等级：铁
-            10000, // 耐久；实际不可破坏由物品的 UNBREAKABLE 组件接管，这里只给一个合法值
+            1000, // 耐久
             5.0F, // 挖掘速度
             2.0F, // 攻击伤害加成
             14, // 附魔能力

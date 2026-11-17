@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.fishing;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,13 +11,12 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
-import org.confluence.mod.common.init.item.ModItems;
 
 public class HotlineFishingHookItem extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("hotline_fishing_hook");
 
     public HotlineFishingHookItem() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).fireResistant(), ModRarity.ORANGE);
+        super(new Properties().durability(448).fireResistant(), ModRarity.ORANGE);
         addAttributeModifiers(builder -> builder.add(ConfluenceMagicLib.FISHING_POWER, new AttributeModifier(ID, 45, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 

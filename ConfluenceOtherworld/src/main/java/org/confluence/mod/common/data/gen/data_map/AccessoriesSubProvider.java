@@ -156,11 +156,6 @@ public class AccessoriesSubProvider {
                 .add(TCItems.ICE_SKATES, helper -> helper.unit(TCItems.ICE$SAFE))
                 .add(TCItems.BASE_POINT, helper -> helper.unit(TCItems.ICE$SAFE))
                 .add(TCItems.ANKH_CHARM, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, ankh))
-                .add(TCItems.ANKH_SHIELD, helper -> {
-                    helper.unit(TCItems.FROZEN$IMMUNE);
-                    helper.unit(TCItems.FIRE$IMMUNE);
-                    helper.of(TCItems.EFFECT$IMMUNITIES, ankh);
-                })
                 .add(TCItems.EVERLASTING, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, ankh))
                 .add(TCItems.AVENGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, fiveClassesAttribute(helper.asId(), 0.12).build()))
                 .add(TCItems.DESTROYER_EMBLEM, helper -> {
@@ -309,8 +304,6 @@ public class AccessoriesSubProvider {
                             .add(ConfluenceMagicLib.SUMMON_KNOCKBACK, id, 2.0, AttributeModifier.Operation.ADD_VALUE)
                             .build());
                 }) // 甲虫莎草纸
-                .add(AccessoryItems.PYGMY_NECKLACE, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, helper.asId(), 1.0, AttributeModifier.Operation.ADD_VALUE))) // 矮人项链
-                // 其他
                 .add(AccessoryItems.CLOTHIER_VOODOO_DOLL, helper -> helper.unit(AccessoryItems.CLOTHIER$KILLER)) // 服装商巫毒娃娃
                 .add(ModItems.PARADOX_INTERACTIVE_MEDAL, helper -> {
                     ResourceLocation id = helper.asId();

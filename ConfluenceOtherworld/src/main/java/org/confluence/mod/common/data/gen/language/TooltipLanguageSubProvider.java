@@ -171,6 +171,9 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.attack_interval", "Attack Interval: %s", "下次攻击间隔：%s");
         language.add("tooltip.confluence.boomerang.fly_speed", "Fly Speed", "飞行速度");
         language.add("tooltip.confluence.boomerang.max_count", "Max Count", "分身数量");
+        language.add("tooltip.confluence.meteorite.dimensions", "Meteorites can land in: %s", "陨石可降落于：%s");
+        language.add("tooltip.confluence.hold_shift", "Hold SHIFT for details", "Hold SHIFT for details");
+        language.add("item.confluence.custom_npc_spawn_egg.named", "%s Spawn Egg", "%s刷怪蛋");
         language.add("tooltip.confluence.boomerang.penetration", "Penetrates Count", "穿透数量");
         language.add("tooltip.confluence.boss_target_selector", "In Creative mode, right-click a BOSS or its parts to toggle its aggro toward you.", "创造模式下，右键指定BOSS或其部件，开启或关闭它对你的仇恨。");
         language.add("tooltip.confluence.soulcerer_skill_book.invalid", "The bound soul skill is unavailable", "绑定的灵魂技能不存在");
@@ -209,8 +212,6 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.snapthorn.1", "20% chance to poison the target for 3 seconds", "20% 概率使目标中毒 3 秒");
         language.add("tooltip.item.confluence.firecracker.0", "Inflicts Hellfire on the target for 4 seconds", "命中后使目标陷入 4 秒狱炎");
         language.add("tooltip.item.confluence.firecracker.1", "When a summon hits the marked target it detonates: 2.75x damage in a 6-block cube around the hit, consuming the mark", "召唤物攻击带标记的目标时会引爆：以命中点为中心 6 格范围内造成 2.75 倍伤害，并消耗标记");
-        language.add("tooltip.item.confluence.wind_whip.0", "Deals 6.25% more damage per block of height difference, up to +75% at 12 blocks", "与目标的高度差每 1 格提高 6.25% 伤害，最高 +75%（12 格）");
-        language.add("tooltip.item.confluence.star_fear.0", "10% chance on hit to knock out a falling star; catching it grants Star Harvest for 5 minutes (+1 minion slot)", "命中时有 10% 概率冒出一颗坠星，接住它可获得 5 分钟摘星（仆从栏位 +1）");
         language.add("tooltip.confluence.phantom_base_station.line1", "Use to summon Skeletron Prime; it only appears at night", "右键使用以召唤机械骷髅王，它只在夜间出没");
         language.add("tooltip.confluence.phantom_base_station.line2", "It can be placed on the ground during the day. When night falls, the electromagnetic signal it broadcasts will draw in a bloodthirsty metal skull", "在白天时可放置在地上，夜晚来临时其传出的电磁波信号会引来一颗嗜血成性的金属骷髅头");
         language.add("tooltip.confluence.phantom_base_station.quote", "\"Advisory: make absolutely sure your radio cannot receive this frequency, otherwise the consequences are yours to bear\"", "“忠告：请务必确保您的收音机不会接收到这个频段的信号，否则后果自负”");
@@ -249,7 +250,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.yoyo.terrarian", "Continuously fires energy projectiles toward nearby enemies", "持续向附近敌人发射能量弹");
         language.add("tooltip.confluence.yoyo.venom", "Inflicts Acid Venom for 2 seconds on hit", "命中施加 2 秒酸性毒液");
         language.add("tooltip.confluence.yoyo.waves", "A whirlpool expands attack range; every %s hits fire %s piercing waves", "漩涡扩大攻击范围，每 %s 次命中发射 %s 道穿透波浪");
-        language.addTooltip(ModEffects.ACID_VENOM.get(), 0, "Losing life; Cannot regenerate life", "缓慢损失生命值，无法再生生命");
+        language.addTooltip(ModEffects.ACID_VENOM.get(), 0, "Losing life", "持续损失生命值");
         language.addTooltip(ModEffects.AMMO_BOX.get(), 0, "20% chance to save ammo", "20%几率省下弹药");
         language.addTooltip(ModEffects.ARCHERY.get(), 0, "10% increased bow damage and 20% increased arrow speed", "弓伤害提高10%，箭速度提高20%");
         language.addTooltip(ModEffects.AROMATIC_SATIATION.get(), 0, "Continuous response to hunger and satiety", "持续回复饥饿与饱和");
@@ -258,7 +259,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.BLEEDING.get(), 0, "Cannot regenerate life", "无法再生生命");
         language.addTooltip(ModEffects.BLOOD_BUTCHERED.get(), 0, "Losing life", "持续损失生命值");
         language.addTooltip(ModEffects.BROKEN_ARMOR.get(), 0, "Defense is cut in half", "防御力减半");
-        language.addTooltip(ModEffects.BUILDER.get(), 0, "Increased placement speed and range", "提高放置速度、扩大放置范围");
+        language.addTooltip(ModEffects.BUILDER.get(), 0, "Increased block reach", "扩大方块交互范围");
         language.addTooltip(ModEffects.CALM.get(), 0, "Decreased enemy spawn rate", "敌人生成速度降低");
         language.addTooltip(ModEffects.CHOKING.get(), 0, "You need water!", "你需要喝水！");
         language.addTooltip(ModEffects.CLAIRVOYANCE.get(), 0, "Magic powers are increased", "魔法能力提高");
@@ -272,7 +273,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.DEMONIC_THOUGHTS.get(), 0, "Being inflicted with Demonic Thoughts again spawns Eater of Souls", "再次被赋予邪念时会生成噬魂怪");
         language.addTooltip(ModEffects.DRYADS_BANE.get(), 0, "The power of nature compels you", "自然之力驱逐着你");
         language.addTooltip(ModEffects.DRYADS_BLESSING.get(), 0, "The power of nature protects you", "自然之力保护着你");
-        language.addTooltip(ModEffects.ENDURANCE.get(), 0, "10% reduced damage", "所受伤害降低10%");
+        language.addTooltip(ModEffects.ENDURANCE.get(), 0, "Immune to knockback", "免疫击退");
         language.addTooltip(ModEffects.ENEMY_BANNER.get(), 0, "Increased damage and defense from the following: %s", "提高对以下怪的伤害和防御：%s");
         language.addTooltip(ModEffects.EXQUISITELY_STUFFED.get(), 0, "All stats increased", "所有属性提升");
         language.addTooltip(ModEffects.FISHING.get(), 0, "Increased fishing power", "提高渔力");
@@ -301,17 +302,6 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.life_splendor.0", "Soul skill hits also poison the target for 5 seconds", "灵魂技能命中敌人时，额外附加 5 秒中毒");
         language.add("tooltip.item.confluence.day_and_night_alike.0", "Soul skill hits also apply shadowflame for 5 seconds", "灵魂技能命中敌人时，额外附加 5 秒暗影焰");
         language.add("tooltip.item.confluence.truffle_lantern.0", "While held, soul skill cooldowns are 30% shorter", "手持时，灵魂技能冷却缩短 30%");
-        // 魂师弓 / 祈灵之刃：效果数值与 SoulSkillParameters 里的同名常量对应
-        language.add("tooltip.item.confluence.soul_bow.0", "Arrows deal 3 more damage while you have more than 10 soul", "灵魂高于 10 点时，箭矢伤害 +3");
-        language.add("tooltip.item.confluence.soul_bow.1", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
-        language.add("tooltip.item.confluence.soul_bow.2", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
-        language.add("tooltip.item.confluence.soul_short_bow.0", "Arrows deal 3 more damage while you have more than 10 soul", "灵魂高于 10 点时，箭矢伤害 +3");
-        language.add("tooltip.item.confluence.soul_short_bow.1", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
-        language.add("tooltip.item.confluence.soul_short_bow.2", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
-        language.add("tooltip.item.confluence.spiritward_blade.0", "A fully charged swing pierces forward and also hits other enemies in its path", "满蓄力挥砍时向前贯穿，额外命中路径上的其他敌怪");
-        language.add("tooltip.item.confluence.spiritward_blade.1", "Melee damage +3 while you have more than 10 soul", "灵魂高于 10 点时，近战伤害 +3");
-        language.add("tooltip.item.confluence.spiritward_blade.2", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
-        language.add("tooltip.item.confluence.spiritward_blade.3", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
         language.addTooltip(ModEffects.SOUL_SURGE.get(), 0, "Automatically casts a free Spirit Surge every 3 seconds", "每3秒自动释放一次灵魂激荡，且不消耗灵魂");
         language.addTooltip(ModEffects.BLOOD_RAGE.get(), 0, "200% increased melee and ranged damage", "近战与远程伤害提高200%");
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), 0, "25% increased melee and ranged damage", "近战与远程伤害提高25%");
@@ -413,12 +403,6 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(PotionItems.BATTLE_POTION.get(), 0, "Increases enemy spawn rate", "提高敌人生成速度");
         language.addTooltip(SwordItems.BEE_KEEPER.get(), 0, "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
         language.add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"", "“口蜜腹剑”");
-        language.addTooltip(BoomerangItems.BEIDOU_BOOMERANG.get(), 0, "Carries a random rune; on hit, applies the matching effect for 10 seconds:", "随机携带一枚符文，命中时依符文颜色施加 10 秒效果：");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.1", "Red: Hellfire IV", "红：狱炎 IV");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.2", "Light Blue: Frozen IV", "淡蓝：冰冻 IV");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.3", "Light Gray: Stoned IV", "淡灰：石化 IV");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.4", "Dark Green: Poison IV / Gray Purple: Wither IV", "深绿：中毒 IV／灰紫：凋零 IV");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.5", "Dark Brownish Red: Instant Damage VII", "深红棕：瞬间伤害 VII");
         language.add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions", "右键点击可拥有更多仆从");
         language.addTooltip(ModItems.BESTIARY.get(), 0, "Right-click a creature to unlock its complete entry", "右键生物可获取解锁对应的完全条目");
         language.addTooltip(ToolItems.BINOCULARS.get(), 0, "Expand the FOV when in use, and adjust the zoom with the mouse wheel", "使用时扩大视野，鼠标滚轮可调整缩放");
@@ -438,7 +422,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(SwordItems.BREATHING_REED.get(), 0, "Increases breath time and allows breathing in water", "延长呼吸时间并可在水中呼吸");
         language.addTooltip(AccessoryItems.BROWN_YOYO_STRING.get(), 0, "Increases yoyo range by 25% + 2 blocks and spin duration by 50%", "增加悠悠球射程 25% + 2 格，滞空时间增加 50%");
         language.addTooltip(ToolItems.BUG_NET.get(), 0, "Used to catch critters", "用来捕捉小动物");
-        language.addTooltip(PotionItems.BUILDER_POTION.get(), 0, "Increased placement speed and range", "提高放置速度、扩大放置范围");
+        language.addTooltip(PotionItems.BUILDER_POTION.get(), 0, "Increased block reach", "扩大方块交互范围");
         language.addTooltip(PotionItems.CALMING_POTION.get(), 0, "Decreases enemy spawn rate", "降低敌人生成速度");
         language.add("tooltip.item.confluence.can_be_extractinated.0", "Can Be Extractinated", "可提炼");
         language.add("tooltip.item.confluence.can_penetrate", "Can Penetrate", "穿透");
@@ -465,7 +449,6 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and Sneak while clicking the right mouse button to place.", "手持右键打开，潜行右键可放置");
         language.addTooltip(PotionItems.CRATE_POTION.get(), 0, "Increases chance to get a crate", "提高获得宝匣的几率");
         language.addTooltip(ToolItems.CRIMSON_KEY.get(), 0, "“Opens the evil room door and crimson chest in the dungeon”", "“打开地牢中的邪恶房间门和猩红箱”");
-        language.addTooltip(ManaWeaponItems.CRYSTAL_SERPENT.get(), 0, "Shoots an explosive crystal charge", "射出爆炸水晶电荷");
         language.addTooltip(AccessoryItems.CYAN_YOYO_STRING.get(), 0, "Increases yoyo range by 25% + 2 blocks and spin duration by 50%", "增加悠悠球射程 25% + 2 格，滞空时间增加 50%");
         language.addTooltip(PotionItems.DANGERSENSE_POTION.get(), 0, "Allows you to see nearby danger sources", "让你看到附近的危险源");
         language.addTooltip(ConsumableItems.DEER_THING.get(), 0, "Right-click to summon the Deerclops, which will emerge amidst the frigid winds of the Tundra", "右键使用以召唤独眼巨鹿，它会在冰原的寒风中现身");
@@ -489,7 +472,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ToolItems.ENCUMBERING_STONE.get(), 0, "Prevents item pickups while locked", "锁上时能防止拾取物品");
         language.add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock", "“你负重过多”");
         language.add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'", "背包内右键点击可开关");
-        language.addTooltip(PotionItems.ENDURANCE_POTION.get(), 0, "10% reduced damage", "所受伤害降低10%");
+        language.addTooltip(PotionItems.ENDURANCE_POTION.get(), 0, "Immune to knockback", "免疫击退");
         language.add("tooltip.item.confluence.enemy_banner.0", "Nearby players get a bonus against: %s", "附近的玩家获得针对以下怪的加成：%s");
         language.addTooltip(AccessoryItems.HUNTING_TOTEM.get(), 0, "Minions pick up experience from defeated enemies", "召唤物会拾取被打败敌人的经验");
         language.add("tooltip.item.confluence.extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
@@ -778,8 +761,6 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.seafloor_cracker.0", "A full charge slams a 5x5x3 area in front, raising a water column under the enemies", "蓄力条满时砸出前方 5x5x3 的范围伤害，并在范围内掀起水柱");
         language.add("tooltip.item.confluence.seafloor_cracker.1", "Jump attacks hit 1.5x harder and raise a taller, longer-lasting column", "跳劈时伤害提升至 1.5 倍，水柱更高、更持久");
         language.add("tooltip.item.confluence.seafloor_cracker.2", "The jump attack column deals half the hammer's damage every second for 5 seconds", "跳劈水柱持续 5 秒，每秒对柱内敌怪造成一半的武器伤害");
-        language.add("tooltip.item.confluence.opal_staff.0", "Fires a wide torrent that falls, surges along the ground and then returns to the caster", "射出一道大范围洪流，落地后贴地奔涌，随后折返施法者");
-        language.add("tooltip.item.confluence.opal_staff.1", "The torrent deals double damage on its way back, and gains 50% of your melee damage", "洪流折返途中伤害翻倍，并额外获得 50% 的近战伤害加成");
         language.add("tooltip.item.confluence.lost_enchanted_page.0", "A brittle page torn out of some astronomical compendium", "从某本天文汇编中撕下的一页脆纸");
         language.add("tooltip.item.confluence.lost_enchanted_page.1", "Hold it on the cursor and left-click a Stellar Studies Compilation to bind it in", "在物品栏中左键拾起后，再左键点击星体研究汇编即可装订");
         language.add("tooltip.item.confluence.stellar_studies_compilation.missing_page", "(It is missing a crucial page)", "（它缺少了关键的一页）");
@@ -829,22 +810,10 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.price.sell", "Sell: ", "卖出：");
         language.add("tooltip.price.silver", "Silver ", "银 ");
         language.add("tooltip.trade.cost", "Cost: %s × %s", "花费：%s × %s");
-        language.add("tooltip.item.confluence.dusk_dawn.0", "Alternately fires a sunlight bolt and a moonlight bolt that park a little sun or little moon overhead (sun: 10% area damage per second; moon: 80% ray every 2s)", "交替发射日光与月光弹幕，命中后挂在敌怪头顶：小日光每秒 10% 范围伤害，小月光每 2 秒一道 80% 射线");
-language.add("tooltip.item.confluence.dusk_dawn.1", "Hitting a hosted foe only triggers it (no refresh, no swap); killing a hosted foe fires one homing bolt", "命中已有附着的敌怪只会触发其效果（不刷新、不替换）；附着中的敌怪被击杀时补发一发索敌弹幕");
-language.add("tooltip.item.confluence.polar_day.0", "Hits apply Polar Mark: level 1 raises a 3x3 aura that follows the foe, dealing 10% attack damage per second", "命中挂上极昼灼烧：1 级在敌怪身周产生跟随它的 3x3 光环，每秒造成 10% 攻击力伤害");
-language.add("tooltip.item.confluence.polar_day.1", "Hits upgrade it to level 2 and add 5s (level 2 spits homing sunlight bolts, 50% damage); 10+ hits on a level 2 foe grant Polar Ring for 3 minutes, whose arrows carry a 5x5 aura that applies the mark", "再次命中会升级到 2 级并延长 5 秒（2 级每秒迸发索敌日光弹幕，50% 攻击力）；对 2 级目标累计命中 10 次以上获得 3 分钟的极昼环，期间箭矢自带 5x5 光环，接触的敌怪获得极昼灼烧");
-        language.add("tooltip.item.confluence.wind_string.0", "Wooden arrows become Wind Arrows; deals 10%-20% more damage to foes with 0.1-1 knockback resistance", "木箭会被替换为风矢；对击退抗性 0.1-1 的敌怪额外造成 10%-20% 伤害");
         language.add("tooltip.item.confluence.hunting_bow.0", "Arrows apply the Hunt effect to struck enemies for %s seconds", "箭矢命中敌人会附加 %s 秒的狩猎效果");
         language.add("tooltip.item.confluence.hunting_bow.1", "Summons prioritise hunted enemies and deal 50%% more damage to them", "召唤物会优先攻击被狩猎标记的敌人，并对其额外造成 50%% 伤害");
         language.add("tooltip.item.confluence.scarebow.0", "Holding it drives Harpies within %s blocks away", "手持时，%s 格内的鸟妖会停止攻击并远离你");
         language.add("tooltip.item.confluence.scarebow.1", "Its arrows deal %s extra damage to Harpies", "射出的箭矢对鸟妖额外造成 %s 点伤害");
-        language.add("tooltip.item.confluence.blade_bow.0", "Left-click to strike in melee, right-click to draw and fire", "左键近战攻击，右键拉弓射箭");
-        language.add("tooltip.item.confluence.blade_bow.1", "A fully charged melee hit sweeps nearby enemies, just like a sword", "攻击条蓄满时左键可打出与原版剑相同的横扫");
-        language.add("tooltip.item.confluence.blade_bow.2", "Melee hits have a %s%% chance to loose an extra arrow at the nearest enemy", "近战命中时有 %s%% 概率自动朝最近的敌人补上一箭");
-        language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
-        language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; recasting removes the previous one, and only the first projectile fired into its core is absorbed", "制造持续吸附敌人的旋风；再次使用会移除上一道，只吸收第一枚打入中心的弹幕");
-        language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");
-        language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars. More uses mean more stars, and the 20th use triggers a critical starfall", "长按凝聚坠星，松手爆开成追踪坠星；使用次数越多星数越多，第 20 次触发临界星雨");
         //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
         language.add("tooltip.confluence.artifact.soul_cost", "Costs %s Soul", "消耗 %s 灵魂");
         language.add("tooltip.confluence.artifact.cooldown", "Cooldown: %s s", "冷却：%s 秒");

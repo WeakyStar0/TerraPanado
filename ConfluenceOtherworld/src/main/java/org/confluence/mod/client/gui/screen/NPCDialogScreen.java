@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.confluence.mod.client.handler.ClientCustomNPCs;
 import org.confluence.mod.client.handler.ClientNPCDialogs;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.NurseNPC;
@@ -80,7 +81,9 @@ public class NPCDialogScreen extends Screen {
     }
 
     protected void selectDialog(BaseNPC npc) {
-        String key = ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
+        String key = npc instanceof org.confluence.mod.common.entity.npc.custom.CustomNPC custom
+                ? ClientCustomNPCs.randomDialogKey(npc.getRandom(), custom.getNpcId())
+                : ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
         if (key != null) dialogText = Component.translatable(key);
     }
 

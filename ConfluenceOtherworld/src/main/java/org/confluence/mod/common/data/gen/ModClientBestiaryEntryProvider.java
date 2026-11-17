@@ -419,8 +419,6 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(MonsterEntities.BIG_BONES, builder -> builder.order(28102).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(MonsterEntities.BIG_ANGER_BONES, builder -> builder.order(28200).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(MonsterEntities.BIG_MUSCLE_ANGER_BONES, builder -> builder.order(28300).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
-                .add(MonsterEntities.BONE_LEE, builder -> builder.order(30400).rarity(4).background(THE_DUNGEON).filters(FilterEntry.RARE_CREATURE, FilterEntry.THE_DUNGEON))
-                .add(MonsterEntities.PALADIN, builder -> builder.order(30500).rarity(5).background(THE_DUNGEON).filters(FilterEntry.RARE_CREATURE, FilterEntry.THE_DUNGEON))
                 .add(MonsterEntities.BIG_HELMET_ANGER_BONES, builder -> builder.order(28400).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 /// 蓝装甲骷髅 （锤矛）
                 /// 骷髅狙击手
@@ -440,9 +438,6 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 骷髅李
                 /// 圣骑士
                 .add(MonsterEntities.WATER_BOLT_MIMIC, builder -> builder.order(31400).rarity(1).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
-                .add(MonsterEntities.DIABOLIST, builder -> builder.order(30800).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
-                .add(MonsterEntities.NECROMANCER, builder -> builder.order(31000).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
-                .add(MonsterEntities.RAGGED_CASTER, builder -> builder.order(31100).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(MonsterEntities.DARK_CASTER, builder -> builder.order(30200).rarity(1).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 /// 魔教徒
                 /// 魔教徒
@@ -704,8 +699,6 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 毁灭者
                 /// 探测怪
                 .add(BossEntities.SKELETRON_PRIME, builder -> builder.order(52500).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME))
-                .add(BossEntities.LUNATIC_CULTIST, builder -> builder.order(53700).rarity(4).background(THE_DUNGEON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_DUNGEON))
-                .add(BossEntities.PHANTASM_DRAGON, builder -> builder.order(54100).rarity(3).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(BossEntities.PLANTERA, builder -> builder.order(52600).rarity(4).background(UNDERGROUND_JUNGLE).filters(FilterEntry.BOSS_ENEMY, FilterEntry.UNDERGROUND_JUNGLE))
                 /// 光之女皇
                 /// 石巨人

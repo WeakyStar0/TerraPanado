@@ -1,6 +1,8 @@
 package org.confluence.mod.common.item.mana;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,8 +24,11 @@ public class ArcaneCrystalItem extends CustomRarityItem {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
             // 已经用过：不消耗、不播声音
-            if (!ManaStorage.of(player).setArcaneCrystalUsed()) return InteractionResultHolder.fail(itemStack);
-            player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
+            if (!ManaStorage.of(player).setArcaneCrystalUsed()) {
+                player.displayClientMessage(Component.translatable("message.confluence.arcane_crystal_used").withStyle(ChatFormatting.RED), true);
+                return InteractionResultHolder.fail(itemStack);
+            }
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.TRANSMUTATION_USE.get(), player.getSoundSource(), 1.0F, 1.0F);
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
             if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);

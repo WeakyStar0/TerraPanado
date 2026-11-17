@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,8 +25,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -172,14 +169,9 @@ public record SwordDefinition(
             return this;
         }
 
-        public Builder unbreakable() {
-            return properties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
-        }
-
         public BuildResult build(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
             Item.Properties properties = new Item.Properties();
             propertyModifiers.forEach(modifier -> modifier.accept(properties));
-            if (tier == ModTiers.UNBREAKABLE) properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE);
             properties.durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity);
             ItemAttributeModifiers.Builder attributesBuilder = ItemAttributeModifiers.builder();
             attributes.forEach(entry -> attributesBuilder.add(entry.attribute(), entry.modifier(), EquipmentSlotGroup.MAINHAND));

@@ -11,7 +11,7 @@ import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 
 /// 保留 NPC 自身 Geo 移动动画，仅叠加手持、拉弓和挥击姿势。
-public final class NPCHumanoidGeoModel<T extends BaseNPC> extends GeoNormalModel<T> {
+public class NPCHumanoidGeoModel<T extends BaseNPC> extends GeoNormalModel<T> {
     private final ResourceLocation shimmerTexture;
     private final ResourceLocation shimmerModel;
     private final ResourceLocation shimmerAnimation;

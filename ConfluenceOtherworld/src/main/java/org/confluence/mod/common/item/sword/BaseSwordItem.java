@@ -30,6 +30,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
+import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
@@ -52,7 +53,7 @@ public class BaseSwordItem extends SwordItem implements IWeaponTooltip, ISpecial
     }
 
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder builder) {
-        this(tier, rawDamage, rawSpeed, builder.build(tier, rarity, rawDamage, rawSpeed));
+        this(ModTiers.durable(tier, rawDamage), rawDamage, rawSpeed, builder.build(ModTiers.durable(tier, rawDamage), rarity, rawDamage, rawSpeed));
     }
 
     private BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, SwordDefinition.BuildResult result) {

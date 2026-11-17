@@ -270,6 +270,8 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> CLOTHIER_SPAWN_EGG = register(NpcEntities.CLOTHIER, "服装商刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> STYLIST_SPAWN_EGG = register(NpcEntities.STYLIST, "发型师刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> TAX_COLLECTOR_SPAWN_EGG = register(NpcEntities.TAX_COLLECTOR, "税收官刷怪蛋");
+    /// Base egg for datapack NPCs; the creative tab and `/give` attach the NPC id as entity data.
+    public static final DeferredItem<DeferredSpawnEggItem> CUSTOM_NPC_SPAWN_EGG = register(NpcEntities.CUSTOM_NPC, "自定义NPC刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> ZOOLOGIST_SPAWN_EGG = register(NpcEntities.ZOOLOGIST, "动物学家刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> TRUFFLE_SPAWN_EGG = register(NpcEntities.TRUFFLE, "松露人刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> WIZARD_SPAWN_EGG = register(NpcEntities.WIZARD, "巫师刷怪蛋");

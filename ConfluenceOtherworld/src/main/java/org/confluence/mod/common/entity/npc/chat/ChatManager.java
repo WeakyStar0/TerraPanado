@@ -27,8 +27,7 @@ public final class ChatManager {
     /// 每 tick 更新该 NPC 自己的聊天冷却，并在附近有玩家时尝试触发一条可用对话。
     public static void tickNPC(BaseNPC npc) {
         if (npc.level().isClientSide) return;
-        List<ChatLine> lines = chatTable.get(npc.getType());
-        if (lines == null) lines = List.of();
+        List<ChatLine> lines = npc.configuredChat(chatTable);
         npc.tickChatCooldowns(lines);
         if (lines.isEmpty()) return;
 

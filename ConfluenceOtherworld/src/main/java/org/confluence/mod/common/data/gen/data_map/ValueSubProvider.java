@@ -478,11 +478,6 @@ public final class ValueSubProvider {
                 .add(BowItems.TUNGSTEN_BOW, 1050)
                 .add(BowItems.TUNGSTEN_SHORT_BOW, 1030)
                 .add(Items.BOW, 40)
-                .add(BowItems.WIND_STRING, gold1)
-                .add(BowItems.ENCHANTED_BOW, gold1 + silver50)
-                .add(BowItems.STAR_WEEP, gold1 + silver50)
-                .add(BowItems.POLAR_DAY, gold2)
-                .add(BowItems.BLADE_BOW, gold2 + gold1)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
@@ -669,10 +664,6 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMBER_STAFF, 2800)
                 .add(ManaWeaponItems.VILETHRON, gold1 + silver50)
-                .add(ManaWeaponItems.DUSK_DAWN, gold1 + gold2)
-                .add(ManaWeaponItems.WIND_PAGE, gold2)
-                .add(ManaWeaponItems.WIND_EYE, gold1 + gold2)
-                .add(ManaWeaponItems.STAR_MUSIC, gold2)
                 .add(ManaWeaponItems.CRIMSON_ROD, gold1 + silver50)
                 .add(ManaWeaponItems.NIMBUS_ROD, gold2 + gold1 + silver50)
                 .add(ManaWeaponItems.WEATHER_PAIN, gold1 + silver50)
@@ -688,13 +679,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
                 .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2)
                 .add(ManaWeaponItems.CRYSTAL_VILE_SHARD, gold10 - gold2)
-                .add(ManaWeaponItems.SKY_FRACTURE, gold5 + gold1)
-                .add(ManaWeaponItems.CRYSTAL_SERPENT, gold5 - gold1)
-                .add(ManaWeaponItems.RAINBOW_ROD, gold5 - gold1)
-                .add(ManaWeaponItems.FLOWER_OF_FROST, gold5)
-                .add(ManaWeaponItems.MAGIC_DAGGER, gold5)
-                .add(ManaWeaponItems.CRYSTAL_STORM, gold5 - gold1)
-                .add(ManaWeaponItems.CURSED_FLAMES, gold5 - gold1);
+                .add(ManaWeaponItems.RAINBOW_ROD, gold5 - gold1);
         builder
                 .add(SummonItems.SLIME_STAFF, gold2)
                 .add(SummonItems.NEW_HORNET_STAFF, silver50 + silver20)
@@ -726,9 +711,7 @@ public final class ValueSubProvider {
                 .add(WhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
                 .add(WhipItems.SNAPTHORN, gold1)
                 .add(WhipItems.SPINAL_TAP, gold1 + silver50)
-                .add(WhipItems.FIRECRACKER, gold1 + gold2)
-                .add(WhipItems.WIND_WHIP, gold1 + silver50)
-                .add(WhipItems.STAR_FEAR, gold2);
+                .add(WhipItems.FIRECRACKER, gold1 + gold2);
         builder
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)
@@ -736,7 +719,6 @@ public final class ValueSubProvider {
                 .add(TCItems.ANCIENT_CHISEL, gold1)
                 .add(TCItems.ANGLER_EARRING, gold1)
                 .add(TCItems.ANKH_CHARM, 30000)
-                .add(TCItems.ANKH_SHIELD, 50000)
                 .add(TCItems.ANKLET_OF_THE_WIND, gold1)
                 .add(TCItems.ARCHITECT_GIZMO_PACK, 40000)
                 .add(TCItems.ARCTIC_DIVING_GEAR, 50000)
@@ -763,10 +745,8 @@ public final class ValueSubProvider {
                 .add(TCItems.CLIMBING_CLAWS, 25000)
                 .add(TCItems.CLOUD_IN_A_BALLOON, 30000)
                 .add(TCItems.CLOUD_IN_A_BOTTLE, gold1)
-                .add(TCItems.COBALT_SHIELD, 17500)
                 .add(TCItems.COMPASS, 1750)
                 .add(TCItems.COPPER_WATCH, 140)
-                .add(TCItems.CROSS_NECKLACE, gold2)
                 .add(TCItems.DEPTH_METER, 1750)
                 .add(TCItems.DESTROYER_EMBLEM, 60000)
                 .add(TCItems.DETOXIFICATION_CAPSULE, 25000)
@@ -809,7 +789,6 @@ public final class ValueSubProvider {
                 .add(TCItems.HAND_OF_CREATION, 80000)
                 .add(TCItems.HAND_WARMER, gold1)
                 .add(TCItems.HERMES_BOOTS, gold1)
-                .add(TCItems.HERO_SHIELD, 100000)
                 .add(TCItems.HIVE_PACK, gold2)
                 .add(TCItems.HOLY_WATER, gold2)
                 .add(TCItems.HONEY_BALLOON, gold2)
@@ -841,7 +820,6 @@ public final class ValueSubProvider {
                 .add(TCItems.NUTRIENT_SOLUTION, 30000)
                 .add(TCItems.OBSIDIAN_HORSESHOE, 12000)
                 .add(TCItems.OBSIDIAN_ROSE, gold2)
-                .add(TCItems.OBSIDIAN_SHIELD, gold2)
                 .add(TCItems.OBSIDIAN_SKULL, 3500)
                 .add(TCItems.OBSIDIAN_SKULL_ROSE, 30000)
                 .add(TCItems.OBSIDIAN_WATER_WALKING_BOOTS, 60000)
@@ -880,7 +858,6 @@ public final class ValueSubProvider {
                 .add(TCItems.SPECTRE_BOOTS, gold2)
                 .add(TCItems.STALKERS_QUIVER, 100000)
                 .add(TCItems.STAR_CLOAK, gold2)
-                .add(TCItems.STAR_VEIL, gold2)
                 .add(TCItems.STEP_STOOL, 25000)
                 .add(TCItems.STINGER_NECKLACE, 30000)
                 .add(TCItems.STOPWATCH, 10000)
@@ -980,8 +957,7 @@ public final class ValueSubProvider {
                 .add(ArrowItems.FROSTBURN_ARROW, 3)
                 .add(ArrowItems.BONE_ARROW, 3)
                 .add(ArrowItems.SHIMMER_ARROW, 3)
-                .add(ArrowItems.FLY_FISH_ARROW, 2)
-                .add(ArrowItems.WIND_ARROW, 20);
+                .add(ArrowItems.FLY_FISH_ARROW, 2);
         builder // 其它
                 .add(ConsumableItems.DRY_BOMB, silver5)
                 .add(ConsumableItems.WET_BOMB, silver5)
@@ -1201,11 +1177,6 @@ public final class ValueSubProvider {
                 .add(ArmorItems.GREEN_CAP, silver50)
                 .add(ArmorItems.VIKING_HELMET, silver50)
                 .add(ArmorItems.FLINX_FUR_COAT, silver50 + gold2)
-
-                .add(ArmorItems.TIKI_MASK, silver50 + gold5 + gold2)
-                .add(ArmorItems.TIKI_SHIRT, silver50 + gold5 + gold2)
-                .add(ArmorItems.TIKI_LEGGINGS, silver50 + gold5 + gold2)
-                .add(ArmorItems.TIKI_BOOTS, silver50 + gold5 + gold2)
 
                 .add(TCItems.DIVING_HELMET, silver2);
         builder
@@ -1657,7 +1628,6 @@ public final class ValueSubProvider {
                 .add(AccessoryItems.HERCULES_BEETLE, gold10 - gold2)
                 .add(AccessoryItems.NECROMANTIC_SCROLL, gold2 + gold2)
                 .add(AccessoryItems.PAPYRUS_SCARAB, gold5)
-                .add(AccessoryItems.PYGMY_NECKLACE, gold2 + gold2)
                 .add(AccessoryItems.SPECTRE_GOGGLES, gold2)
                 .add(TCItems.FLEDGLING_WINGS, silver2 + silver2)
                 .add(AccessoryItems.CHROMATIC_CLOAK, gold2)

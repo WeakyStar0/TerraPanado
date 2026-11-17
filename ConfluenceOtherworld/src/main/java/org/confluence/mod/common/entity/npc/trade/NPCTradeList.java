@@ -28,7 +28,7 @@ public final class NPCTradeList {
 
     public static ShopSnapshot getAvailableOffers(ServerPlayer player, BaseNPC npc) {
         State current = state;
-        List<NPCTradeOffer> selected = npc.selectTradeOffers(current.table().getOrDefault(npc.getType(), List.of()));
+        List<NPCTradeOffer> selected = npc.selectTradeOffers(npc.configuredOffers(current.table()));
         return new ShopSnapshot(selected.stream().filter(offer -> offer.isAvailable(player, npc)).toList(), current.revision());
     }
 

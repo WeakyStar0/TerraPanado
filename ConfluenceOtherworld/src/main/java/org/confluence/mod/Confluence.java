@@ -5,7 +5,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -48,7 +47,6 @@ import java.util.function.Consumer;
 public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
-    public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     // todo 1.3.0
     public static final boolean SOUL_SKILLS = true ;
@@ -119,11 +117,6 @@ public final class Confluence {
         ModSoulSkills.register(eventBus);
     }
 
-    public static void registerGameRules() {
-        if (SPREADABLE_CHANCE == null) {
-            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.UPDATES, GameRules.IntegerValue.create(10, 0, 100, (server, value) -> {}));
-        }
-    }
 
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);

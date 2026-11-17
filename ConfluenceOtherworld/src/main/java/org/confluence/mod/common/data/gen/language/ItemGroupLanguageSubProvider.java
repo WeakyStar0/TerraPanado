@@ -264,7 +264,6 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.spider_armor", "Spider Armor", "蜘蛛盔甲");
         language.add("itemGroup.confluence.splendid_robe_armor", "Splendid Robe Armor", "华丽长袍盔甲");
         language.add("itemGroup.confluence.spooky", "Spooky Wood", "阴森木");
-        language.add("itemGroup.confluence.spore_root_armor", "Spore Root Armor", "孢根盔甲");
         language.add("itemGroup.confluence.stalwart_armor", "Stalwart Armor", "坚毅盔甲");
         language.add("itemGroup.confluence.statue", "Statues", "雕像");
         language.add("itemGroup.confluence.stone_tree", "Stone Tree", "石质树");
@@ -273,7 +272,6 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.text_books", "Text Books", "文本书");
         language.add("itemGroup.confluence.thief_armor", "Thief Armor", "窃贼盔甲");
         language.add("itemGroup.confluence.throwing_weapons", "Throwing Weapons", "投掷武器");
-        language.add("itemGroup.confluence.tiki_armor", "Tiki Armor", "提基盔甲");
         language.add("itemGroup.confluence.tin_armor", "Tin Armor", "锡盔甲");
         language.add("itemGroup.confluence.tin_bricks", "Tin Bricks", "锡砖");
         language.add("itemGroup.confluence.titanium_armor", "Titanium Armor", "钛金盔甲");

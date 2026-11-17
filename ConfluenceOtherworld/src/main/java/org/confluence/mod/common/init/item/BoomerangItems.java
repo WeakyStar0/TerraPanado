@@ -4,7 +4,6 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.boomerang.BeiDouBoomerangItem;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
 
 import java.util.function.Supplier;
@@ -22,7 +21,6 @@ public class BoomerangItems {
     public static final DeferredItem<BoomerangItem> COMBAT_WRENCH = register("combat_wrench", "战斗扳手", 9.0F, 3.0F, 1.85F, 10, 10, 1, 1, false, 1500);
     public static final DeferredItem<BoomerangItem> WOOD_BOOMERANG = register("wood_boomerang", "木回旋镖", 3.8F, 1.52F, 1.52F, 15, 10, 1, 1, false, 100);
 
-    public static final DeferredItem<BoomerangItem> BEIDOU_BOOMERANG = registerItem("bei_dou_boomerang", "北斗飞镖", BeiDouBoomerangItem::new);
     public static final DeferredItem<BoomerangItem> DEVELOPER_BOOMERANG = register("developer_boomerang", "开发者回旋镖", 9999.0F, 2.0F, 2.0F, 50, 0, 10, 8, false, 0);
 
     private static DeferredItem<BoomerangItem> register(String registryId, String chineseName, float damage, float flySpeed, float backSpeed, int forwardTicks, int cooldown, int maxCount, int penetration, boolean fire, int durability) {

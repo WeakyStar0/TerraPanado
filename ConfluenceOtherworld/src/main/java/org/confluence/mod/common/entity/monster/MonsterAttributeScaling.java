@@ -41,7 +41,7 @@ public final class MonsterAttributeScaling {
     /// 所有实体加入世界的路径共用此入口，包括自然生成、刷怪蛋、脚本及区块读档。
     /// 仅新生成且原本满血的实体补齐新生命上限；读档与配置重载均不治疗。
     public static void apply(LivingEntity entity, boolean freshSpawn) {
-        if (entity.level().isClientSide || ModCommonConfigs.SPEC == null || !ModCommonConfigs.SPEC.isLoaded())
+        if (entity.level().isClientSide || ModCommonConfigs.MOBS_SPEC == null || !ModCommonConfigs.MOBS_SPEC.isLoaded())
             return;
         boolean eligible = isEligible(entity);
         CreatureDifficultyScaling.apply(entity, freshSpawn);

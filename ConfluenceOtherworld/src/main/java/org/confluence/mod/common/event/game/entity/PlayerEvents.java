@@ -1,8 +1,6 @@
 package org.confluence.mod.common.event.game.entity;
 
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -45,9 +43,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
-import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
-import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
@@ -55,7 +51,6 @@ import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.AnglerData;
@@ -91,7 +86,6 @@ import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.*;
-import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
@@ -134,7 +128,6 @@ public final class PlayerEvents {
         }
         TooEasy.setToHardmode(player.server);
 
-        PlayerUtils.askForSoftcore(player);
     }
 
     @SubscribeEvent
@@ -384,7 +377,6 @@ public final class PlayerEvents {
         if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
-        SoulcererUtils.soulKnifeReach(event);
     }
 
     @SubscribeEvent
@@ -396,6 +388,9 @@ public final class PlayerEvents {
         /// @see org.confluence.mod.common.effect.flask.FlaskEffect#saveFlaskEffects
         for (MobEffectInstance activeEffect : old.getActiveEffects()) {
             neo.forceAddEffect(activeEffect, null);
+        }
+        if (event.isWasDeath()) {
+            PlayerUtils.restoreDeathCoins(old, neo);
         }
     }
 
@@ -426,19 +421,8 @@ public final class PlayerEvents {
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffset.Loader.getDisplayOffset().containsKey(advancement.id())) {
-            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
-        }
-
         if (Confluence.MODID.equals(advancement.id().getNamespace()) && "achievements/new_world".equals(advancement.id().getPath())) {
             AgeratumHelper.giveIngameWiki(player);
-        }
-    }
-
-    @SubscribeEvent
-    public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
-        if (AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())) {
-            AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity());
         }
     }
 
@@ -529,16 +513,6 @@ public final class PlayerEvents {
     public static void canSpawnPhantom(PlayerSpawnPhantomsEvent event) {
         if (ModSecretSeeds.NEVER_SLEEP.match(((ServerPlayer) event.getEntity()).server)) {
             event.setResult(PlayerSpawnPhantomsEvent.Result.ALLOW);
-        }
-    }
-
-    /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
-    ///
-    /// @see LibGameEvents#playerNaturalHeal
-    @SubscribeEvent
-    public static void naturalHeal(PlayerNaturalHealEvent event) {
-        if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
-            event.setCanceled(true);
         }
     }
 
@@ -668,7 +642,6 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void soulCollection(SoulCollectionEvent event) {
         SoulcererUtils.soulBowExtraSoul(event);
-        SoulcererUtils.soulKnifeExtraSoul(event);
         SoulcererUtils.brokenGlimmerHeal(event);
         SoulcererUtils.soulDropBonus(event);
         SoulcererUtils.verdantSoulChance(event);

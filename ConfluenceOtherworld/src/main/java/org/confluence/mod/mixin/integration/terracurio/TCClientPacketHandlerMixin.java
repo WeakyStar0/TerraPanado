@@ -7,7 +7,6 @@ import net.minecraft.world.item.SwordItem;
 import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +16,7 @@ public abstract class TCClientPacketHandlerMixin {
     @ModifyExpressionValue(method = "applyAutoAttack", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/client/handler/TCClientPacketHandler;couldAutoAttack()Z"))
     private static boolean extraAutoAttack(boolean original, @Local(name = "itemStack") ItemStack stack) {
         /// 祈灵之刃这类魂师副武器不是 SwordItem，刃弓这类带特殊横扫的弓也不是，但它们都要参与自动挥舞判定
-        if (!(stack.getItem() instanceof SwordItem) && !(stack.getItem() instanceof SoulKnifeItem) && !(stack.getItem() instanceof ISpecialSweepWeapon))
+        if (!(stack.getItem() instanceof SwordItem) && !(stack.getItem() instanceof ISpecialSweepWeapon))
             return false;
         if (stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST))
             return false;

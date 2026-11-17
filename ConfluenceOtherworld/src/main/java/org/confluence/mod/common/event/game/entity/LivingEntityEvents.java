@@ -66,7 +66,6 @@ import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TownPopulation;
-import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
@@ -132,7 +131,6 @@ public final class LivingEntityEvents {
                     && victim.getRandom().nextInt(100) == 0) {
                 victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
             }
-            TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibEntityUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
@@ -185,7 +183,7 @@ public final class LivingEntityEvents {
             // 在未取消的死亡结算后保留玩家灵魂，并处理击杀收魂。
             SoulStorage.of(player).onDeath();
             // 以防止玩家假死不停掉钱
-            PlayerUtils.dropMoney(player);
+            PlayerUtils.applyDeathCoinLoss(player);
         }
         SoulcererUtils.collectSoul(victim, event.getSource());
         /// 附魂印记：击杀带印记的敌人额外回 2 点灵魂（普通收魂照常结算，这是叠加的一份）。
@@ -262,7 +260,6 @@ public final class LivingEntityEvents {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
 
-        SoulcererUtils.soulKnifeBonusDamage(event);
         SoulcererUtils.soulBowBonusDamage(event);
         SoulcererUtils.seekerSetDamage(event);
         SoulcererUtils.enduranceDamageReduction(event);
@@ -294,7 +291,6 @@ public final class LivingEntityEvents {
         amount = EnchantmentBehaviors.attackerDamage(attacker, damageSource, victim, amount);
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
-            amount = PlayerUtils.applyTerraFire(damageSource, amount);
             amount = AbstractEnemyBannerBlock.processVictim(player, attacker, amount);
         }
         amount = ArcheryEffect.apply(victim, damageSource, amount);
@@ -468,15 +464,7 @@ public final class LivingEntityEvents {
         double y = living.getY();
         double z = living.getZ();
 
-        if (living instanceof Player player) { // 掉落玩家的钱币
-            ExtraInventory data = ExtraInventory.of(player);
-            for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
-                ItemStack itemStack = data.getCoins(i);
-                if (!itemStack.isEmpty()) {
-                    data.setItem(i, ItemStack.EMPTY);
-                }
-                drops.add(new ItemEntity(level, x, y, z, itemStack));
-            }
+        if (living instanceof Player player) {
             /// 附魔「死亡交易」：本次死亡不掉落任何物品，触发后移除该附魔
             if (player instanceof ServerPlayer serverPlayer && EnchantmentBehaviors.triggerDeathBargain(serverPlayer)) {
                 event.setCanceled(true);

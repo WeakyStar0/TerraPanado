@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +12,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
-import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -31,7 +28,6 @@ public record NPCNames(Map<String, Float> namesWeights) {
     }
 
     public static final class Loader extends SimpleJsonResourceReloadListener {
-        private static final ResourceLocation PATH = Confluence.asResource("names");
         private static Loader instance;
         private Map<EntityType<?>, NPCNames> names = ImmutableMap.of();
 
@@ -41,20 +37,7 @@ public record NPCNames(Map<String, Float> namesWeights) {
 
         @Override
         protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
-            JsonElement json = map.get(PATH);
-            if (json == null) {
-                names = ImmutableMap.of();
-                return;
-            }
-            DataResult<Map<EntityType<?>, NPCNames>> decoded = TABLE_CODEC.parse(JsonOps.INSTANCE, json);
-            var parsed = decoded.result();
-            if (parsed.isEmpty()) {
-                String reason = decoded.error().map(DataResult.Error::message).orElse("unknown decode error");
-                Confluence.LOGGER.error("Cannot load npc/names.json: {}", reason);
-                Confluence.LOGGER.error("NPC name reload was rejected; the previous valid table remains active");
-                return;
-            }
-            names = ImmutableMap.copyOf(parsed.get());
+            names = ImmutableMap.copyOf(NPCTableMerge.load(manager, "npc/names.json", TABLE_CODEC));
         }
 
         @Nullable

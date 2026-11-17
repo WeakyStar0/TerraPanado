@@ -13,14 +13,12 @@ import org.jetbrains.annotations.NotNull;
 public final class ConfluenceData extends SavedData {
     private int revealStep = -1;
     private int evilBrokenCount = 0;
-    private boolean stopAskForSoftcore = false;
 
     ConfluenceData() {}
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         this.revealStep = nbt.getInt("revealStep");
         this.evilBrokenCount = nbt.getInt("evilBrokenCount");
-        this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -31,7 +29,6 @@ public final class ConfluenceData extends SavedData {
     public CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         nbt.putInt("revealStep", revealStep);
         nbt.putInt("evilBrokenCount", evilBrokenCount);
-        nbt.putBoolean("stopAskForSoftcore", stopAskForSoftcore);
         return nbt;
     }
 
@@ -58,14 +55,5 @@ public final class ConfluenceData extends SavedData {
 
     public int getEvilBrokenCount() {
         return evilBrokenCount;
-    }
-
-    public void setStopAskForSoftcore(boolean stop) {
-        this.stopAskForSoftcore = stop;
-        setDirty();
-    }
-
-    public boolean isStopAskForSoftcore() {
-        return stopAskForSoftcore;
     }
 }

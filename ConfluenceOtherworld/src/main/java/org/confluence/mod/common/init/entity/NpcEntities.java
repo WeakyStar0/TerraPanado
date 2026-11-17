@@ -10,6 +10,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
+import org.confluence.mod.common.entity.npc.custom.CustomNPC;
 import org.confluence.mod.common.entity.npc.*;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatActions;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
@@ -31,6 +32,12 @@ public class NpcEntities {
 
     // 常驻城镇：向导
     public static final DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> GUIDE = withAttributes(register("guide", "向导", () -> Items.BOW, NPCCombatActions.ARROW, builder -> builder.maxHealth(65).damage(3).defense(30).projectileSpeed(1.5).healthRegeneration(2)),
+            () -> CreatureAttributeBuilder.npc().build());
+
+    /// Datapack-defined NPCs (data/<ns>/npc/definitions). One type, many definitions.
+    public static final DeferredHolder<EntityType<?>, EntityType<CustomNPC>> CUSTOM_NPC = withAttributes(register("custom_npc", "自定义NPC", CustomNPC::new,
+            (java.util.function.Function<BaseNPC, Item>) npc -> npc instanceof CustomNPC custom ? custom.weapon() : Items.AIR, NPCCombatActions.MELEE,
+            builder -> builder.maxHealth(65).damage(3).attackRange(3).retreatRange(1.5).attackInterval(25), 0.6F, 1.85F),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 常驻城镇：商人与护士

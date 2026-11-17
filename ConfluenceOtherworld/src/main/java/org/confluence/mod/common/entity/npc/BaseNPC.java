@@ -479,6 +479,16 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     // === 交互 ===
 
+    /// Picks this NPC's configured offers from the loaded shop table. Custom NPCs read their own datapack definition.
+    public List<NPCTradeOffer> configuredOffers(Map<EntityType<?>, List<NPCTradeOffer>> table) {
+        return table.getOrDefault(getType(), List.of());
+    }
+
+    /// Picks this NPC's configured speech-bubble lines from the loaded chat table.
+    public List<ChatLine> configuredChat(Map<EntityType<?>, List<ChatLine>> table) {
+        return table.getOrDefault(getType(), List.of());
+    }
+
     public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
         return offers;
     }
@@ -611,9 +621,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
     }
 
+    @Nullable
+    protected String pickName() {
+        return NPCNames.Loader.getInstance().getRandomName(getType(), getRandom());
+    }
+
     protected final void initName() {
         if (hasCustomName()) return;
-        String name = NPCNames.Loader.getInstance().getRandomName(getType(), getRandom());
+        String name = pickName();
         if (name != null) setCustomName(Component.literal(name));
     }
 

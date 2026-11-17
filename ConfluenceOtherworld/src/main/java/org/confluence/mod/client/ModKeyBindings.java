@@ -7,7 +7,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.confluence.mod.Confluence;
 import org.lwjgl.glfw.GLFW;
@@ -52,18 +51,7 @@ public final class ModKeyBindings {
             GLFW.GLFW_KEY_R,
             KEY_BINDINGS_CATEGORY
     ));
-
     //region 魔法系列
-
-    /// 灵魂总览（魂师大界面）：默认 Shift + C
-    public static final Lazy<KeyMapping> SOUL_OVERVIEW = register(() -> new KeyMapping(
-            "key.confluence.soulcerer.overview",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.SHIFT,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_C,
-            KEY_BINDINGS_CATEGORY
-    ));
 
     /// 切换灵魂技能：默认**左 Alt**，按住时弹出快捷技能面板（小轮盘 / 大轮盘 / 横向卡片），松开确认。
     ///

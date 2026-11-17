@@ -11,7 +11,6 @@ import org.confluence.mod.common.item.shovel.GraveDiggersShovel;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
 public class ShovelItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -23,9 +22,9 @@ public class ShovelItems {
     public static final DeferredItem<BaseShovelItem> TUNGSTEN_SHOVEL = registerItem("tungsten_shovel", "钨锹", () -> new BaseShovelItem(ModTiers.TUNGSTEN, 4.7f, 1, ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> GOLDEN_SHOVEL = registerItem("golden_shovel", "金锹", () -> new BaseShovelItem(ModTiers.GOLD, 5.0f, 1, ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> PLATINUM_SHOVEL = registerItem("platinum_shovel", "铂金锹", () -> new BaseShovelItem(ModTiers.PLATINUM, 5.5f, 1, ModRarity.COMMON));
-    public static final DeferredItem<BaseShovelItem> SHADOW_SHOVEL = registerItem("shadow_shovel", "暗影锹", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1, unbreakable(), ModRarity.BLUE));
-    public static final DeferredItem<BaseShovelItem> MINER = registerItem("miner", "采掘者", () -> new BaseShovelItem(ModTiers.CRIMTANE, 6.5f, 1, unbreakable(), ModRarity.BLUE));
-    public static final DeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = registerItemWithEnglishName("grave_diggers_shovel", "掘墓者铲子", "Gravedigger's Shovel", () -> new GraveDiggersShovel(4.5f, 1, unbreakable(), ModRarity.GREEN));
+    public static final DeferredItem<BaseShovelItem> SHADOW_SHOVEL = registerItem("shadow_shovel", "暗影锹", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1, new Item.Properties(), ModRarity.BLUE));
+    public static final DeferredItem<BaseShovelItem> MINER = registerItem("miner", "采掘者", () -> new BaseShovelItem(ModTiers.CRIMTANE, 6.5f, 1, new Item.Properties(), ModRarity.BLUE));
+    public static final DeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = registerItemWithEnglishName("grave_diggers_shovel", "掘墓者铲子", "Gravedigger's Shovel", () -> new GraveDiggersShovel(4.5f, 1, new Item.Properties(), ModRarity.GREEN));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

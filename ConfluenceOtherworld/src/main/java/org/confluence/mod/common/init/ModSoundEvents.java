@@ -316,8 +316,6 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CHAINSAW = register("item_chainsaw"); // 电锯：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CLINGER_STAFF = register("item_clinger_staff"); // 爬藤怪法杖：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CRACKED_DUNGEON_BRICK = register("item_cracked_dungeon_brick"); // 破裂地牢砖：使用
-    public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CRYSTAL_CHARGE_IMPACT = register("item_crystal_charge_impact"); // 水晶弹：命中（2 个变体）
-    public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CRYSTAL_SERPENT = register("item_crystal_serpent"); // 水晶蛇：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DEADLY_SPHERE_STAFF = register("item_deadly_sphere_staff"); // 致命球法杖：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DEATH_LASER = register("item_death_laser"); // 死亡激光：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> DESTROYER_TERRIFYING_LASER = register("destroyer_terrifying_laser"); // 毁灭者：蓄力激光

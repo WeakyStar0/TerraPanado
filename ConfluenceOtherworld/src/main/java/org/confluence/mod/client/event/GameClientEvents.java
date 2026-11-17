@@ -7,11 +7,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -69,7 +65,6 @@ import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaSwimEffects;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
-import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.CrosshairHud;
@@ -104,7 +99,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
@@ -116,7 +110,6 @@ import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModAttributeUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -277,6 +270,7 @@ public final class GameClientEvents {
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         ClientNPCDialogs.clear();
+        ClientCustomNPCs.clear();
         ClientWeaponInputManager.reset();
         GunHandler.reset();
         WeatherHandler.reset();
@@ -290,7 +284,6 @@ public final class GameClientEvents {
         ClientBestiary.getInstance().reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
-        AchievementUtils.saveData();
         AfterimageHelper.reset();
     }
 
@@ -373,10 +366,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
         ResourceLocation name = event.getName();
-        if ((ModClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
-                (ModClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
-                (ModClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
-                ArsNouveauHelper.cancelRenderManaBar(name) ||
+        if (ArsNouveauHelper.cancelRenderManaBar(name) ||
                 IronSpellHelper.cancelRenderManaOverlay(name) ||
                 (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
@@ -423,6 +413,8 @@ public final class GameClientEvents {
         ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
         DiggingPower.addTooltip(stack, holder, toolTip);
         ExtractinatorData.addTooltip(holder, toolTip);
+        MeteorLandingHandler.addTooltip(stack, toolTip);
+        ItemDescriptionTooltip.add(stack, toolTip);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -506,22 +498,6 @@ public final class GameClientEvents {
             event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
         }
 
-        if (screen instanceof TitleScreen) {
-            for (GuiEventListener listener : event.getListenersList()) {
-                if (listener instanceof AbstractWidget widget &&
-                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
-                        "menu.online".equals(contents.getKey())
-                ) {
-                    event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
-                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
-                    }) {
-                        @Override
-                        public void setFocused(boolean focused) {}
-                    });
-                    break;
-                }
-            }
-        }
 
     }
 
@@ -606,11 +582,6 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
-        /// 刃弓的左键是近战攻击，创造模式下不该顺手把准星对着的方块挖掉。
-        if (player.isCreative() && player.getMainHandItem().is(BowItems.BLADE_BOW)) {
-            event.setCanceled(true);
-            return;
-        }
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }

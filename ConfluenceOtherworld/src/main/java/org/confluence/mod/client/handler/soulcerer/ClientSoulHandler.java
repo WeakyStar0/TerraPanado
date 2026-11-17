@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
-import org.confluence.mod.client.gui.container.soulcerer.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.soulcerer.CurrentSelectedSkillHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.BasicSoulQuickSkillHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.CardHorizontalHud;
@@ -73,15 +72,6 @@ public final class ClientSoulHandler {
             closeSoulSkillHuds();
         }
         handleSoulSkills();
-        boolean isSoulOverviewScreen = false;
-        while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
-            if (!isSoulOverviewScreen) {
-                isSoulOverviewScreen = true;
-            }
-        }
-        if (isSoulOverviewScreen) {
-            minecraft.setScreen(new SoulOverviewScreen());
-        }
     }
 
     /// 按当前玩家的可装备槽数初始化技能槽位。
@@ -108,12 +98,9 @@ public final class ClientSoulHandler {
         CURRENT_SELECTED_SKILL_HUD_INSTANCE.updateSkill(SoulcererUtils.getCurrentSkillStack(player));
     }
 
-    /// 收到技能快照后刷新 HUD 和已打开的技能总览。
+    /// 收到技能快照后刷新 HUD。
     public static void onSoulSkillSync() {
         updateSoulSkillHuds();
-        if (Minecraft.getInstance().screen instanceof SoulOverviewScreen screen) {
-            screen.rebuildHotbar();
-        }
     }
 
     /// 向服务端请求使用当前技能，等待成功通知后再执行。

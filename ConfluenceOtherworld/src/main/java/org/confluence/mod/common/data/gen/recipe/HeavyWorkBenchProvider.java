@@ -137,16 +137,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " b "
         )), HammerItems.SEAFLOOR_CRACKER.toStack());
 
-        // 欧泊法杖：欧泊×2 + 海沫
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, MaterialItems.OPAL),
-                'b', Ingredient.of(MaterialItems.HEIM)
-        ), List.of(
-                "  ba",
-                "  bb",
-                " b  ",
-                "b   "
-        )), ManaWeaponItems.OPAL_STAFF.toStack());
 
         // 基础光剑
         basePhaseblade(recipeOutput, AmountIngredient.of(5, Tags.Items.GEMS_DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_PHASEBLADE.toStack());
@@ -993,35 +983,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #",
                 "# #"
         )), ArmorItems.COLD_CRYSTAL_BOOTS.toStack());
-        // 孢根套
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT),
-                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_GELSTONE)
-        ), List.of(
-                "#a#",
-                "# #"
-        )), ArmorItems.SPORE_ROOT_HELMET.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT),
-                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_GELSTONE)
-        ), List.of(
-                "# #",
-                "#a#",
-                "###"
-        )), ArmorItems.SPORE_ROOT_CHESTPLATE.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT)
-        ), List.of(
-                "###",
-                "# #",
-                "# #"
-        )), ArmorItems.SPORE_ROOT_LEGGINGS.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT)
-        ), List.of(
-                "# #",
-                "# #"
-        )), ArmorItems.SPORE_ROOT_BOOTS.toStack());
         // 渊潾套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, MaterialItems.HEIM),
@@ -1533,17 +1494,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         shapeless(recipeOutput, ConsumableItems.ABEEMINATION.toStack(), AmountIngredient.of(5, NatureBlocks.JUNGLE_HIVE_BLOCK), AmountIngredient.of(5, Items.HONEY_BLOCK), Ingredient.of(Items.HONEY_BOTTLE), Ingredient.of(MaterialItems.STINGER));
 
-        // 风鞭：把手是沉重核心、鞭身是风棒（旋风棒），有序
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Items.HEAVY_CORE),
-                'a', Ingredient.of(Items.BREEZE_ROD),
-                'b', AmountIngredient.of(4,Items.WIND_CHARGE)
-        ), List.of(
-                "  a ",
-                " a a",
-                " b a",
-                "#   "
-        )), WhipItems.WIND_WHIP.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

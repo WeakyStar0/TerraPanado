@@ -35,10 +35,18 @@ import java.util.Set;
 
 public class FallingStarItemEntity extends ItemEntity {
     private static final EntityDataAccessor<Boolean> DATA_WAS_ON_GROUND = SynchedEntityData.defineId(FallingStarItemEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final int STAR_GLOW_COLOR = 0xFFE24A;
     private ParticleEmitter emitter;
 
     public FallingStarItemEntity(EntityType<FallingStarItemEntity> entityType, Level level) {
         super(entityType, level);
+        setGlowingTag(true);
+    }
+
+    /// 坠星的发光轮廓固定为黄色，不依赖队伍。
+    @Override
+    public int getTeamColor() {
+        return STAR_GLOW_COLOR;
     }
 
     public FallingStarItemEntity(Level level, Vec3 pos) {

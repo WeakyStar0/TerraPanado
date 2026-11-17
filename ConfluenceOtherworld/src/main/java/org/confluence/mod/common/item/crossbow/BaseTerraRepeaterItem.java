@@ -4,7 +4,6 @@ import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -48,7 +47,6 @@ import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -825,8 +823,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
             modifyArrowBuilder.forEach(m -> m.accept(modifyArrow));
         }
 
-        public ModifyArrowBuilder setUnBreakable() {
-            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+        public ModifyArrowBuilder setDurability(int durability) {
+            this.modifyProperties.add(p -> p.durability(durability));
             return this;
         }
 

@@ -15,6 +15,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.Attributes", "Attributes", "属性");
         language.add("confluence.configuration.Attributes.button", "Attributes", "属性");
         language.add("confluence.configuration.Attributes.tooltip", "Attribute multipliers and progression settings.", "属性倍率与阶段属性设置。");
+        language.add("confluence.configuration.Tools", "Tools", "工具");
+        language.add("confluence.configuration.Tools.button", "Tools", "工具");
         language.add("confluence.configuration.AutomaticWeaponUse", "Automatic Weapon Use", "武器自动使用");
         language.add("confluence.configuration.AutomaticWeaponUse.tooltip", "Controls which weapon categories automatically repeat while their input is held", "控制按住对应按键时哪些武器类别会自动重复使用");
         language.add("confluence.configuration.Behavior", "Behavior", "行为");
@@ -155,8 +157,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.WorldRules", "World Rules", "世界规则");
         language.add("confluence.configuration.WorldRules.button", "World Rules", "世界规则");
         language.add("confluence.configuration.WorldRules.tooltip", "World progression and conversion rules.", "世界进程与转换规则。");
-        language.add("confluence.configuration.achievementToast", "Enable Terra Style Achievements", "启用泰拉样式成就");
-        language.add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.", "如果想使用原版样式进度的话就关闭它");
         language.add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning", "地牢守卫警告");
         language.add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.", "启用时，地牢守卫出现前将有三次吼叫警告");
         language.add("confluence.configuration.allowFleshBossesOutsideUnderworld", "Allow Flesh Bosses Outside the Underworld", "允许血肉 Boss 在地狱外存在");
@@ -171,11 +171,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot", "在黑名单中的id或tag对应的物品不会自动进入弹药栏");
         language.add("confluence.configuration.announcementBoxDistance", "Announcement Box Distance", "广播盒距离");
         language.add("confluence.configuration.announcementBoxDistance.tooltip", "The maximum information sending distance of the Announcement Box", "广播盒的最大信息发送距离");
-        language.add("confluence.configuration.armorStyle", "Armor Style", "护甲值样式");
-        language.add("confluence.configuration.armorStyle.legacy_diagonal", "Armor Style: Elegant - Diagonal", "护甲值样式:精致-对角");
-        language.add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal", "护甲值样式:精致-水平");
-        language.add("confluence.configuration.armorStyle.legacy_vertical", "Armor Style: Elegant - Vertical", "护甲值样式:精致-垂直");
-        language.add("confluence.configuration.armorStyle.overlay", "Armor Style: Overlay", "护甲值样式:叠加");
         language.add("confluence.configuration.autoFireAllGuns", "Auto Fire All Guns", "所有枪械长按连射");
         language.add("confluence.configuration.autoFireAllGuns.tooltip", "When disabled, only guns in the automatic gun tag support hold-to-fire", "关闭后，仅自动枪械标签内的枪械支持长按连射");
         language.add("confluence.configuration.autoReleaseAllBows", "Auto Release All Bows", "所有弓蓄满自动发射");
@@ -224,10 +219,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.bossBarStyle.vanilla", "Vanilla", "原版");
         language.add("confluence.configuration.bossClearWhenNoTarget", "Remove Bosses Without a Target", "无目标时清除 Boss");
         language.add("confluence.configuration.bossClearWhenNoTarget.tooltip", "Remove bosses when no valid target remains.", "没有有效目标时清除 Boss。");
-        language.add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)", "最大重生时间（boss战时）");
-        language.add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle", "最大重生时间（boss战时死亡的重生时间）");
-        language.add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Battle)", "最小重生时间（boss战时）");
-        language.add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle", "最小重生时间（boss战时死亡的重生时间）");
         language.add("confluence.configuration.brewingStandRecipe", "Terra Potion Brewing Stand Recipes", "泰拉药水酿造台配方");
         language.add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the Brewing Stand can craft Terra Potions. (Restart the game after changing this setting!)", "启用时，酿造台可以酿造泰拉药水（该配置更换需要重启游戏！）");
         language.add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe", "泰拉药水酿造台配方");
@@ -244,10 +235,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.damageIndicator", "Damage Indicator", "伤害数值显示");
         language.add("confluence.configuration.damageIndicator.tooltip", "How damage numbers are displayed: particle indicator, virtual info, or off", "伤害数值的显示方式：粒子信息、虚拟信息或关闭");
         language.add("confluence.configuration.deerclopsNatureSpawning", "Deerclops Natural Spawning", "巨鹿自然生成");
-        language.add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time", "默认最大重生时间");
-        language.add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time", "设置默认最大重生时间");
-        language.add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time", "默认最小重生时间");
-        language.add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time", "设置默认最小重生时间");
         language.add("confluence.configuration.doFallingStarSpawning", "Falling Star Spawning", "坠落之星生成");
         language.add("confluence.configuration.doFallingStarSpawning.tooltip", "When enabled, falling stars will spawn at night", "启用时，坠落之星将会在晚上生成");
         language.add("confluence.configuration.doMeteoriteSpawning", "Meteorite Spawning", "陨石生成");
@@ -259,10 +246,10 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.doWind.tooltip", "Master switch. When disabled, all wind consumers fall back to no wind.", "总开关。关闭后所有风消费端退化为无风。");
         language.add("confluence.configuration.dragonChargePlayer", "Fix Ender Dragon attacking players", "末影龙攻击玩家修复");
         language.add("confluence.configuration.dragonChargePlayer.tooltip", "When enabled, the Ender Dragon will dive to attack players", "开启后，末影龙将会俯冲攻击玩家");
-        language.add("confluence.configuration.dropsTombstone", "Drops Tombstone", "掉落墓石");
-        language.add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death", "启用时，允许玩家死亡后掉落墓石");
         language.add("confluence.configuration.enableNonSpiderModel", "Spider Harmonization", "蜘蛛和谐");
         language.add("confluence.configuration.enableNonSpiderModel.tooltip", "Replace vanilla spiders and Confluence spiders, including sand poachers, with non-spider models. Requires a game restart.", "将原版蜘蛛与汇流蜘蛛（含沙贼）替换为蜘蛛娘模型；血爬虫使用专用外观。需要重启游戏。");
+        language.add("confluence.configuration.deathCoinLossPercent", "Coin Loss on Death (%)", "死亡时钱币损失比例（%）");
+        language.add("confluence.configuration.deathCoinLossPercent.tooltip", "Percentage of each coin stack lost when the player dies. Coins are not dropped, the remainder is kept.", "玩家死亡时每组钱币损失的百分比，不会掉落，剩余的会保留。");
         language.add("confluence.configuration.enemyDropsMoney", "Enemy Drops Money", "敌怪掉落钱币");
         language.add("confluence.configuration.enemyDropsMoney.tooltip", "When enabled, enemies will drop coins upon death.", "启用时，敌怪死亡后会掉落钱币");
         language.add("confluence.configuration.enhanceAllMonster", "Include All Mods' Enemies", "同时调整所有模组的敌怪");
@@ -277,9 +264,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.flailUseButton", "Flail Action Button", "链锤动作按键");
         language.add("confluence.configuration.fletchingMenu", "Fletching Table Menu", "制箭台菜单");
         language.add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux", "启用时，将使用汇流来世的修改制箭台");
-        language.add("confluence.configuration.foodStyle", "Food Saturation Style", "饥饿值样式");
-        language.add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant", "饥饿值样式:精致");
-        language.add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay", "饥饿值样式:叠加");
         language.add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab", "Decide whether wip items should be displayed in the creative mode tab.", "决定未完成物品是否显示于创造模式标签页");
         language.add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab.tooltip", "Enable to force allow wip items to be displayed in the creative mode tab.", "开启后强制允许未完成物品显示于创造模式标签页");
         language.add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality", "启用虫洞药水功能");
@@ -303,12 +287,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.gunUseButton", "Gun Action Button", "枪械动作按键");
         language.add("confluence.configuration.healIndicator", "Heal Indicator", "治疗数值显示");
         language.add("confluence.configuration.healIndicator.tooltip", "How heal numbers are displayed: particle indicator, virtual info, or off", "治疗数值的显示方式：粒子信息、虚拟信息或关闭");
-        language.add("confluence.configuration.healthOffsetX", "Health Offset X", "生命值X轴偏移");
-        language.add("confluence.configuration.healthOffsetY", "Health Offset Y", "生命值Y轴偏移");
-        language.add("confluence.configuration.healthStyle", "Health Style", "生命值样式");
-        language.add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant", "生命值样式:精致");
-        language.add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay", "生命值样式:叠加");
-        language.add("confluence.configuration.healthStyle.tooltip", "Health Display", "生命值显示");
         language.add("confluence.configuration.indicatorMode.off", "Off", "关闭");
         language.add("confluence.configuration.indicatorMode.particle", "Particle Info", "粒子信息");
         language.add("confluence.configuration.indicatorMode.virtual", "Virtual Info", "虚拟信息");
@@ -362,8 +340,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.npcSpawnInterval.tooltip", "Ticks between NPC spawn checks; a check does not guarantee a spawn.", "NPC 生成检查的间隔，单位为 tick；每次检查不保证生成 NPC。");
         language.add("confluence.configuration.paintsReplaceTexture", "Paint Replace Texture", "油漆替换贴图");
         language.add("confluence.configuration.paintsReplaceTexture.tooltip", "When enabled, the paint will use a replacement grayscale texture, making the appearance on materials more natural.", "开启时，油漆将使用替换灰度图贴图，在材质上的表现会更自然");
-        language.add("confluence.configuration.playerDropsMoney", "Player Drops Money", "玩家掉落钱币");
-        language.add("confluence.configuration.playerDropsMoney.tooltip", "When enabled, players will drop coins upon death.", "启用时，玩家死亡后会掉落钱币");
         language.add("confluence.configuration.preventEnemyFriendlyFire", "Prevent Enemy Friendly Fire", "禁止怪物互伤");
         language.add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "Enable the existing enemy faction friendly-fire protection. Does not change targeting or block player, summon or environmental damage.", "控制现有敌怪阵营不互伤规则，不改变索敌，不阻止玩家、召唤物及环境伤害。");
         language.add("confluence.configuration.preventEnemyHurtingPassiveMobs", "Prevent Enemies Hurting Passive Mobs", "禁止敌怪伤害被动生物");
@@ -391,8 +367,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip", "When enabled, Shimmer decomposition uses the first matching ingredient item instead of randomly selecting from tag candidates.", "启用后，微光分解遇到标签原料时固定使用第一个可用候选，而不是在候选中随机选择。");
         language.add("confluence.configuration.shimmer_decompose", "Shimmer Decompose", "微光分解");
         language.add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials", "启用后，微光可将物品分解为原材料");
-        language.add("confluence.configuration.showMoneyDrops", "Show Coin Drops on Death Screen", "死亡界面显示掉落钱币数");
-        language.add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen", "启用以在死亡界面显示掉落钱币数");
         language.add("confluence.configuration.showWindParticles", "Wind Particles Ratio", "风粒子比率");
         language.add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.", "通过调整数值，来决定你能看见风粒子的数量");
         language.add("confluence.configuration.slimeRainEventFrequency", "Event Trigger Chance (Denominator)", "事件触发概率（分母）");
@@ -429,17 +403,12 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.specialSeedBossBehaviors", "Special Seed Boss Behaviors", "特殊种子Boss额外行为");
         language.add("confluence.configuration.specialSeedBossBehaviors.tooltip", "Enable extra boss behaviors in special-seed worlds. Does not change difficulty mapping or attribute scaling.", "启用特殊种子世界中的 Boss 额外行为；不改变难度对应关系和属性缩放。");
         language.add("confluence.configuration.staffUseButton", "Staff Action Button", "法杖动作按键");
-        language.add("confluence.configuration.stopAskForSoftcore", "Stop Ask for Softcore", "停止请求软核模式");
-        language.add("confluence.configuration.stopAskForSoftcore.tooltip", "When enabled, the server will not ask for the Softcore.", "开启后，服务器将不会请求软核模式");
-        language.add("confluence.configuration.terraStyleArmor", "Terra Style Armor", "泰拉样式护甲值");
-        language.add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, armor is displayed in Terra style.", "开启后，护甲值显示为泰拉样式");
+        language.add("confluence.configuration.hardmodeWorldConversion", "Hardmode World Conversion", "困难模式世界转化");
+        language.add("confluence.configuration.hardmodeWorldConversion.tooltip", "When enabled, entering Hardmode converts a stripe of the world into the Hallow. When disabled, Hardmode still starts but the world blocks are left alone.", "开启后，进入困难模式时会将世界的一部分转化为神圣之地。关闭后仍会进入困难模式，但不会改变世界方块。");
+        language.add("confluence.configuration.meteoriteDimensions", "Meteorite Dimensions", "陨石维度");
+        language.add("confluence.configuration.meteoriteDimensions.tooltip", "Dimensions where meteorites may land. One of them is picked each time. Dimensions with a ceiling, such as the Nether, are ignored.", "陨石可以降落的维度，每次会从中随机选择一个。带有天花板的维度（如下界）会被忽略。");
         language.add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion", "泰拉样式爆炸");
         language.add("confluence.configuration.terraStyleExplosion.tooltip", "When enabled, the bombs in confluence will simulate the blast radius of a Terra explosion.", "开启后，模组内炸弹将模拟泰拉爆炸范围");
-        language.add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage", "泰拉样式火焰伤害");
-        language.add("confluence.configuration.terraStyleFireDamage.tooltip", "When enabled, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.", "开启后，火焰伤害将x4，并阻止回血。且仅对玩家有效");
-        language.add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation", "泰拉样式饥饿值");
-        language.add("confluence.configuration.terraStyleHealth", "Terra Style Health", "泰拉样式生命值");
-        language.add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.", "开启后，生命值显示为泰拉样式");
         language.add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt", "泰拉闪电束");
         language.add("confluence.configuration.terraStyleLightningBolt.tooltip", "When enabled, natural lightning bolts are replaced by Terra-style strikes.", "开启后，自然闪电束将替换为泰拉样式闪电");
         language.add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier", "闪电束频率提升倍率");
@@ -476,6 +445,5 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.drunkWorldRaiseSurface", "Drunk World Raises Surface Height", "醉酒世界抬升地面高度");
         language.add("confluence.configuration.drunkWorldRaiseSurface.tooltip", "When enabled, the Drunk World seed (5162020) raises terrain above sea level. Turning it off restores vanilla terrain height; only newly generated chunks are affected.", "启用后，醉酒世界种子（5162020）会把海平面以上的地面抬高。关闭则恢复原版地形高度；只影响新生成的区块");
         language.add("confluence.configuration.yoyoUseButton", "Yoyo Action Button", "悠悠球动作按键");
-        language.add("confluence.screen.soulcerer_overview.center", "Soul Overview Screen: Center", "灵魂技能总览界面.居中");
     }
 }

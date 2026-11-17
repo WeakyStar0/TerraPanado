@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -54,8 +55,10 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
@@ -206,9 +209,6 @@ public final class ModArmorBonus {
         });
         COLD_CRYSTAL_SET = register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {});
         HEIM_SET = register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {});
-        register("spore_root_set", 1, SPORE_ROOT_HELMET, SPORE_ROOT_CHESTPLATE, SPORE_ROOT_LEGGINGS, SPORE_ROOT_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
-        });
         register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
@@ -323,12 +323,6 @@ public final class ModArmorBonus {
                     .add(LibAttributes.getMagicDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(Attributes.MOVEMENT_SPEED, key.id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .build());
-        });
-        register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
-                    .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("hunters", 1, HUNERS_HELMET, HUNERS_CHESTPLATE, HUNERS_LEGGINGS, HUNERS_BOOTS, key -> {
@@ -503,21 +497,41 @@ public final class ModArmorBonus {
         return VALUE_MAP;
     }
 
+    private static @Nullable Map<Item, List<ArmorSetBonusKey>> keysByItem;
+
+    private static Map<Item, List<ArmorSetBonusKey>> keysByItem() {
+        if (keysByItem == null) {
+            Map<Item, List<ArmorSetBonusKey>> map = new HashMap<>();
+            for (ArmorSetBonusKey key : VALUE_MAP.keySet()) {
+                for (Item piece : new Item[]{key.head(), key.chest(), key.legs(), key.feet()}) {
+                    if (piece != Items.AIR) map.computeIfAbsent(piece, item -> new ArrayList<>()).add(key);
+                }
+            }
+            keysByItem = map;
+        }
+        return keysByItem;
+    }
+
+    /// 每一件盔甲都显示它所属套装的奖励，不必先穿齐。
+    /// 同一件盔甲属于多套时（例如换头盔的变体），每套前面标出用来区分的那一件。
     public static void addTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
-        if (player == null) return;
-        ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
-        if (key == ArmorSetBonusKey.NONE) return;
-        if (itemStack.getItem() instanceof ArmorItem armorItem && switch (armorItem.getEquipmentSlot()) {
-            case FEET -> key.feet() == armorItem;
-            case LEGS -> key.legs() == armorItem;
-            case CHEST -> key.chest() == armorItem;
-            case HEAD -> key.head() == armorItem;
-            default -> false;
-        }) {
-            ArmorSetBonusData data = getArmorSetBonusData(player, key);
-            if (data == null || data.tooltipCount() == 0) return;
+        if (!(itemStack.getItem() instanceof ArmorItem armorItem)) return;
+        List<ArmorSetBonusKey> keys = keysByItem().get(armorItem);
+        if (keys == null) return;
+        boolean variants = keys.size() > 1;
+        boolean header = false;
+        for (ArmorSetBonusKey key : keys) {
+            ArmorSetBonusData data = VALUE_MAP.get(key);
+            if (data == null || data.tooltipCount() == 0) continue;
+            if (!header) {
+                toolTip.add(Component.translatable("armor_set_bonus.when_applied").withStyle(ChatFormatting.GRAY));
+                header = true;
+            }
+            if (variants) {
+                Item distinguishing = armorItem == key.head() ? key.chest() : key.head();
+                toolTip.add(Component.translatable("armor_set_bonus.variant", distinguishing.getDescription()).withStyle(ChatFormatting.GRAY));
+            }
             String descriptionKey = key.getDescriptionKey();
-            toolTip.add(Component.translatable("armor_set_bonus.when_applied").withStyle(ChatFormatting.GRAY));
             for (int i = 0; i < data.tooltipCount(); i++) {
                 toolTip.add(Component.translatable("armor_set_bonus." + descriptionKey + "." + i).withStyle(ChatFormatting.DARK_AQUA));
             }

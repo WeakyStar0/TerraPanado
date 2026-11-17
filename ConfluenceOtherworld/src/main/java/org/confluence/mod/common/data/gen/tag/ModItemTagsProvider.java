@@ -642,17 +642,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
         IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
-        Item[] soul_bow = {
-                BowItems.SOUL_BOW.get(),
-                BowItems.SOUL_SHORT_BOW.get()
-        };
-        for (Item value : soul_bow) {
-            durability_enchantable.add(value);
-            bow_enchantable.add(value);
-            ranged_weapon_tools.add(value);
-            tools_bows.add(value);
-            skip_using_slowdown.add(value);
-        }
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durability_enchantable.add(value);
@@ -717,29 +706,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.FLAIL_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
-        // 本轮新增/改动、尚未定稿的武器（不含大马林鱼刺剑与海床崩裂者）
-        tag(ModTags.Items.WIP).add(
-                SoulItems.SPIRITWARD_BLADE.get(),
-                BowItems.SOUL_BOW.get(),
-                BowItems.SOUL_SHORT_BOW.get(),
-                ManaWeaponItems.OPAL_STAFF.get(),
-                ManaWeaponItems.MAGIC_DAGGER.get(),
-                ManaWeaponItems.FLOWER_OF_FROST.get(),
-                ManaWeaponItems.CURSED_FLAMES.get(),
-                ManaWeaponItems.CRYSTAL_STORM.get(),
-                ManaWeaponItems.DUSK_DAWN.get(),
-                ManaWeaponItems.WIND_PAGE.get(),
-                ManaWeaponItems.WIND_EYE.get(),
-                ManaWeaponItems.STAR_MUSIC.get(),
-                BowItems.WIND_STRING.get(),
-                BowItems.ENCHANTED_BOW.get(),
-                BowItems.STAR_WEEP.get(),
-                BowItems.POLAR_DAY.get(),
-                BowItems.BLADE_BOW.get(),
-                WhipItems.WIND_WHIP.get(),
-                WhipItems.STAR_FEAR.get(),
-                ArrowItems.WIND_ARROW.get()
-        );
         IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
         WhipItems.ITEMS.getEntries().forEach(item -> whip.add(item.get()));
 
@@ -1511,6 +1477,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 CrossbowItems.STAKE_LAUNCHER.get(),
                 SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                SpawnEggItems.ENCHANTED_SWORD_SPAWN_EGG.get(),
+                SpawnEggItems.PALADIN_SPAWN_EGG.get(),
+                SpawnEggItems.BONE_LEE_SPAWN_EGG.get(),
+                SpawnEggItems.NECROMANCER_SPAWN_EGG.get(),
+                SpawnEggItems.DIABOLIST_SPAWN_EGG.get(),
+                SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(),
+                SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get(),
+                SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get(),
                 TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
                 TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(),
                 TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
@@ -1669,19 +1643,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.MARLIN_SPIKE_SWORD.get(),
                 SwordItems.BLADETONGUE.get()
         );
-        // 刃弓：弓类武器，但走阔剑式的自动空挥与特殊横扫
-        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(BowItems.BLADE_BOW.get());
-        // 祈灵之刃：魂师副武器，自带自动挥舞
-        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
-        // 祈灵之刃不参与 SwordItems 的注册循环，需要单独登记近战词缀与剑类附魔可用性
-        tag(ModTags.Items.PREFIX_MELEE_ONLY).add(SoulItems.SPIRITWARD_BLADE.get());
-        weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
-        sharp_weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
-        // 灵魂弓 / 灵魂短弓：显式挂到远程词缀，避免只依赖 c:tools/ranged_weapon 的间接登记
-        tag(ModTags.Items.PREFIX_RANGED_ONLY).add(
-                BowItems.SOUL_BOW.get(),
-                BowItems.SOUL_SHORT_BOW.get()
-        );
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(
                 ToolItems.KEY_OF_LIGHT.get(),
                 ToolItems.KEY_OF_NIGHT.get()
@@ -1707,10 +1668,23 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 short_sword.add(holder.get());
             }
         }
-        // 祈灵之刃在魂师体系里属于短剑
-        short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
         // 大马林鱼刺剑：命名不带 short_sword 后缀，但定位就是短剑
         short_sword.add(SwordItems.MARLIN_SPIKE_SWORD.get());
+
+        // 模型未完成的怪物（只显示占位线框）：刷怪蛋与宝藏袋不在配方查看器中显示
+        tag(Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS).add(
+                SpawnEggItems.ENCHANTED_SWORD_SPAWN_EGG.get(),
+                SpawnEggItems.PALADIN_SPAWN_EGG.get(),
+                SpawnEggItems.BONE_LEE_SPAWN_EGG.get(),
+                SpawnEggItems.NECROMANCER_SPAWN_EGG.get(),
+                SpawnEggItems.DIABOLIST_SPAWN_EGG.get(),
+                SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(),
+                SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get(),
+                SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get(),
+                SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
+                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get()
+        );
 
         PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
 

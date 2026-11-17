@@ -51,7 +51,6 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
@@ -62,7 +61,6 @@ import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.mod.util.SoulcererUtils;
@@ -113,7 +111,7 @@ public final class ModCommands {
                         .then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
                             BlockPos location = BlockPosArgument.getBlockPos(context, "location");
                             int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
-                            MeteoriteTracker.INSTANCE.setMeteorite(location, tickUntilLanding);
+                            MeteoriteTracker.INSTANCE.setMeteorite(context.getSource().getLevel().dimension(), location, tickUntilLanding);
                             return 1;
                         })))
                 )
@@ -279,12 +277,6 @@ public final class ModCommands {
                             return 1;
                         }))
                 )
-                .then(Commands.literal("stopAskForSoftcore").executes(context -> {
-                    ServerLevel overworld = context.getSource().getServer().getLevel(OverworldUtils.dimension());
-                    if (overworld == null) return 0;
-                    ConfluenceData.get(overworld).setStopAskForSoftcore(true);
-                    return 1;
-                }))
                 .then(Commands.literal("soulSkill")
                         .then(Commands.literal("reset").executes(context -> {
                             ServerPlayer player = context.getSource().getPlayerOrException();
