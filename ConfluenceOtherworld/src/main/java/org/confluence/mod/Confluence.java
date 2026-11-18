@@ -76,6 +76,7 @@ public final class Confluence {
         SoulItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
+        ModLootModifiers.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
         AgeratumHelper.register(eventBus);

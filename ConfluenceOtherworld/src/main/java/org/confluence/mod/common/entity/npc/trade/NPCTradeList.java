@@ -17,6 +17,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.wip.WipRemoval;
 
 
 /// 从每个 NPC 对应的 JSON 文件加载固定商品列表。
@@ -28,8 +29,12 @@ public final class NPCTradeList {
 
     public static ShopSnapshot getAvailableOffers(ServerPlayer player, BaseNPC npc) {
         State current = state;
-        List<NPCTradeOffer> selected = npc.selectTradeOffers(npc.configuredOffers(current.table()));
+        List<NPCTradeOffer> selected = npc.selectTradeOffers(withoutWipItems(npc.configuredOffers(current.table())));
         return new ShopSnapshot(selected.stream().filter(offer -> offer.isAvailable(player, npc)).toList(), current.revision());
+    }
+
+    private static List<NPCTradeOffer> withoutWipItems(List<NPCTradeOffer> offers) {
+        return WipRemoval.enabled() ? offers.stream().filter(offer -> !WipRemoval.isWip(offer.stack())).toList() : offers;
     }
 
     public static int getRevision() {

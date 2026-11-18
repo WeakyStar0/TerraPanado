@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.AddTableLootModifier;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
@@ -14,6 +15,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddBlockLootConfluenceSubProvider;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddChestLootConfluenceSubProvider;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddEntityLootConfluenceSubProvider;
+import org.confluence.mod.common.wip.RemoveWipLootModifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -65,5 +67,8 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
                     }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(chestProvider.getPath(lootTable))))
             );
         }
+
+        // Must stay last so it also strips what the modifiers above add.
+        this.add("remove_wip", new RemoveWipLootModifier(new LootItemCondition[0]));
     }
 }
