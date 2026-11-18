@@ -1,4 +1,10 @@
-# Confluence: Otherworld
+# Terra Panado
+
+> Unofficial fork of [Confluence: Otherworld](https://github.com/Magic-team-jvav/confluence) by Magic-team-jvav and contributors, licensed under LGPL-3.0. This is not the original mod and is not the official Confluence project. The mod id stays `confluence` for compatibility. The full commit history of the original authors is kept in this repository.
+
+The rest of this file is the original project's README.
+
+## Confluence: Otherworld (original README)
 
 - [中文](README.md)
 
