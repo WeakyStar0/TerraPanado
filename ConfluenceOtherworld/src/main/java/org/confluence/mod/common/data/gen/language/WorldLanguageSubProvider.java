@@ -49,6 +49,8 @@ public final class WorldLanguageSubProvider {
         language.add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria", "欢迎来到泰拉瑞亚");
         language.add("event.confluence.meteorite", "A meteorite has landed!", "有一颗陨石落地了！");
         language.add("event.confluence.meteorite.ready", "A meteorite is falling!", "陨石即将落下！");
+        language.add("event.confluence.meteorite.at", "A meteorite has landed in %1$s at X: %2$s, Y: %3$s, Z: %4$s!", "有一颗陨石落在了%1$s的 X: %2$s, Y: %3$s, Z: %4$s！");
+        language.add("event.confluence.meteorite.ready.at", "A meteorite is falling in %1$s at X: %2$s, Y: %3$s, Z: %4$s!", "陨石即将落在%1$s的 X: %2$s, Y: %3$s, Z: %4$s！");
         language.add("event.confluence.npc.arrived", "%2$s the %1$s has arrived!", "%1$s%2$s已到达！");
         language.add("event.confluence.npc.left", "%s has left!", "%s已离开！");
         language.add("event.confluence.npc.slain", "%2$s the %1$s was slain...", "%1$s%2$s被杀死了……");

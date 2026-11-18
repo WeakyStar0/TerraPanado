@@ -49,9 +49,14 @@ public enum MeteoriteTracker implements IGlobalData {
         if (!ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
-            generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
-            Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());
-            level.getServer().getPlayerList().broadcastSystemMessage(message, false);
+            if (generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400))) {
+                Component message = Component.translatable("event.confluence.meteorite.ready.at", dimensionName(dimension.location()),
+                        location.getX(), location.getY(), location.getZ()).withColor(GlobalColors.EVENT.get());
+                level.getServer().getPlayerList().broadcastSystemMessage(message, false);
+            } else {
+                // 没找到能降落的地方（维度没加载、全是水、虚空……）就留到下一个夜晚重试，而不是悄悄丢掉
+                this.spawnAtNextNight = true;
+            }
         }
         if (tickUntilLanding == 0) {
             // this.location = BlockPos.ZERO; 注释掉这行，阻止重置
@@ -66,10 +71,11 @@ public enum MeteoriteTracker implements IGlobalData {
         }
     }
 
-    public void generateLandingDetail(ServerLevel overworld, int landingTime) {
-        if (!shouldGenerate || !ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+    /// @return 是否成功安排了一次降落
+    public boolean generateLandingDetail(ServerLevel overworld, int landingTime) {
+        if (!shouldGenerate || !ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return false;
         ServerLevel level = chooseLevel(overworld);
-        if (level == null) return;
+        if (level == null) return false;
         this.shouldGenerate = false;
 
         // 获取玩家数量最小的象限
@@ -140,7 +146,7 @@ public enum MeteoriteTracker implements IGlobalData {
         } while (liquidSurface && ++attempts < MAX_LANDING_ATTEMPTS);
         if (liquidSurface) {
             this.shouldGenerate = true;
-            return;
+            return false;
         }
 
         this.shouldGenerate = true;
@@ -149,6 +155,17 @@ public enum MeteoriteTracker implements IGlobalData {
         this.tickUntilLanding = landingTime;
         markUnavailable(ChunkPos.asLong(x, z));
         MeteoriteLocationPacketS2C.sendToAll(dimension, location, landingTime);
+        return true;
+    }
+
+    private static Component dimensionName(ResourceLocation id) {
+        StringBuilder name = new StringBuilder();
+        for (String word : id.getPath().split("[_/]")) {
+            if (word.isEmpty()) continue;
+            if (!name.isEmpty()) name.append(' ');
+            name.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+        }
+        return Component.literal(name.toString());
     }
 
     private boolean isUnAvailableChunk(ChunkMap chunkMap, int x, int z) {
@@ -192,7 +209,8 @@ public enum MeteoriteTracker implements IGlobalData {
         }
 
         if (placed) {
-            Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
+            Component message = Component.translatable("event.confluence.meteorite.at", dimensionName(level.dimension().location()),
+                    origin.getX(), origin.getY(), origin.getZ()).withColor(GlobalColors.MESSAGE.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
             Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", origin.toShortString());
         }
