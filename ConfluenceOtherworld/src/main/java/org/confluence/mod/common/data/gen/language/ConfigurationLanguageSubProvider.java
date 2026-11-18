@@ -445,5 +445,61 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.drunkWorldRaiseSurface", "Drunk World Raises Surface Height", "醉酒世界抬升地面高度");
         language.add("confluence.configuration.drunkWorldRaiseSurface.tooltip", "When enabled, the Drunk World seed (5162020) raises terrain above sea level. Turning it off restores vanilla terrain height; only newly generated chunks are affected.", "启用后，醉酒世界种子（5162020）会把海平面以上的地面抬高。关闭则恢复原版地形高度；只影响新生成的区块");
         language.add("confluence.configuration.yoyoUseButton", "Yoyo Action Button", "悠悠球动作按键");
+
+        // Descriptions for options that had none. Shown as the tooltip in the config screen.
+        tip(language, "customTitle", "How many random messages the game window title can pick from on the title screen. 0 turns the extra window title text off.");
+        tip(language, "extraInventoryButtonOffsetX", "Moves the Extra Inventory button (the tree icon on the inventory screen) sideways, in pixels. Use a negative value to move it the other way.");
+        tip(language, "extraInventoryButtonOffsetY", "Moves the Extra Inventory button (the tree icon on the inventory screen) up or down, in pixels. Use a negative value to move it the other way.");
+        tip(language, "manaOffsetX", "Moves the mana bar sideways, in pixels. Use a negative value to move it the other way.");
+        tip(language, "manaOffsetY", "Moves the mana bar up or down, in pixels. Use a negative value to move it the other way.");
+        tip(language, "soulcererQuickSkillStyle", "How the soul quick-skill selector is drawn: a big or small roulette wheel, or horizontal cards on the left or right.");
+        tip(language, "rainbowCount", "How many rainbows are drawn in the Hallow sky while you move. 0 turns them off.");
+        tip(language, "rainbowGradient", "Draws the Hallow sky rainbows with a smooth color gradient.");
+        tip(language, "staffUseButton", "Mouse button used to attack with staffs.");
+        tip(language, "whipUseButton", "Mouse button used to attack with whips.");
+        tip(language, "yoyoUseButton", "Mouse button used to attack with yoyos.");
+        tip(language, "gunUseButton", "Mouse button used to fire guns.");
+        tip(language, "flailUseButton", "Mouse button used to swing flails.");
+        tip(language, "convertArsNouveauMana", "Makes Ars Nouveau spells use your mana from this mod instead of Ars Nouveau's own mana. While on, players in soul mode cannot cast Ars Nouveau spells. Needs Ars Nouveau.");
+        tip(language, "convertIronsSpellMana", "Makes Iron's Spells 'n Spellbooks spells use your mana from this mod instead of their own mana. While on, players in soul mode cannot cast those spells. Needs Iron's Spells 'n Spellbooks.");
+        tip(language, "ftbChunksWormholePotion", "Lets the Wormhole Potion teleport you to teammates that FTB Chunks tracks, even when they are far away. Needs FTB Chunks.");
+        tip(language, "waystonesPylonNonCost", "Intended to make pylons free to use with Waystones. Does nothing for now, because the pylons in this mod are unfinished placeholders.");
+        tip(language, "eyeOfCthulhuNatureSpawning", "Lets the Eye of Cthulhu appear on its own. Turn off to only get it by using its summon item.");
+        tip(language, "deerclopsNatureSpawning", "Lets Deerclops appear on its own when it is raining or snowing. Turn off to only get it by using its summon item.");
+        tip(language, "slimeRainEventMaxEnemiesBase", "Slime Rain: most event enemies that can be alive at once. The real cap is this plus the per-player value for every player in the world.");
+        tip(language, "slimeRainEventPerPlayer", "Slime Rain: extra enemies allowed at once for each player in the world.");
+        tip(language, "slimeRainEventSpawnIntervalFactor", "Slime Rain: spawn delay multiplier. Higher spawns slimes slower, lower spawns them faster. 1 is the normal rate.");
+        tip(language, "slimeRainEventSpawnGroupSize", "Slime Rain: how many slimes it tries to spawn in one spawn wave.");
+        tip(language, "slimeRainEventKingSlimeSpawnRequiredKillCount", "Slime Rain: kills needed before King Slime appears. Goes up by half if one was already spawned during the event, and is halved once King Slime has been defeated.");
+        tip(language, "slimeRainEventRequiredPlayerMaxHealth", "Slime Rain: minimum max health a player needs for the event to start normally. Without it the event can still start in Expert, but much more rarely.");
+        tip(language, "slimeRainEventRequiredPlayerArmor", "Slime Rain: minimum armor a player needs for the event to start normally. Without it the event can still start in Expert, but much more rarely.");
+        tip(language, "slimeRainEventFrequency", "Slime Rain: how rare it is. The game rolls a 1 in this many chance while it is daytime, so a higher number means rarer. It is doubled after King Slime is defeated and made 1.5 times rarer in Hardmode.");
+        tip(language, "bloodMoonEventMaxEnemiesBase", "Blood Moon: most event enemies that can be alive at once. The real cap is this plus the per-player value for every player in the world.");
+        tip(language, "bloodMoonEventMaxEnemiesPerPlayer", "Blood Moon: extra enemies allowed at once for each player in the world.");
+        tip(language, "bloodMoonEventSpawnEnemiesIntervalFactor", "Blood Moon: spawn delay multiplier. Higher spawns enemies slower, lower spawns them faster.");
+        tip(language, "bloodMoonEventRequiredPlayerMaxHealth", "Blood Moon: minimum max health a player needs for the event to be able to start.");
+        tip(language, "bloodMoonEventRequiredPlayerArmor", "Blood Moon: minimum armor a player needs for the event to be able to start.");
+        tip(language, "bloodMoonEventInvertChance", "Blood Moon: chance is 1 in this number each night, once a player meets the health and armor requirements. A higher number means rarer. It never happens on a new moon.");
+        tip(language, "goblinArmyEventMaxEnemiesBase", "Goblin Army: most invaders that can be alive at once. The real cap is this plus the per-player value for every player in the world.");
+        tip(language, "goblinArmyEventMaxEnemiesPerPlayer", "Goblin Army: extra invaders allowed at once for each player in the world.");
+        tip(language, "goblinArmyEventSpawnEnemiesIntervalFactor", "Goblin Army: spawn delay multiplier. Higher spawns invaders slower, lower spawns them faster.");
+        tip(language, "goblinArmyEventRequiredPlayerMaxHealth", "Goblin Army: minimum max health a player needs for the invasion to be able to start.");
+        tip(language, "goblinArmyEventRequiredPlayerArmor", "Goblin Army: minimum armor a player needs for the invasion to be able to start.");
+        tip(language, "goblinArmyEventInvertChance", "Goblin Army: chance is 1 in this number each dawn, before Hardmode and before the army was ever defeated. Needs evil blocks to have been broken. A higher number means rarer.");
+        tip(language, "goblinArmyDefeatedEventInvertChance", "Goblin Army: chance is 1 in this number each dawn, before Hardmode, if the army was defeated before. A higher number means rarer.");
+        tip(language, "goblinArmyHardmodeEventInvertChance", "Goblin Army: chance is 1 in this number each dawn, in Hardmode, if the army was never defeated. A higher number means rarer.");
+        tip(language, "goblinArmyEventHardmodeDefeatedInvertChance", "Goblin Army: chance is 1 in this number each dawn, in Hardmode, if the army was defeated before. A higher number means rarer.");
+        tip(language, "goblinArmyEventRequiredKillCountBase", "Goblin Army: kills needed to beat the invasion, before counting players.");
+        tip(language, "goblinArmyEventRequiredKillCountPerPlayer", "Goblin Army: extra kills needed for each player in the world (counted up to 255 players).");
+        tip(language, "meteorShowerEventFallingStarSpawnSpeedMultiplier", "Meteor Shower: how many times faster falling stars spawn during the event.");
+        tip(language, "meteorShowerEventFrequency", "Meteor Shower: chance is 1 in this number each evening. A higher number means rarer.");
+        tip(language, "meteorShowerEventCelebrationMK10Frequency", "Meteor Shower: same as the normal frequency, but used on the Celebration MK10 seed. A higher number means rarer.");
+        tip(language, "meteorShowerEventMaxEnchantedNightcrawlersBase", "Meteor Shower: most Enchanted Nightcrawlers that can be alive at once. The real cap is this plus the per-player value for every player in the world.");
+        tip(language, "meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", "Meteor Shower: extra Enchanted Nightcrawlers allowed at once for each player in the world.");
+        tip(language, "meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", "Meteor Shower: spawn delay multiplier for Enchanted Nightcrawlers. Higher spawns them slower, lower spawns them faster.");
+    }
+
+    private static void tip(TranslationConsumer language, String option, String text) {
+        language.add("confluence.configuration." + option + ".tooltip", text, text);
     }
 }
