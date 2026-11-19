@@ -103,6 +103,7 @@ public final class ModLootTables {
     public static class EntryTypes {
         public static final DeferredRegister<LootPoolEntryType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, Confluence.MODID);
         public static final Supplier<LootPoolEntryType> PERCENTAGE = TYPES.register("percentage", () -> new LootPoolEntryType(PercentageLootEntry.CODEC));
+        public static final Supplier<LootPoolEntryType> POT_MONEY = TYPES.register("pot_money", () -> new LootPoolEntryType(PotMoneyLootEntry.CODEC));
     }
 
     public static class ItemConditions {
@@ -112,6 +113,7 @@ public final class ModLootTables {
         public static final Supplier<LootItemConditionType> GAME_PHASE = TYPES.register("game_phase", () -> new LootItemConditionType(GamePhaseLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> SECRET_FLAG = TYPES.register("secret_flag", () -> new LootItemConditionType(SecretFlagLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> DIFFICULTY_CHANCE = TYPES.register("difficulty_chance", () -> new LootItemConditionType(DifficultyChanceLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> WORLD_STATE = TYPES.register("world_state", () -> new LootItemConditionType(WorldStateLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> ENTITY_VARIANT = TYPES.register("entity_variant", () -> new LootItemConditionType(EntityVariantLootItemCondition.CODEC));
     }
 

@@ -8,7 +8,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
@@ -20,6 +22,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -33,6 +36,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -49,6 +56,7 @@ import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.BrushData;
+import org.confluence.mod.common.init.block.PotBlocks;
 import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -81,6 +89,37 @@ public final class ModCommands {
         ARGUMENT_TYPE_INFOS.register("game_event", () -> ArgumentTypeInfos.registerByClass(GameEventArgument.class, SingletonArgumentInfo.contextFree(GameEventArgument::new)));
     }
 
+    /// Rolls a pot's loot table many times at the player's position and prints how often each item came up.
+    /// The Coin Portal and Powered Creeper summons happen before the table and are not part of this.
+    private static int potSample(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerLevel level = context.getSource().getLevel();
+        ResourceLocation id = ResourceLocationArgument.getId(context, "pot");
+        int count = IntegerArgumentType.getInteger(context, "count");
+        Vec3 origin = context.getSource().getPlayerOrException().position();
+        LootTable table = level.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, id.withPrefix("blocks/")));
+        LootParams params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, origin)
+                .withParameter(LootContextParams.BLOCK_STATE, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState())
+                .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                .create(LootContextParamSets.BLOCK);
+        Map<String, long[]> totals = new java.util.TreeMap<>();
+        for (int i = 0; i < count; i++) {
+            Map<String, Integer> thisRoll = new HashMap<>();
+            table.getRandomItems(params, stack -> thisRoll.merge(stack.getItem().builtInRegistryHolder().key().location().toString(), stack.getCount(), Integer::sum));
+            thisRoll.forEach((item, amount) -> {
+                long[] entry = totals.computeIfAbsent(item, key -> new long[2]);
+                entry[0]++;
+                entry[1] += amount;
+            });
+        }
+        context.getSource().sendSystemMessage(Component.literal(id + " x" + count + " at y=" + (int) origin.y + ": item = rolls with it, % of rolls, average amount"));
+        totals.entrySet().stream().sorted((a, b) -> Long.compare(b.getValue()[0], a.getValue()[0])).forEach(entry -> {
+            long[] v = entry.getValue();
+            context.getSource().sendSystemMessage(Component.literal(String.format(Locale.ROOT, "  %s = %d, %.2f%%, avg %.1f", entry.getKey(), v[0], v[0] * 100.0 / count, (double) v[1] / v[0])));
+        });
+        return count;
+    }
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
                 .then(Commands.literal("gamePhase").then(Commands.literal("get").executes(context -> {
@@ -88,6 +127,11 @@ public final class ModCommands {
                     context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
                     return 1;
                 })))
+                .then(Commands.literal("potSample")
+                        .then(Commands.argument("pot", ResourceLocationArgument.id())
+                                .suggests((context, builder) -> SharedSuggestionProvider.suggestResource(PotBlocks.BLOCKS.getEntries().stream().map(holder -> holder.getId()), builder))
+                                .then(Commands.argument("count", IntegerArgumentType.integer(1, 1_000_000))
+                                        .executes(ModCommands::potSample))))
                 .then(Commands.literal("wind")
                         .then(Commands.literal("get").executes(ModCommands::windGet))
                         .then(Commands.literal("set")

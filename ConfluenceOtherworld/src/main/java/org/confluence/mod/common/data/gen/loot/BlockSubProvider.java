@@ -31,7 +31,9 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.common.block.common.BasePotBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
+import org.confluence.mod.common.init.block.PotBlocks;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
@@ -65,6 +67,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
     protected void generate() {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
 
+        PotBlocks.BLOCKS.getEntries().forEach(holder -> {
+            if (holder.get() instanceof BasePotBlock pot) this.add(pot, PotLootTables.build(pot, pot.getMoneyRatio()));
+        });
 
         // region ore
         dropSelf(TIN_BLOCK.get());
