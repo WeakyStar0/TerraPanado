@@ -92,6 +92,51 @@ public final class ItemDescriptionLanguageSubProvider {
         for (String ring : new String[]{"fertile_singularity", "perplexed_cat_medal", "pulsar"}) {
             d.item(ring, "Carry it in your inventory to gain Speed while monsters are within 8 blocks.");
         }
+
+        // Grass seeds
+        d.item("grass_seed", "Use it on Dirt, or on Corrupt, Crimson or Hallow Grass Blocks, to turn the block into a normal Grass Block. Used up when it works.");
+        d.item("ash_grass_seed", "Use it on an Ash Block to turn it into an Ash Grass Block. Used up when it works.");
+        d.item("jungle_grass_seed", "Use it on Mud to turn it into a Jungle Grass Block. Used up when it works.");
+        d.item("mushroom_grass_seed", "Use it on Mud to turn it into a Mushroom Grass Block. Used up when it works.");
+
+        // Mushrooms
+        d.item("life_mushroom", "Use it to restore 3 hearts of health and some hunger. Causes Potion Sickness for 30 seconds, during which it cannot be used.", "It can also be planted on grass, and Bone Meal grows it into a Life Mushroom tree.");
+        d.item("vile_mushroom", "Can only be planted on Corrupt Grass Blocks.");
+        d.item("vicious_mushroom", "Can only be planted on Crimson Grass Blocks.");
+        d.item("glowing_mushroom", "Can only be planted on Mushroom Grass Blocks. It gives off light, and Bone Meal grows it into a Glowing Mushroom tree.");
+
+        // Storage
+        d.item("chester_staff", "Use it to summon Chester, a companion that opens your personal storage. Sneak and use it to send Chester away. Using it again moves Chester to you.");
+        d.item("money_trough", "Use it to summon a Flying Piggy Bank that opens your personal storage. Sneak and use it to send it away. Using it again moves it to you.");
+        d.item("void_bag", "Use it to open your Void Vault, a personal storage you can reach from anywhere while carrying the bag.");
+
+        // Treasure bags and right-click loot
+        for (String boss : new String[]{"king_slime", "eye_of_cthulhu", "eater_of_worlds", "brain_of_cthulhu", "queen_bee", "skeletron", "deerclops", "the_twins"}) {
+            d.item(boss + "_treasure_bag", "Use it to open it and receive loot. Sneak and use it to open the whole stack at once. The loot depends on the world difficulty.");
+        }
+        d.item("clam", "Use it to open it and receive pearls or a shucked oyster. Sneak and use it to open the whole stack at once.");
+        d.item("pine_cone", "Use it to open it and receive pine nuts. Sneak and use it to open the whole stack at once.");
+        d.item("herb_bag", "Use it to open it and receive 2 to 5 herbs or herb seeds. Sneak and use it to open the whole stack at once.");
+        d.item("can_of_worms", "Use it to open it and receive worms or enchanted nightcrawlers. Sneak and use it to open the whole stack at once.");
+        d.item("red_envelope", "Use it to open it and receive coins. Sneak and use it to open the whole stack at once.");
+        d.item("sugar_tangerine", "Use it to open it and receive peeled sugar tangerines. Sneak and use it to open the whole stack at once.");
+        d.item("deluxe_package", "Use it to open it and receive prepared food and drinks. Sneak and use it to open the whole stack at once.");
+        d.item("christmas_gift", "Use it to open it and receive festive treats, candy blocks or winter gear. Sneak and use it to open the whole stack at once.");
+
+        // Tools and misc
+        d.item("honey_bucket", "Place it to pour out honey, or hold use to drink it for the Honey effect for 45 seconds. Drinking also cures Poison and leaves an empty bucket.");
+        d.item("bottle", "Use it on water or honey to fill it. Use it on a block to place a Brewing Vial, or sneak and use it to place a Brewing Vial instead of filling it.");
+        d.item("eyedropper", "Use it on a painted block face to copy that colour into a Paint item. The Paint is placed in your off hand, replacing what is there.");
+        d.item("staff_of_regrowth", "Use it on Dirt to turn it into Grass. Right-click a crop to harvest it, replant it and get extra drops, which Fortune improves.");
+        d.item("crimson_rod", "Summons a blood cloud that rains on enemies. Aim at an enemy to make the cloud target it. Only one cloud can exist at a time.");
+        d.item("nimbus_rod", "Summons a rain cloud that rains on enemies. Aim at an enemy to make the cloud target it. Up to two clouds can exist at a time.");
+        d.item("golden_shower", "Hold to spray golden ichor that falls in an arc and inflicts Ichor on enemies. Uses mana while you hold it.");
+        d.item("spiky_ball", "Throw it to bounce along the ground and hurt enemies it touches. It is used up when thrown.");
+
+        // Mounts
+        d.item("slimy_saddle", "Summons a slime mount that jumps very high. Landing on top of an enemy hurts it and bounces you back up.");
+        d.item("honeyed_goggles", "Summons a bee mount that can fly. Its flight energy is limited and it slows down as it runs out.");
+        d.item("blessed_apple", "Summons a unicorn mount that runs fast and hurts enemies it charges into.");
     }
 
     private record Describer(TranslationConsumer language) {
