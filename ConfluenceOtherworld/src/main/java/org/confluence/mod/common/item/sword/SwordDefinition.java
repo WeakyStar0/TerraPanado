@@ -44,6 +44,14 @@ public record SwordDefinition(
         return new Builder();
     }
 
+    /// Sword attack speeds were written for Terraria's use times, which feel far too fast with Minecraft's cooldown.
+    /// Speeds up to a vanilla sword (1.6) are kept; anything above is pulled most of the way back toward it, and
+    /// nothing goes past 2.5. The order between weapons is unchanged. Example: 2.0 -> 1.76, 2.4 -> 1.92, 3 -> 2.16, 7 -> 2.5.
+    public static float balancedSpeed(float rawSpeed) {
+        if (rawSpeed <= 1.6F) return rawSpeed;
+        return Math.min(2.5F, 1.6F + (rawSpeed - 1.6F) * 0.4F);
+    }
+
     public record BuildResult(SwordDefinition definition, Item.Properties properties) {
         public @Nullable Projectile projectile() {
             return definition.projectile();
@@ -177,7 +185,7 @@ public record SwordDefinition(
             attributes.forEach(entry -> attributesBuilder.add(entry.attribute(), entry.modifier(), EquipmentSlotGroup.MAINHAND));
             if (baseAttributes) {
                 attributesBuilder.add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-                attributesBuilder.add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, rawSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                attributesBuilder.add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, balancedSpeed(rawSpeed) - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
             }
             properties.attributes(attributesBuilder.build());
             return new BuildResult(new SwordDefinition(canSweep, specialSweep, tooltipImage, tooltips, projectile), properties);

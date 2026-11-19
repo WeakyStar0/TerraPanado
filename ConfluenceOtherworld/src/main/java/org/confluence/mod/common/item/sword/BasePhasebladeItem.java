@@ -60,7 +60,7 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     protected BasePhasebladeItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, PhaseColor color) {
         super(tier, rarity, rawDamage, rawSpeed, SwordDefinition.builder().specialSweep(0.8F).withoutBaseAttributes());
         this.color = color;
-        turnOnModifiers = createAttributes(rawDamage - 1, rawSpeed - 4);
+        turnOnModifiers = createAttributes(rawDamage - 1, SwordDefinition.balancedSpeed(rawSpeed) - 4);
         turnOffModifiers = createAttributes(1, -2);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
