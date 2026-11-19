@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -20,4 +21,9 @@ public record BossDefeatedCondition(EntityType<?> bossType) implements TradeCond
 
     @Override
     public MapCodec<? extends TradeCondition> codec() {return ModTradeConditions.BOSS_DEFEATED.get();}
+
+    @Override
+    public Component describe() {
+        return Component.translatable("trade_condition.confluence.boss_defeated.named", bossType.getDescription());
+    }
 }

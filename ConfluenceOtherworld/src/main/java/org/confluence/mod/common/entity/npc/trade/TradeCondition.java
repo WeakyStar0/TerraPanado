@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.npc.trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.conditions.AlwaysTrueCondition;
@@ -17,6 +19,12 @@ public interface TradeCondition {
     boolean test(ServerPlayer player, BaseNPC npc);
 
     MapCodec<? extends TradeCondition> codec();
+
+    /// Short text for recipe viewers. An empty component means the offer has no requirement.
+    default Component describe() {
+        ResourceLocation id = ModCustomRegistries.TRADE_CONDITIONS.getKey(codec());
+        return Component.translatable("trade_condition." + (id == null ? "unknown" : id.getNamespace() + "." + id.getPath()));
+    }
 
     default TradeCondition and(TradeCondition other) {
         return new AndCondition(this, other);

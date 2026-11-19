@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -15,4 +16,9 @@ public record BestiaryCondition(int count) implements TradeCondition {
         return Bestiary.INSTANCE.getUnlockedCount() >= count;
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.BESTIARY.get(); }
+
+    @Override
+    public Component describe() {
+        return Component.translatable("trade_condition.confluence.bestiary.count", count);
+    }
 }

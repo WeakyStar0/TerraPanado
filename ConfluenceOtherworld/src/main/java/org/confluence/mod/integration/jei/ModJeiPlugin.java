@@ -11,6 +11,8 @@ import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
+import mezz.jei.api.recipe.IRecipeManager;
+import org.confluence.mod.client.handler.ClientNPCShops;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,6 +41,8 @@ import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
@@ -46,6 +50,8 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
     public static @Nullable IJeiRuntime jeiRuntime;
+    /// The shop pages JEI currently holds, so a new shop table from the server can replace them.
+    private static List<NPCShopCategory.Offer> shopOffers = List.of();
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -78,6 +84,7 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
         }
         registration.addRecipeCategories(new ArmorSetBonusCategory(jeiHelpers));
+        registration.addRecipeCategories(new NPCShopCategory(jeiHelpers));
     }
 
     @Override
@@ -108,6 +115,8 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipes(BrewingStandTerraPotionCategory.TYPE, BrewingStandTerraPotionCategory.Recipe.getAllRecipes());
         }
         registration.addRecipes(ArmorSetBonusCategory.TYPE, ModArmorBonus.getValueMap().entrySet().stream().map(ArmorSetBonusCategory.Holder::new).toList());
+        shopOffers = NPCShopCategory.collectAll(ClientNPCShops.get());
+        registration.addRecipes(NPCShopCategory.TYPE, shopOffers);
     }
 
     @Override
@@ -174,11 +183,23 @@ public final class ModJeiPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         ModJeiPlugin.jeiRuntime = jeiRuntime;
+        ClientNPCShops.setListener(ModJeiPlugin::refreshShops);
     }
 
     @Override
     public void onRuntimeUnavailable() {
         ModJeiPlugin.jeiRuntime = null;
+        ClientNPCShops.setListener(null);
+    }
+
+    /// The server sent a new shop table (join or `/reload`) after JEI had already loaded.
+    private static void refreshShops() {
+        IJeiRuntime runtime = jeiRuntime;
+        if (runtime == null) return;
+        IRecipeManager manager = runtime.getRecipeManager();
+        manager.hideRecipes(NPCShopCategory.TYPE, shopOffers);
+        shopOffers = NPCShopCategory.collectAll(ClientNPCShops.get());
+        manager.addRecipes(NPCShopCategory.TYPE, shopOffers);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

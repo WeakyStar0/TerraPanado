@@ -35,6 +35,7 @@ public class ModLanguageProvider extends LanguageProvider {
         TooltipLanguageSubProvider.addTranslations(this::addTranslation);
         ArmorBonusLanguageSubProvider.addTranslations(this::addTranslation);
         ItemDescriptionLanguageSubProvider.addTranslations(this::addTranslation);
+        NPCShopLanguageSubProvider.addTranslations(this::addTranslation);
         EffectDescriptionLanguageSubProvider.addTranslations(this::addTranslation);
         InterfaceLanguageSubProvider.addTranslations(this::addTranslation);
         WorldLanguageSubProvider.addTranslations(this::addTranslation);

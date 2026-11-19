@@ -37,6 +37,16 @@ public final class NPCTradeList {
         return WipRemoval.enabled() ? offers.stream().filter(offer -> !WipRemoval.isWip(offer.stack())).toList() : offers;
     }
 
+    /// Every NPC's shop with unfinished items left out, keyed by entity id. Sent to clients for the recipe viewer.
+    public static Map<ResourceLocation, List<NPCTradeOffer>> shopsForViewer() {
+        Map<ResourceLocation, List<NPCTradeOffer>> shops = new HashMap<>();
+        state.table().forEach((type, offers) -> {
+            List<NPCTradeOffer> shown = withoutWipItems(offers);
+            if (!shown.isEmpty()) shops.put(BuiltInRegistries.ENTITY_TYPE.getKey(type), shown);
+        });
+        return shops;
+    }
+
     public static int getRevision() {
         return state.revision();
     }

@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.entity.npc.custom.CustomNPCDefinitions;
 import org.confluence.mod.network.s2c.CustomNPCSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
+import org.confluence.mod.network.s2c.NPCShopSyncPacketS2C;
 import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
@@ -66,6 +67,7 @@ public final class GameEvents {
         for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo)) {
             NPCDialogSyncPacketS2C.sendToClient(target);
             CustomNPCSyncPacketS2C.sendToClient(target);
+            NPCShopSyncPacketS2C.sendToClient(target);
         }
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {

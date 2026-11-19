@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
@@ -16,4 +17,9 @@ public record NotCondition(TradeCondition inner) implements TradeCondition {
         return !inner.test(player, npc);
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.NOT.get(); }
+
+    @Override
+    public Component describe() {
+        return Component.translatable("trade_condition.confluence.not.of", inner.describe());
+    }
 }

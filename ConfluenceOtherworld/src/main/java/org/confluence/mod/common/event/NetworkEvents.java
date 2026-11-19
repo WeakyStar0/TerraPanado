@@ -22,6 +22,7 @@ public final class NetworkEvents {
                 .playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle)
                 .playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle)
                 .playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle)
+                .playToClient(NPCShopSyncPacketS2C.TYPE, NPCShopSyncPacketS2C.STREAM_CODEC, NPCShopSyncPacketS2C::handle)
                 .playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle)
                 .playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle)
                 .playToClient(SoulSkillSyncPacketS2C.TYPE, SoulSkillSyncPacketS2C.STREAM_CODEC, SoulSkillSyncPacketS2C::handle)

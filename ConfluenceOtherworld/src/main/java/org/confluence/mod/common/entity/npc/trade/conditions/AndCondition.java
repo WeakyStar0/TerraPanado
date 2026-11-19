@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
@@ -17,4 +18,15 @@ public record AndCondition(TradeCondition left, TradeCondition right) implements
         return left.test(player, npc) && right.test(player, npc);
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.AND.get(); }
+
+    @Override
+    public Component describe() {
+        return join(left.describe(), right.describe(), ", ");
+    }
+
+    static Component join(Component a, Component b, String separator) {
+        if (a.getString().isEmpty()) return b;
+        if (b.getString().isEmpty()) return a;
+        return Component.empty().append(a).append(separator).append(b);
+    }
 }

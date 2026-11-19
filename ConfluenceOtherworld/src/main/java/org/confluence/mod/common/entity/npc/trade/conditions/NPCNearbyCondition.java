@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -21,4 +22,9 @@ public record NPCNearbyCondition(EntityType<?> npcType) implements TradeConditio
                 n -> n != npc && n.getType() == npcType).isEmpty();
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.NPC_NEARBY.get(); }
+
+    @Override
+    public Component describe() {
+        return Component.translatable("trade_condition.confluence.npc_nearby.named", npcType.getDescription());
+    }
 }

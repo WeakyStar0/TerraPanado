@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
@@ -23,5 +24,21 @@ public record GameEventCondition(ResourceKey<? extends GameEvent> event) impleme
     @Override
     public MapCodec<? extends TradeCondition> codec() {
         return ModTradeConditions.GAME_EVENT.get();
+    }
+
+    @Override
+    public Component describe() {
+        String path = event.location().getPath();
+        return Component.translatable("trade_condition.confluence.game_event.named", Component.translatableWithFallback("bestiary.confluence.filter." + path + ".title", titleCase(path)));
+    }
+
+    private static String titleCase(String path) {
+        StringBuilder out = new StringBuilder();
+        for (String word : path.split("_")) {
+            if (word.isEmpty()) continue;
+            if (!out.isEmpty()) out.append(' ');
+            out.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+        }
+        return out.toString();
     }
 }
