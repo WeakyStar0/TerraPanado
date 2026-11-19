@@ -1485,10 +1485,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(),
                 SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get(),
                 SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
-                TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(),
-                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
-                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
                 HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
@@ -1681,9 +1677,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(),
                 SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get(),
                 SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get(),
-                SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
-                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
-                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get()
+                SpawnEggItems.PLANTERA_SPAWN_EGG.get()
         );
 
         PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
