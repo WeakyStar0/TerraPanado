@@ -61,7 +61,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
     private static final EntityDataAccessor<Integer> STRING_COLOR = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ORBIT_DIRECTION = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.INT);
     /// 对齐 1.21 的碰撞攻击节奏，实体每 5 tick 才发起一轮接触攻击。
-    private static final int HIT_INTERVAL_TICKS = 5;
+    private static final int HIT_INTERVAL_TICKS = 7;
     /// 泰拉每秒 60 tick、每格 16 像素；换算为 Minecraft 每秒 20 tick 的脱线弹道。
     private static final double DETACHED_GRAVITY = 0.3 * 3 * 3 / 16;
     private static final double DETACHED_MAX_SPEED = 16 * 3.0 / 16;
@@ -70,7 +70,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
     private static final double DETACHED_BLOCK_BOUNCE_SPEED = 4 * 3.0 / 16;
     private static final double DETACHED_BLOCK_RESTITUTION = 0.6;
     private static final float DETACHED_HIT_MULTIPLIER = 0.75F;
-    private static final int DETACHED_HIT_INTERVAL_TICKS = 4;
+    private static final int DETACHED_HIT_INTERVAL_TICKS = 6;
     private static final double DETACHED_HIT_LIFT_MIN = 5 * 3.0 / 16;
     private static final double DETACHED_HIT_LIFT_MAX = 8 * 3.0 / 16;
     private static final double RETURN_DISTANCE_SQR = 0.25;
