@@ -250,6 +250,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
+        org.confluence.mod.common.init.ItemDurability.apply(event);
     }
 
     @SubscribeEvent
