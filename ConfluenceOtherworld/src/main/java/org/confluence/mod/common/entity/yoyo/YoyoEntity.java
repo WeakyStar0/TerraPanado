@@ -315,10 +315,13 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
             }
 
             owner.setLastHurtMob(logicalTarget);
-            if (liveWeapon.getItem() == item)
-                liveWeapon.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
+            /// 悠悠球本体每秒最多扣 1 点，只有主球付耐久；背包的副球和平衡锤不扣，命中特效弹幕各自单独计算。
+            if (getRole() == Role.MAIN && liveWeapon.getItem() == item)
+                org.confluence.mod.common.init.ItemDurability.charge(owner, liveWeapon, EquipmentSlot.MAINHAND, 20);
             if (!isCounterweight()) {
-                item.applyHitEffect(this, owner, logicalTarget);
+                try (var ignored = org.confluence.mod.common.init.ItemDurability.scope(liveWeapon)) {
+                    item.applyHitEffect(this, owner, logicalTarget);
+                }
                 if (!isDetached() && !isReturning()) YoyoSession.of(owner).consumeSpin(obstructed);
                 YoyoSession.of(owner).onHit(owner, this);
             } else entityData.set(ORBIT_DIRECTION, -entityData.get(ORBIT_DIRECTION));

@@ -69,6 +69,7 @@ public class GardenShearsItem extends ShearsItem {
             }
 
             level.setBlock(blockpos, optional.get(), 11);
+            if (player != null) itemstack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(context.getHand()));
             level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, optional.get()));
 
             return InteractionResult.sidedSuccess(level.isClientSide);

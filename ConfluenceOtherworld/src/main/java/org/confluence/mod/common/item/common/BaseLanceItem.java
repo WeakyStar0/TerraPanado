@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.world.entity.EquipmentSlot;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -110,6 +111,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
             Vec3 lanceDirection = owner.getViewVector(1.0F);
             Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance));
 
+            boolean hit = false;
             for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> LibEntityUtils.canHitEntity(target, owner))) {
                 if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
                 victim = LibEntityUtils.tryFindBeImpacted(victim);
@@ -128,7 +130,9 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                     LibEntityUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
+                hit = true;
             }
+            if (hit) stack.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
         }
     }
 

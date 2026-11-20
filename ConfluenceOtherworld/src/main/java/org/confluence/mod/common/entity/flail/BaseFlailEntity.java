@@ -169,7 +169,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     private void tickItemBehavior(Player player) {
         if (!level().isClientSide() && player.getMainHandItem().getItem() instanceof BaseFlailItem item) {
-            item.onFlailTick(player, this);
+            try (var ignored = org.confluence.mod.common.init.ItemDurability.scope(player.getMainHandItem())) {
+                item.onFlailTick(player, this);
+            }
         }
     }
 
@@ -551,7 +553,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
                 anyHit = true;
                 LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), parameters.behavior().knockback(), 0.15f);
                 if (living != null && isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
-                    flailItem.onFlailHit(player, living, this);
+                    try (var ignored = org.confluence.mod.common.init.ItemDurability.scope(held)) {
+                        flailItem.onFlailHit(player, living, this);
+                    }
+                }
+                /// 链锤本体是持续命中的同一个实体，所以每秒最多扣 1 点；它生成的弹幕各自单独计算。
+                if (held.getItem() instanceof BaseFlailItem) {
+                    org.confluence.mod.common.init.ItemDurability.charge(player, held, net.minecraft.world.entity.EquipmentSlot.MAINHAND, 20);
                 }
                 if (level() instanceof ServerLevel serverLevel) {
                     EnchantmentHelper.doPostAttackEffects(serverLevel, target, source);
@@ -686,7 +694,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         /// 物品扩展点：投出瞬间的附属效果（如风锚在链球位置召唤痛苦飓风）
         if (player.getMainHandItem().getItem() instanceof BaseFlailItem flailItem) {
-            flailItem.onFlailLaunch(player, this);
+            try (var ignored = org.confluence.mod.common.init.ItemDurability.scope(player.getMainHandItem())) {
+                flailItem.onFlailLaunch(player, this);
+            }
         }
     }
 

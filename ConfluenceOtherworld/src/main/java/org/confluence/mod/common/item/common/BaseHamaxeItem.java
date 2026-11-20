@@ -81,6 +81,8 @@ public class BaseHamaxeItem extends DiggerItem implements IWeaponTooltip {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
         if (toolMode == null || toolMode.mode() == 0) {
             BaseHammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
+        } else if (!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0F) {
+            stack.hurtAndBreak(1, miningEntity, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
         }
         return true;
     }

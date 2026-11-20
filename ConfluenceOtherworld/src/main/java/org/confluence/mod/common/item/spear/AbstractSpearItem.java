@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.spear;
 
+import org.confluence.mod.common.init.ItemDurability;
+import net.minecraft.world.entity.EquipmentSlot;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -115,7 +117,9 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem, 
             struckEntities.clear();
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
             triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "spear", "use");
-            onStartSting(stack, level, entity);
+            try (var ignored = ItemDurability.scope(stack)) {
+                onStartSting(stack, level, entity);
+            }
         }
         return true;
     }
@@ -155,10 +159,15 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem, 
                     struckEntities.add(victim.getId());
                     owner.setLastHurtMob(victim);
                     victim = LibEntityUtils.tryFindBeImpacted(victim);
-                    onHitEntity(stack, owner.serverLevel(), owner, victim);
+                    try (var ignored = ItemDurability.scope(stack)) {
+                        onHitEntity(stack, owner.serverLevel(), owner, victim);
+                    }
+                    stack.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
                     break;
                 }
-                onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
+                try (var ignored = ItemDurability.scope(stack)) {
+                    onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
+                }
             }
         }
     }
