@@ -17,6 +17,8 @@ public final class ClientWeaponInputManager {
         if (HANDLERS.isEmpty()) {
             register(YoyoInputHandler.INSTANCE);
             register(WhipInputHandler.INSTANCE);
+            register(StaffInputHandler.INSTANCE);
+            register(GunInputHandler.INSTANCE);
         }
     }
 

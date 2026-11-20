@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.api.animation.first_person.CameraAnimation;
 import org.confluence.mod.api.event.GunEvent;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
@@ -33,8 +34,12 @@ public final class GunHandler {
         KeyMapping shoot = ModKeyBindings.GUN_SHOOT.get();
 
         updateGunCameraAnimation(player);
-        boolean defaultBindingHeld = shoot.isDefault() && attackHeld;
-        boolean shootHeld = shoot.isDown() || defaultBindingHeld;
+        /// 枪的动作键按配置取左键或右键；自定义了射击键位时以键位为准
+        net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getInstance();
+        boolean useHeld = ModClientConfigs.gunUseButton == ModClientConfigs.WeaponUseButton.LEFT
+                ? attackHeld : minecraft.screen == null && minecraft.options.keyUse.isDown();
+        boolean defaultBindingHeld = shoot.isDefault() && useHeld;
+        boolean shootHeld = shoot.isDefault() ? defaultBindingHeld : shoot.isDown();
         boolean defaultBindingPressed = defaultBindingHeld && !wasDefaultGunShootHeld;
         wasDefaultGunShootHeld = defaultBindingHeld;
         if (player.isSpectator() || !shootHeld) return;
@@ -44,8 +49,11 @@ public final class GunHandler {
         if (!(mainHandItem.getItem() instanceof BaseGun baseGun) || cooldowns.isOnCooldown(baseGun))
             return;
         if (!ModGunUtils.canShoot(player, mainHandItem)) return;
-        if (!baseGun.isAutomatic(mainHandItem) && !shoot.consumeClick() && !defaultBindingPressed)
-            return;
+        if (!baseGun.isAutomatic(mainHandItem)) {
+            /// 默认键位按配置的左/右键判断“刚按下”，自定义键位仍用按键的点击计数
+            boolean clicked = shoot.isDefault() ? defaultBindingPressed : shoot.consumeClick();
+            if (!clicked) return;
+        }
 
         GunEvent.Use use = new GunEvent.Use(player, baseGun, baseGun.getCooldown());
         NeoForge.EVENT_BUS.post(use);
