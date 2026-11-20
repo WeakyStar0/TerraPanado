@@ -9,8 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.block.ChestBlocks;
+import org.confluence.mod.integration.lootr.LootrIntegration;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +59,7 @@ public class BiomeChestBlock extends ChestBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BEntity(pos, state);
+        return LootrIntegration.biomeChest(pos, state);
     }
 
     @Override
@@ -96,37 +98,53 @@ public class BiomeChestBlock extends ChestBlock {
 
     @Override
     public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, net.minecraft.world.entity.Entity entity) {
-        return state.getValue(UNLOCKED);
+        return state.getValue(UNLOCKED)
+                && !(level.getBlockEntity(pos) instanceof BaseChestBlock.BEntity chest && chest.isLootrChest() && chest.lootrBlastImmune());
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof BaseChestBlock.BEntity chest && chest.isLootrChest()) {
+            return chest.lootrComparatorSignal(state, level, pos);
+        }
+        return super.getAnalogOutputSignal(state, level, pos);
+    }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (blockEntity instanceof BaseChestBlock.BEntity chest && chest.isLootrChest()) chest.lootrPlayerDestroyed(level, player, pos);
     }
 
     @Override
     protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
+        if (!state.getValue(UNLOCKED)) return 0;
+        float progress = super.getDestroyProgress(state, player, level, pos);
+        if (level.getBlockEntity(pos) instanceof BaseChestBlock.BEntity chest && chest.isLootrChest()) {
+            return chest.lootrDestroyProgress(state, player, level, pos, progress);
+        }
+        return progress;
     }
 
-    public static class BEntity extends ChestBlockEntity {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        InteractionResult result = BaseChestBlock.useLootrChest(level, pos, player);
+        return result != null ? result : super.useWithoutItem(state, level, pos, player, hitResult);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return BaseChestBlock.wrapLootrTicker(super.getTicker(level, state, type));
+    }
+
+    public static class BEntity extends BaseChestBlock.BEntity {
         public BEntity(BlockPos pos, BlockState blockState) {
             super(ChestBlocks.BIOME_CHEST_ENTITY.get(), pos, blockState);
         }
 
         @Override
-        public boolean canOpen(Player player) {
-            return getBlockState().getValue(UNLOCKED) && super.canOpen(player);
-        }
-
-        @Override
         protected Component getDefaultName() {
             return Component.translatable("container.confluence." + BuiltInRegistries.BLOCK.getKey(getBlockState().getBlock()).getPath());
-        }
-
-        @Override
-        public boolean canTakeItem(Container target, int slot, ItemStack stack) {
-            return getBlockState().getValue(UNLOCKED);
-        }
-
-        @Override
-        public boolean canPlaceItem(int slot, ItemStack stack) {
-            return getBlockState().getValue(UNLOCKED);
         }
     }
 }

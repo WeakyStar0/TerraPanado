@@ -29,6 +29,7 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.ChestBlocks;
+import org.confluence.mod.integration.lootr.LootrIntegration;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +43,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BEntity(pPos, pState);
+        return LootrIntegration.deathChest(pPos, pState);
     }
 
     protected Stat<ResourceLocation> getOpenChestStat() {
@@ -177,12 +178,16 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
 
         @Override
         public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+            CompoundTag tag = serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+            serializePoses(tag, "relativePoses", relativePoses); // update packets are loaded through loadAdditional, which reads both
+            writeLootrSync(tag, registries);
+            return tag;
         }
 
         @Override
         public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             deserializePoses(tag, "connectedPoses", connectedPoses);
+            readLootrSync(tag, lookupProvider);
         }
 
         @Override

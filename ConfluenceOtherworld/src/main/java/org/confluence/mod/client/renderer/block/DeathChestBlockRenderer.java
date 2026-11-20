@@ -18,6 +18,18 @@ import java.util.function.BiFunction;
 
 public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.BEntity> {
     private final BiFunction<Block, ChestType, Material> function;
+    /** Grayscale textures shown to a player that already looted a per-player (Lootr) chest. */
+    private final Hashtable<Block, Material[]> lootedCache = Util.make(new Hashtable<>(), map -> {
+        for (DeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
+            String chestName = "looted_" + deathChest.getId().getPath().replace("_chest", "");
+            ResourceLocation location = Confluence.asResource("entity/chest/" + chestName);
+            map.put(deathChest.get(), new Material[]{
+                    new Material(Sheets.CHEST_SHEET, location),
+                    new Material(Sheets.CHEST_SHEET, location.withSuffix("_left")),
+                    new Material(Sheets.CHEST_SHEET, location.withSuffix("_right"))
+            });
+        }
+    });
 
     public DeathChestBlockRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -48,6 +60,11 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.BEnti
 
     @Override
     protected Material getMaterial(DeathChestBlock.BEntity blockEntity, ChestType chestType) {
-        return function.apply(blockEntity.getBlockState().getBlock(), chestType);
+        Block block = blockEntity.getBlockState().getBlock();
+        if (BaseChestBlockRenderer.isLooted(blockEntity)) {
+            Material[] looted = lootedCache.get(block);
+            if (looted != null) return looted[chestType.ordinal()];
+        }
+        return function.apply(block, chestType);
     }
 }

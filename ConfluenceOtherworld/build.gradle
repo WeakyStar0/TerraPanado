@@ -356,6 +356,7 @@ dependencies {
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
     //runtimeOnly "maven.modrinth:lootr:4dt0SxY0"
+    compileOnly "maven.modrinth:lootr:SPOrIzX8" // 1.21.1-1.11.38.127, optional: per-player loot in natural chests
     //runtimeOnly "curse.maven:official-divinerpg-363543:7371103"
 //    runtimeOnly "maven.modrinth:biolith:byVGeYWw"
 //    runtimeOnly "curse.maven:citadel-331936:7476597"

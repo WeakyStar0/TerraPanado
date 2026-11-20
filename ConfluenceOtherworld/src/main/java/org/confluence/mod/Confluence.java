@@ -32,6 +32,7 @@ import org.confluence.mod.common.init.item.SoulItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
+import org.confluence.mod.integration.lootr.LootrIntegration;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
@@ -82,6 +83,7 @@ public final class Confluence {
         AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
         IronSpellHelper.registerEvents();
+        LootrIntegration.init();
         ModAdvancements.register(eventBus);
 
         TFReferences.init();

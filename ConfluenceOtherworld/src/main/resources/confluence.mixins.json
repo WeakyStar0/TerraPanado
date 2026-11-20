@@ -81,6 +81,7 @@
         "world.level.block.BlockMixin",
         "world.level.block.CropBlockMixin",
         "world.level.block.FarmBlockMixin",
+        "world.level.block.entity.ChestOpenersCounterMixin",
         "world.level.block.state.BlockBehaviourMixin",
         "world.level.block.state.BlockBehaviourMixin$BlockStateBaseMixin",
         "world.level.block.state.StateHolderMixin",
