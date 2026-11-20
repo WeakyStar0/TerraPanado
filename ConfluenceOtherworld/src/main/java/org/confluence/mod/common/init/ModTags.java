@@ -438,6 +438,8 @@ public final class ModTags {
         public static final TagKey<Item> WHIP = register("whip");
         /// 尚未定稿的内容：本轮新增/改动的武器统一打上此标签，方便后续筛选与测试。
         public static final TagKey<Item> WIP = register("wip");
+        /// 只能在困难模式（击败肉山之后）获得的物品，提示框会显示“仅困难模式”。
+        public static final TagKey<Item> HARDMODE_ONLY = register("hardmode_only");
         public static final TagKey<Item> YOYO = register("yoyo");
         public static final TagKey<Item> BOOMERANG = register("boomerang");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");

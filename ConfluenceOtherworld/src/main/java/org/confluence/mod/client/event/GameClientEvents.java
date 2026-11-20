@@ -415,6 +415,9 @@ public final class GameClientEvents {
         ExtractinatorData.addTooltip(holder, toolTip);
         MeteorLandingHandler.addTooltip(stack, toolTip);
         ItemDescriptionTooltip.add(stack, toolTip);
+        if (stack.is(org.confluence.mod.common.init.ModTags.Items.HARDMODE_ONLY)) {
+            toolTip.add(Component.translatable("tooltip.confluence.hardmode_only").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

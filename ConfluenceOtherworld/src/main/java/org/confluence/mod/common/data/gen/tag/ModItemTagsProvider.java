@@ -1230,6 +1230,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
         copy(Tags.Blocks.GLASS_BLOCKS_COLORLESS, Tags.Items.GLASS_BLOCKS_COLORLESS);
 
+        IntrinsicTagAppender<Item> hardmode = tag(ModTags.Items.HARDMODE_ONLY);
+        java.util.regex.Pattern hardmodeName = java.util.regex.Pattern.compile("cobalt|palladium|mythril|orichalcum|adamantite|titanium|chlorophyte|shroomite|spectre|crystal_assassin|hallowed");
+        for (Item item : net.minecraft.core.registries.BuiltInRegistries.ITEM) {
+            var id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
+            if (id.getNamespace().equals(Confluence.MODID) && hardmodeName.matcher(id.getPath()).find()) hardmode.add(item);
+        }
+
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
                 ConsumableItems.SMOKE_BOMB.get(),

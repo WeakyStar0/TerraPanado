@@ -153,6 +153,7 @@ public final class TooltipLanguageSubProvider {
         language.add("screen.confluence.environmental_machine.target.red", "The Crimson", "猩红之地");
         language.add("screen.confluence.environmental_machine.target.white", "Snow", "雪原");
         language.add("screen.confluence.environmental_machine.target.yellow", "Desert", "沙漠");
+        language.add("tooltip.confluence.hardmode_only", "Hardmode only", "仅困难模式");
         language.add("tooltip.confluence.ability.chlorophyte_homing", "Special Effect: Homes in on nearby targets and leaves a bright green trail", "特殊效果：会追踪附近的目标，并留下明亮的绿色轨迹");
         language.add("tooltip.confluence.ability.crystal_split", "Special Effect: Splits backward into 2 shards at 50% damage; shards pass through blocks", "特殊效果：命中后向后分裂为 2 枚碎片，伤害为原弹 50%，可穿过方块");
         language.add("tooltip.confluence.ability.cursed_debuff", "Special Effect: Applies Wither", "特殊效果：施加凋零");

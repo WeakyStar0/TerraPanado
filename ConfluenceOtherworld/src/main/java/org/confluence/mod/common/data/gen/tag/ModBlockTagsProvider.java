@@ -1513,21 +1513,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MAGENTA_PURE_GLASS.get(),
                 PINK_PURE_GLASS.get()
         );
+        // 只隐藏未定稿（WIP）的方块；矿石本身已完成，必须能在 JEI 里查到
         tag(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS).add(
-                DEEPSLATE_COBALT_ORE.get(),
                 RAW_COBALT_BLOCK.get(),
-                DEEPSLATE_PALLADIUM_ORE.get(),
                 RAW_PALLADIUM_BLOCK.get(),
-                DEEPSLATE_MYTHRIL_ORE.get(),
                 RAW_MYTHRIL_BLOCK.get(),
-                DEEPSLATE_ORICHALCUM_ORE.get(),
                 RAW_ORICHALCUM_BLOCK.get(),
-                DEEPSLATE_ADAMANTITE_ORE.get(),
                 RAW_ADAMANTITE_BLOCK.get(),
-                DEEPSLATE_TITANIUM_ORE.get(),
                 RAW_TITANIUM_BLOCK.get(),
                 HALLOWED_BLOCK.get(),
-                CHLOROPHYTE_ORE.get(),
                 RAW_CHLOROPHYTE_BLOCK.get(),
                 CHLOROPHYTE_BLOCK.get(),
                 SHROOMITE_BLOCK.get(),
