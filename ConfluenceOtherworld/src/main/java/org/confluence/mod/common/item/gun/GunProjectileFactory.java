@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.gun;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -56,6 +57,7 @@ public final class GunProjectileFactory {
 
     private static void configureProjectile(ShotContext context, Projectile projectile) {
         ServerPlayer shooter = context.shooter();
+        ItemDurability.bind(projectile, context.gun());
         float speed = Math.max(0.0F, context.velocity());
         float inaccuracy = Math.max(0.0F, context.inaccuracy());
         projectile.setOwner(shooter);

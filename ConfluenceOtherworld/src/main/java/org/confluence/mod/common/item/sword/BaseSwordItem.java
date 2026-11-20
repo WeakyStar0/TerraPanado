@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sword;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -106,6 +107,7 @@ public class BaseSwordItem extends SwordItem implements IWeaponTooltip, ISpecial
         }
         float damage = (float) (component.damageFactor() * owner.getAttributeValue(LibAttributes.getAttackDamage()));
         projectile.configure(owner, weapon, component, damage);
+        ItemDurability.bind(projectile, weapon);
         customizeProjectile(owner, weapon, projectile);
         return projectile;
     }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summoner.attachment;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -88,6 +89,7 @@ public final class RedGloveData {
             return new Vec3(direction.getStepX(), direction.getStepY(), direction.getStepZ());
         });
         Set<UUID> resolved = new HashSet<>();
+        boolean anyHit = false;
         // 候选由实际线段包围盒发现，是否可打沿用原有敌对阵营策略；索敌列表不再限制伤害范围。
         for (Entity recipient : LibEntityUtils.queryHitCandidates(level, player, RedGlovePattern.bounds(paths),
                 candidate -> Zenith.TARGETING.canAcquire(player, candidate))) {
@@ -95,8 +97,13 @@ public final class RedGloveData {
             if (living == null || !RedGlovePattern.intersects(paths, recipient.getBoundingBox())
                     || !resolved.add(LibEntityUtils.dedupeIdentity(recipient).getUUID())) continue;
             var damage = LibDamageTypes.of(level, LibDamageTypes.MAGICAL_PROJECTILE, player, player);
-            if (Immunity.hurt(item, recipient, living, damage, RedGloveItem.BASE_DAMAGE)) player.setLastHurtMob(living);
+            if (Immunity.hurt(item, recipient, living, damage, RedGloveItem.BASE_DAMAGE)) {
+                player.setLastHurtMob(living);
+                anyHit = true;
+            }
         }
+        /// 一次放电算一个弹幕：造成过伤害才扣 1 点，命中几个目标都只扣一次。
+        if (anyHit) ItemDurability.chargeHeld(player, active, 0);
         player.awardStat(Stats.ITEM_USED.get(item));
         RedGloveArcPacketS2C.send(player, source, castSeed, paths);
     }

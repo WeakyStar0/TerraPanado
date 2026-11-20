@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sword;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -148,6 +149,7 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
                 if (projectile != null) {
                     projectile.configure(player, stack, (float) player.getAttributeValue(LibAttributes.getAttackDamage()),
                             (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
+                    ItemDurability.bind(projectile, stack);
                     if (level.addFreshEntity(projectile)) {
                         LibUtils.updateItemStackNbt(stack, tag -> tag.putUUID(PROJECTILE_KEY, projectile.getUUID()));
                         stack.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);

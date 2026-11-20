@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.mana;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -103,6 +104,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack stack, E projectile) {
+        ItemDurability.bind(projectile, stack);
         projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
         projectile.setDamage(damage);
         projectile.setDefaultVelocity(velocity);

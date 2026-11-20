@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.summon;
 
+import org.confluence.mod.common.init.ItemDurability;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -84,6 +85,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
                 remove(player, itemStack);
             } else {
                 summon(player, itemStack);
+                ItemDurability.charge(player, itemStack, net.minecraft.world.entity.LivingEntity.getSlotForHand(hand), 20);
             }
             SoundEvent sound = getSoundEvent(itemStack);
             if (sound != null) {
