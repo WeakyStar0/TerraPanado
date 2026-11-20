@@ -297,7 +297,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), 0, "Casting any soul attach skill also casts every other equipped one; gain 1 extra soul", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能；额外获得1点灵魂");
         language.addTooltip(AccessoryItems.FROSTBITE_SOUL_RING.get(), 0, "20% reduced soul skill cooldown", "灵魂技能冷却缩短20%");
         language.add("tooltip.item.confluence.broken_glimmer.0", "While held, collecting soul has a 20% chance to restore 4 health", "手持时，每次获得灵魂有 20% 概率回复 4 点生命");
-        language.add("tooltip.item.confluence.star_spirit.0", "Soul skill hits have a 30% chance to call down an extra falling star on that enemy", "灵魂技能命中敌人时，有 30% 概率额外召唤一颗坠星砸向该敌人");
+        language.add("tooltip.item.confluence.star_spirit.0", "Fires 3 curving magic missiles at the target you aim at, then repeats every second while held", "按住时对瞄准的目标发射 3 枚弯曲的魔法飞弹，每秒重复一次");
         language.add("tooltip.item.confluence.soul_chant_guide.0", "Soul lure projectiles pierce 2 more enemies", "引魂系列弹幕额外穿透 2 个敌怪");
         language.add("tooltip.item.confluence.senior_pathfinder_pro.0", "Soul lure projectiles home in on nearby enemies", "引魂系列弹幕会追踪附近的敌怪");
         language.add("tooltip.item.confluence.life_splendor.0", "Soul skill hits also poison the target for 5 seconds", "灵魂技能命中敌人时，额外附加 5 秒中毒");

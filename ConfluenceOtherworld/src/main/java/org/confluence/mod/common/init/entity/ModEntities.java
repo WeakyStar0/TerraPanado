@@ -126,6 +126,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<GoldenShowerProjectile>> GOLDEN_SHOWER = registerEntityType("golden_shower", "黄金雨射弹", id -> EntityType.Builder.<GoldenShowerProjectile>of(GoldenShowerProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<MagicMissileProjectile>> MAGIC_MISSILE = registerEntityType("magic_missile", "魔法飞弹", id -> EntityType.Builder.<MagicMissileProjectile>of(MagicMissileProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<FlamelashProjectile>> FLAMELASH = registerEntityType("flamelash", "烈焰火鞭", id -> EntityType.Builder.<FlamelashProjectile>of(FlamelashProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<StarSpiritMissile>> STAR_SPIRIT_MISSILE = registerEntityType("star_spirit_missile", "星魄飞弹", id -> EntityType.Builder.<StarSpiritMissile>of(StarSpiritMissile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<RainbowProjectile>> RAINBOW = registerEntityType("rainbow", "彩虹射弹", id -> EntityType.Builder.<RainbowProjectile>of(RainbowProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
 
     /// 剑气

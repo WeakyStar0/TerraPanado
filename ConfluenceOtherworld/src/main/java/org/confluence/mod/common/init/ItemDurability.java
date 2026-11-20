@@ -189,7 +189,7 @@ public final class ItemDurability {
             Map.entry("book_of_skulls", 700), Map.entry("aqua_scepter", 700), Map.entry("weather_pain", 700),
             Map.entry("demon_scythe", 800), Map.entry("magic_missile", 800), Map.entry("flamelash", 900),
             Map.entry("flower_of_fire", 1000), Map.entry("crystal_vile_shard", 1100), Map.entry("nimbus_rod", 1200),
-            Map.entry("golden_shower", 1200), Map.entry("stellar_studies_compilation", 1200), Map.entry("rainbow_rod", 1800),
+            Map.entry("golden_shower", 1200), Map.entry("stellar_studies_compilation", 1200), Map.entry("rainbow_rod", 1800), Map.entry("star_spirit", 1800),
             Map.entry("arc_surge", 2000), Map.entry("thunderstrike", 2200),
             // 召唤杖：只在召唤时扣 1 点，随从的攻击不扣
             Map.entry("finch_staff", 300), Map.entry("slime_staff", 300), Map.entry("snow_flinx_staff", 300),

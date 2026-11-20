@@ -22,6 +22,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.item.mana.StarSpiritItem;
 import org.confluence.mod.common.item.soulcerer.*;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.util.SoulcererUtils;
@@ -78,14 +79,7 @@ public class SoulItems {
                     .soulSkill(ModSoulSkills.NATURES_WRATH.get().getId())
                     .trait(SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> STAR_SPIRIT = registerItem("star_spirit", "星魄", () -> new SoulLanternItem(
-            new Item.Properties(), ModRarity.ORANGE,
-            SoulWeaponProperties.builder()
-                    .damage(11.0F)
-                    .criticalChance(0.04F)
-                    .soulSkill(ModSoulSkills.STAR_CALL.get().getId())
-                    .trait(SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
-                    .build()));
+    public static final DeferredItem<StarSpiritItem> STAR_SPIRIT = registerItem("star_spirit", "星魄", StarSpiritItem::new);
     public static final DeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = registerItemWithEnglishName("day_and_night_alike", "无分昼夜", "Day and Night Alike", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.LIGHT_RED,
             SoulWeaponProperties.builder()

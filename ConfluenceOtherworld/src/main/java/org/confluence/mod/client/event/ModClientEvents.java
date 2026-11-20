@@ -518,7 +518,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GOLDEN_SHOWER.get(), NoopRenderer::new);
         event.registerEntityRenderer(MAGIC_MISSILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLAMELASH.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new);  // todo 模型
+        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new);
+        event.registerEntityRenderer(STAR_SPIRIT_MISSILE.get(), NoopRenderer::new);  // todo 模型
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjectileRenderer::new);
         event.registerEntityRenderer(HARPY_FEATHER.get(), HarpyFeatherProjectileRenderer::new);
         event.registerEntityRenderer(HOSTILE_DEMON_SCYTHE.get(), HostileDemonScytheProjectileRenderer::new);

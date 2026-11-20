@@ -574,6 +574,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
+        mana_weapon.add(SoulItems.STAR_SPIRIT.get());
         skip_using_slowdown.addTag(ModTags.Items.MANA_WEAPON);
 
         IntrinsicTagAppender<Item> fishing_rod = tag(Tags.Items.TOOLS_FISHING_ROD);
